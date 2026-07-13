@@ -39,8 +39,8 @@ const year = new Date().getFullYear();
     >
       <span class="meta-mono uppercase text-ink-2">© {year} DEVGURU-J / MONKEY FLASH</span>
       <div class="flex gap-8">
-        <a href="/privacy" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Privacy</a>
-        <a href="/support" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Support</a>
+        <a href="/MonkeyFlash/privacy" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Privacy</a>
+        <a href="/MonkeyFlash/support" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Support</a>
         <a href="/" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Home</a>
       </div>
     </div>
@@ -63,6 +63,9 @@ const year = new Date().getFullYear();
       localStorage.setItem('devguru-lang', lang);
     };
     buttons.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang!)));
-    setLang(localStorage.getItem('devguru-lang') ?? 'en');
+    // priority: explicit ?lang= param (used for per-locale App Store URLs) > saved choice > EN
+    const param = new URLSearchParams(location.search).get('lang');
+    const initial = param === 'ko' || param === 'en' ? param : (localStorage.getItem('devguru-lang') ?? 'en');
+    setLang(initial);
   </script>
 </Base>
