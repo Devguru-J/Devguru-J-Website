@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/geist';
 @import '@fontsource-variable/geist-mono';
+@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 
 @theme {
   --color-canvas: #fafaf8;
@@ -13,8 +14,8 @@
   --color-container-low: #f4f4f2;
   --color-paper: #f5f3ee;
 
-  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', monospace;
+  --font-sans: 'Geist Variable', 'Pretendard Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Pretendard Variable', ui-monospace, 'SF Mono', monospace;
 }
 
 html {

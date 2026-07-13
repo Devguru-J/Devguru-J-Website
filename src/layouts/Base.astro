@@ -4,22 +4,35 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description: string;
-  /** pathname for canonical URL, e.g. "/" or "/privacy" */
+  /** pathname for canonical URL, e.g. "/" or "/MonkeyFlash/privacy" */
   path?: string;
+  /** document language */
+  lang?: 'en' | 'ko';
+  /** emit hreflang alternates for the bilingual landing pages (/ and /ko/) */
+  hreflang?: boolean;
 }
 
-const { title, description, path = '/' } = Astro.props;
+const { title, description, path = '/', lang = 'en', hreflang = false } = Astro.props;
 const canonical = new URL(path, Astro.site);
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {
+      hreflang && (
+        <>
+          <link rel="alternate" hreflang="en" href={new URL('/', Astro.site)} />
+          <link rel="alternate" hreflang="ko" href={new URL('/ko/', Astro.site)} />
+          <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site)} />
+        </>
+      )
+    }
     <link rel="icon" type="image/png" href="/assets/icon-512.png" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
