@@ -28,6 +28,8 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   font-variant-numeric: tabular-nums;
+  word-break: keep-all; /* Korean: never break inside a word */
+  overflow-wrap: break-word; /* …but still wrap unbreakable long tokens (URLs etc.) */
 }
 
 /* soft elevation instead of hard 1px borders */
