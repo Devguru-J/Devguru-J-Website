@@ -127,12 +127,13 @@ body {
   animation: dot-pulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 
-/* work image parallax frame */
+/* work image parallax frame: extra height + vertical travel only,
+   so the image never gets cropped horizontally */
 .parallax-frame {
   overflow: hidden;
 }
 .parallax-frame img {
-  transform: scale(1.12);
+  height: 112%;
   will-change: transform;
 }
 
@@ -147,6 +148,7 @@ body {
     animation: none;
   }
   .parallax-frame img {
+    height: 100%;
     transform: none;
   }
 }

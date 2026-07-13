@@ -57,13 +57,13 @@ if (!reduced) {
     });
   });
 
-  // ---- work images: scrubbed parallax ----
+  // ---- work images: scrubbed parallax (vertical travel within the 112%-tall image) ----
   document.querySelectorAll<HTMLElement>('[data-parallax]').forEach((img) => {
     gsap.fromTo(
       img,
-      { yPercent: -6 },
+      { yPercent: -10 },
       {
-        yPercent: 6,
+        yPercent: 0,
         ease: 'none',
         scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: true },
       }
