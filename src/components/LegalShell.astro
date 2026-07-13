@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import LogoMorph from './LogoMorph.astro';
 
 interface Props {
   title: string;
@@ -16,7 +17,7 @@ const year = new Date().getFullYear();
 <Base title={title} description={description} path={path}>
   <nav class="sticky top-0 z-50 border-b border-line bg-canvas/80 backdrop-blur-md">
     <div class="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-6 md:px-12">
-      <a href="/" class="text-[24px] font-bold tracking-tighter text-ink">Devguru</a>
+      <a href="/" class="text-[24px] font-bold text-ink"><LogoMorph /></a>
       <div class="flex items-center gap-6">
         <div class="flex gap-1 border border-line" role="group" aria-label="Language">
           <button class="label-mono px-3 py-1.5 transition-colors" data-lang="en">EN</button>
@@ -36,7 +37,7 @@ const year = new Date().getFullYear();
     <div
       class="mx-auto flex max-w-[1280px] flex-col items-center justify-between gap-4 px-5 py-8 md:flex-row md:px-12"
     >
-      <span class="meta-mono uppercase text-ink-2">© {year} DEVGURU / MONKEY FLASH</span>
+      <span class="meta-mono uppercase text-ink-2">© {year} DEVGURU-J / MONKEY FLASH</span>
       <div class="flex gap-8">
         <a href="/privacy" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Privacy</a>
         <a href="/support" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Support</a>

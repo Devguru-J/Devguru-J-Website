@@ -1,6 +1,6 @@
 # devguru-j.com
 
-Personal site of Devguru (Hyun Joon Kang) — independent software builder in Seoul.
+Personal site of Devguru-J — independent software builder in Seoul.
 Showcases products (Monkey Flash for macOS) and hosts its Privacy Policy / Support pages.
 
 ## Stack
