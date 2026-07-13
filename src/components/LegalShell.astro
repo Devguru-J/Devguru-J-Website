@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  /** mono overline shown above the content, e.g. "MONKEY FLASH — PRIVACY POLICY" */
+  overline: string;
+}
+
+const { title, description, path, overline } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<Base title={title} description={description} path={path}>
+  <nav class="sticky top-0 z-50 border-b border-line bg-canvas/80 backdrop-blur-md">
+    <div class="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-6 md:px-12">
+      <a href="/" class="text-[24px] font-bold tracking-tighter text-ink">Devguru</a>
+      <div class="flex items-center gap-6">
+        <div class="flex gap-1 border border-line" role="group" aria-label="Language">
+          <button class="label-mono px-3 py-1.5 transition-colors" data-lang="en">EN</button>
+          <button class="label-mono px-3 py-1.5 transition-colors" data-lang="ko">KO</button>
+        </div>
+        <a href="/" class="label-mono link-slide hidden pb-1 text-ink-2 sm:inline">← HOME</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="mx-auto max-w-[760px] px-5 pt-20 pb-32 md:px-0">
+    <span class="label-mono mb-10 block uppercase tracking-widest text-amber">{overline}</span>
+    <slot />
+  </main>
+
+  <footer class="border-t border-line">
+    <div
+      class="mx-auto flex max-w-[1280px] flex-col items-center justify-between gap-4 px-5 py-8 md:flex-row md:px-12"
+    >
+      <span class="meta-mono uppercase text-ink-2">© {year} DEVGURU / MONKEY FLASH</span>
+      <div class="flex gap-8">
+        <a href="/privacy" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Privacy</a>
+        <a href="/support" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Support</a>
+        <a href="/" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Home</a>
+      </div>
+    </div>
+  </footer>
+
+  <style>
+    [data-lang].active {
+      background: var(--color-ink);
+      color: var(--color-canvas);
+    }
+  </style>
+
+  <script>
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-lang]');
+    const sections = document.querySelectorAll<HTMLElement>('[data-section]');
+    const setLang = (lang: string) => {
+      buttons.forEach((b) => b.classList.toggle('active', b.dataset.lang === lang));
+      sections.forEach((s) => (s.hidden = s.dataset.section !== lang));
+      document.documentElement.lang = lang;
+      localStorage.setItem('devguru-lang', lang);
+    };
+    buttons.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang!)));
+    setLang(localStorage.getItem('devguru-lang') ?? 'en');
+  </script>
+</Base>

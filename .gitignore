@@ -1,0 +1,13 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# system
+.DS_Store
+
+# internal working material (not part of the published site)
+reference/
+stitch-prompt.md

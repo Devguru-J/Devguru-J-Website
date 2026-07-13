@@ -1,0 +1,77 @@
+---
+const links = [
+  { href: '/#work', label: 'Work' },
+  { href: '/#capabilities', label: 'Capabilities' },
+  { href: '/#principles', label: 'Principles' },
+  { href: '/#about', label: 'About' },
+  { href: '/#contact', label: 'Contact' },
+];
+---
+
+<nav
+  class="sticky top-0 z-50 border-b border-line bg-canvas/80 backdrop-blur-md"
+  id="site-nav"
+>
+  <div
+    class="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-6 md:px-12"
+  >
+    <a href="/" class="text-[24px] font-bold tracking-tighter text-ink">Devguru</a>
+
+    <div class="hidden items-center gap-8 md:flex">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class="label-mono text-ink-2 transition-colors duration-200 hover:text-amber"
+          >
+            {l.label}
+          </a>
+        ))
+      }
+      <span class="label-mono flex items-center gap-2 text-ink">
+        <span class="dot-pulse inline-block h-1.5 w-1.5 rounded-full bg-amber"></span>
+        AVAILABLE
+      </span>
+    </div>
+
+    <button
+      class="label-mono text-ink md:hidden"
+      id="menu-toggle"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open menu"
+    >
+      MENU
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="hidden border-t border-line bg-canvas md:hidden">
+    <div class="flex flex-col gap-6 px-5 py-8">
+      {
+        links.map((l) => (
+          <a href={l.href} class="label-mono text-ink" data-menu-link>
+            {l.label.toUpperCase()}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</nav>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  if (toggle && menu) {
+    const close = () => {
+      menu.classList.add('hidden');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.textContent = 'MENU';
+    };
+    toggle.addEventListener('click', () => {
+      const open = menu.classList.toggle('hidden') === false;
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.textContent = open ? 'CLOSE' : 'MENU';
+    });
+    menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', close));
+  }
+</script>

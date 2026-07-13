@@ -1,0 +1,177 @@
+---
+import LegalShell from '../components/LegalShell.astro';
+---
+
+<LegalShell
+  title="Monkey Flash — Support"
+  description="Support, quick start, and FAQ for Monkey Flash, the permission-free macOS focus dimmer."
+  path="/support"
+  overline="MONKEY FLASH — SUPPORT"
+>
+  <section data-section="en" class="legal">
+    <h1>Monkey Flash Support</h1>
+    <p class="eff">
+      Monkey Flash keeps the active window bright and dims the background to help you focus.
+    </p>
+
+    <h2>Quick Start</h2>
+    <ol>
+      <li>Launch Monkey Flash.</li>
+      <li>Click the Monkey Flash menu bar icon to adjust opacity.</li>
+      <li>
+        Open Settings to configure Fn reveal, multi-display behavior, shortcuts, excluded apps,
+        and startup behavior.
+      </li>
+    </ol>
+
+    <h2>FAQ</h2>
+    <h3>Does Monkey Flash need Accessibility permission?</h3>
+    <p>
+      No. Monkey Flash does not require Accessibility, Screen Recording, or Input Monitoring
+      permissions.
+    </p>
+    <h3>How do I adjust dim intensity?</h3>
+    <p>
+      Use the Opacity slider in the menu bar dropdown, or scroll over the menu bar icon for quick
+      adjustments. You can also keep separate intensity values for Light Mode and Dark Mode.
+    </p>
+    <h3>How do I temporarily reveal everything?</h3>
+    <p>
+      Hold the Fn key. Monkey Flash lifts the dimming while Fn is held. You can turn this behavior
+      on or off in Settings.
+    </p>
+    <h3>Can I exclude an app?</h3>
+    <p>
+      Yes. Add apps in Settings under Excluded Apps, or use the menu bar item to exclude the
+      current app.
+    </p>
+
+    <h2>Troubleshooting</h2>
+    <ul>
+      <li>
+        If the menu bar icon is hidden, reopen the app and check Show Status Bar Icon in Settings.
+      </li>
+      <li>If dimming feels too strong, lower Opacity.</li>
+      <li>To launch automatically after login, enable Start at Login in Settings.</li>
+    </ul>
+
+    <div class="contact-card">
+      <strong>Contact</strong><br />
+      Email <a href="mailto:devguru.j610@gmail.com">devguru.j610@gmail.com</a>
+    </div>
+  </section>
+
+  <section data-section="ko" class="legal" hidden>
+    <h1>Monkey Flash 지원</h1>
+    <p class="eff">
+      Monkey Flash는 활성 창만 밝게 남기고 배경을 어둡게 덮어 집중을 돕는 macOS 유틸리티입니다.
+    </p>
+
+    <h2>빠른 시작</h2>
+    <ol>
+      <li>Monkey Flash를 실행합니다.</li>
+      <li>메뉴바의 Monkey Flash 아이콘을 클릭해 딤 강도를 조정합니다.</li>
+      <li>필요한 경우 Settings에서 Fn 임시 해제, 멀티 디스플레이, 단축키, 제외 앱을 설정합니다.</li>
+    </ol>
+
+    <h2>FAQ</h2>
+    <h3>Accessibility 권한이 필요한가요?</h3>
+    <p>
+      아니요. Monkey Flash는 Accessibility, Screen Recording, Input Monitoring 권한을 요구하지
+      않습니다.
+    </p>
+    <h3>딤 강도는 어떻게 조절하나요?</h3>
+    <p>
+      메뉴바 드롭다운의 슬라이더로 조절하거나, 메뉴바 아이콘 위에서 스크롤해 빠르게 변경할 수
+      있습니다. 설정에서 라이트 모드와 다크 모드의 강도를 따로 둘 수도 있습니다.
+    </p>
+    <h3>잠깐 전체 화면을 밝게 보고 싶을 때는 어떻게 하나요?</h3>
+    <p>Fn 키를 누르고 있는 동안 딤이 일시 해제됩니다. 이 동작은 Settings에서 켜거나 끌 수 있습니다.</p>
+    <h3>특정 앱에서는 끄고 싶습니다.</h3>
+    <p>
+      Settings의 Excluded Apps에서 앱을 제외 목록에 추가하세요. 메뉴바 메뉴에서도 현재 앱을 빠르게
+      제외할 수 있습니다.
+    </p>
+
+    <h2>문제 해결</h2>
+    <ul>
+      <li>
+        메뉴바 아이콘이 보이지 않으면 Dock 아이콘으로 앱을 다시 열고 Settings에서 Show Status Bar
+        Icon을 확인하세요.
+      </li>
+      <li>앱이 너무 강하게 느껴지면 Opacity를 낮추세요.</li>
+      <li>로그인 후 자동 실행하려면 Settings에서 Start at Login을 켜세요.</li>
+    </ul>
+
+    <div class="contact-card">
+      <strong>문의</strong><br />
+      이메일 <a href="mailto:devguru.j610@gmail.com">devguru.j610@gmail.com</a>
+    </div>
+  </section>
+</LegalShell>
+
+<style is:global>
+  .legal h1 {
+    font-size: clamp(28px, 3.4vw, 36px);
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .legal .eff {
+    color: var(--color-ink-2);
+    font-size: 15px;
+    margin-bottom: 32px;
+    max-width: 65ch;
+  }
+  .legal h2 {
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    font-weight: 500;
+    margin: 44px 0 12px;
+  }
+  .legal h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 24px 0 6px;
+    color: var(--color-ink);
+  }
+  .legal p {
+    color: var(--color-ink-2);
+    line-height: 1.7;
+    margin-bottom: 14px;
+    max-width: 65ch;
+  }
+  .legal ol,
+  .legal ul {
+    color: var(--color-ink-2);
+    line-height: 1.7;
+    margin: 0 0 14px;
+    padding-left: 22px;
+    max-width: 65ch;
+  }
+  .legal ol {
+    list-style: decimal;
+  }
+  .legal ul {
+    list-style: disc;
+  }
+  .legal li {
+    margin-bottom: 6px;
+  }
+  .legal strong {
+    color: var(--color-ink);
+  }
+  .legal a {
+    color: var(--color-amber);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .legal .contact-card {
+    margin-top: 32px;
+    padding: 20px 24px;
+    border: 1px solid var(--color-line);
+    background: var(--color-container-low);
+    color: var(--color-ink-2);
+    line-height: 1.8;
+  }
+</style>
