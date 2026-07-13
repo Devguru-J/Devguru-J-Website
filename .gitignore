@@ -11,3 +11,6 @@ node_modules/
 # internal working material (not part of the published site)
 reference/
 stitch-prompt.md
+
+# wrangler local state
+.wrangler/
