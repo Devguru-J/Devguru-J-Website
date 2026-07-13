@@ -57,7 +57,7 @@ import HeroShader from '../components/HeroShader.astro';
       <!-- 01 · Monkey Flash -->
       <div class="mb-40 grid grid-cols-1 items-center gap-6 md:grid-cols-12">
         <div class="reveal md:col-span-7">
-          <div class="parallax-frame group aspect-video border border-line bg-container">
+          <div class="parallax-frame group aspect-video bg-container shadow-soft transition-shadow duration-500 hover:shadow-lift">
             <img
               src="/assets/work-monkeyflash.jpg"
               alt="Monkey Flash on macOS: the active window stays bright while the rest of the desktop is dimmed."
@@ -80,9 +80,9 @@ import HeroShader from '../components/HeroShader.astro';
             everything else—no Accessibility, Screen Recording, or any system permission required.
           </p>
           <div class="mb-8 flex flex-wrap gap-2">
-            <span class="meta-mono border border-line px-3 py-1.5 uppercase text-ink-2">Zero permissions</span>
-            <span class="meta-mono border border-line px-3 py-1.5 uppercase text-ink-2">1% dim control</span>
-            <span class="meta-mono border border-line px-3 py-1.5 uppercase text-ink-2">Fn reveal</span>
+            <span class="meta-mono bg-container-low px-4 py-2 uppercase text-ink-2">Zero permissions</span>
+            <span class="meta-mono bg-container-low px-4 py-2 uppercase text-ink-2">1% dim control</span>
+            <span class="meta-mono bg-container-low px-4 py-2 uppercase text-ink-2">Fn reveal</span>
           </div>
           <span class="label-mono inline-flex items-center gap-2 text-ink">
             COMING TO THE MAC APP STORE
@@ -108,7 +108,7 @@ import HeroShader from '../components/HeroShader.astro';
           </span>
         </div>
         <div class="reveal order-1 md:order-2 md:col-span-7 md:col-start-6">
-          <div class="parallax-frame group aspect-video border border-line bg-container">
+          <div class="parallax-frame group aspect-video bg-container shadow-soft transition-shadow duration-500 hover:shadow-lift">
             <img
               src="/assets/work-platform.jpg"
               alt="Editorial-style business operations workspace with dense but organized tables and timelines."
@@ -191,7 +191,7 @@ import HeroShader from '../components/HeroShader.astro';
     </section>
 
     <!-- ================= Interstitial ================= -->
-    <section class="border-y border-line bg-container-low px-5 py-48 md:px-12">
+    <section class="bg-container-low px-5 py-48 md:px-12">
       <div class="reveal mx-auto max-w-[1280px] text-center">
         <h2 class="display-xl leading-tight text-ink">
           No fixed platform. No fixed category.
@@ -247,12 +247,12 @@ import HeroShader from '../components/HeroShader.astro';
     </section>
 
     <!-- ================= About ================= -->
-    <section class="overflow-hidden border-t border-line bg-surface py-32" id="about">
+    <section class="overflow-hidden bg-surface py-32" id="about">
       <div class="mx-auto max-w-[1280px] px-5 md:px-12">
         <div class="grid grid-cols-1 items-center gap-6 md:grid-cols-12">
           <div class="reveal md:col-span-5">
             <div
-              class="flex aspect-[4/5] flex-col justify-between border border-line bg-ink p-10 text-canvas"
+              class="flex aspect-[4/5] flex-col justify-between bg-ink p-10 text-canvas shadow-lift"
             >
               <span class="meta-mono uppercase text-canvas/50">The independent workspace of</span>
               <span class="select-none text-[clamp(80px,10vw,140px)] font-semibold leading-none tracking-tighter">
@@ -286,7 +286,7 @@ import HeroShader from '../components/HeroShader.astro';
             <div class="mt-12 flex gap-4">
               <a
                 href="mailto:devguru.j610@gmail.com"
-                class="label-mono border border-line px-6 py-3 transition-all hover:border-amber hover:text-amber"
+                class="label-mono bg-container-low px-8 py-4 shadow-soft transition-all duration-300 hover:bg-ink hover:text-canvas"
               >
                 EMAIL
               </a>
@@ -294,7 +294,7 @@ import HeroShader from '../components/HeroShader.astro';
                 href="https://github.com/Devguru-J"
                 target="_blank"
                 rel="noopener"
-                class="label-mono border border-line px-6 py-3 transition-all hover:border-amber hover:text-amber"
+                class="label-mono bg-container-low px-8 py-4 shadow-soft transition-all duration-300 hover:bg-ink hover:text-canvas"
               >
                 GITHUB
               </a>
