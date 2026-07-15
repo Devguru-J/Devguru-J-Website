@@ -8,7 +8,7 @@ export const translations = {
         'Devguru is the independent workspace of Devguru-J, a Seoul-based engineer building precise software across desktop, web, and cloud — including Monkey Flash for macOS.',
     },
     hero: {
-      overline: 'INDEPENDENT SOFTWARE BUILDER — SEOUL',
+      overline: 'INDEPENDENT DEVELOPER — INCHEON, Korea',
       lines: ['Building what should exist.', 'Nothing is impossible.', 'Just engineering.'],
       para: 'I design and build software across desktop, web, cloud, and emerging platforms—turning everyday friction and complex business problems into clear, useful products.',
       ctaPrimary: 'EXPLORE THE WORK',
@@ -87,7 +87,7 @@ export const translations = {
         'Devguru는 서울에서 활동하는 엔지니어 Devguru-J의 독립 작업실입니다. 데스크톱·웹·클라우드를 넘나들며 정밀한 소프트웨어를 만듭니다 — macOS용 Monkey Flash 포함.',
     },
     hero: {
-      overline: 'INDEPENDENT SOFTWARE BUILDER — SEOUL',
+      overline: 'INDEPENDENT DEVELOPER — INCHEON, KOREA',
       lines: ['있어야 할 것을 만듭니다.', '불가능한 건 없습니다.', '엔지니어링이 있을 뿐.'],
       para: '데스크톱, 웹, 클라우드, 그리고 새로운 플랫폼까지 — 일상의 불편함과 복잡한 비즈니스 문제를 명쾌하고 쓸모 있는 제품으로 바꿉니다.',
       ctaPrimary: '작업 살펴보기',
