@@ -5,10 +5,10 @@ export const translations = {
     meta: {
       title: 'Devguru-J — Independent Software Studio',
       description:
-        'Devguru is the independent workspace of Devguru-J, a Seoul-based engineer building precise software across desktop, web, and cloud — including Monkey Flash for macOS.',
+        'Devguru is the independent workspace of Devguru-J, an Incheon-based engineer building precise software across desktop, web, and cloud — including Monkey Flash for macOS.',
     },
     hero: {
-      overline: 'INDEPENDENT DEVELOPER — INCHEON, Korea',
+      overline: 'INDEPENDENT DEVELOPER — INCHEON, KOREA',
       lines: ['Building what should exist.', 'Nothing is impossible.', 'Just engineering.'],
       para: 'I design and build software across desktop, web, cloud, and emerging platforms—turning everyday friction and complex business problems into clear, useful products.',
       ctaPrimary: 'EXPLORE THE WORK',
@@ -66,7 +66,7 @@ export const translations = {
       overline: 'The Builder',
       name: 'Devguru-J',
       paras: [
-        'Devguru is the independent workspace of Devguru-J, a Seoul-based engineer and designer obsessed with building high-performance digital tools.',
+        'Devguru is the independent workspace of Devguru-J, an Incheon-based engineer and designer obsessed with building high-performance digital tools.',
         'With a background spanning distributed systems and editorial design, I bridge the gap between heavy engineering and human-centric interfaces. I don’t just write code; I design systems that solve problems for the long term.',
         'Currently focused on macOS productivity utilities and specialized web applications for complex business operations.',
       ],
@@ -84,7 +84,7 @@ export const translations = {
     meta: {
       title: 'Devguru-J — 독립 소프트웨어 스튜디오',
       description:
-        'Devguru는 서울에서 활동하는 엔지니어 Devguru-J의 독립 작업실입니다. 데스크톱·웹·클라우드를 넘나들며 정밀한 소프트웨어를 만듭니다 — macOS용 Monkey Flash 포함.',
+        'Devguru는 인천에서 활동하는 엔지니어 Devguru-J의 독립 작업실입니다. 데스크톱·웹·클라우드를 넘나들며 정밀한 소프트웨어를 만듭니다 — macOS용 Monkey Flash 포함.',
     },
     hero: {
       overline: 'INDEPENDENT DEVELOPER — INCHEON, KOREA',
@@ -145,7 +145,7 @@ export const translations = {
       overline: 'The Builder',
       name: 'Devguru-J',
       paras: [
-        'Devguru는 서울에서 활동하는 엔지니어이자 디자이너 Devguru-J의 독립 작업실입니다. 고성능 디지털 도구를 만드는 일에 몰두합니다.',
+        'Devguru는 인천에서 활동하는 엔지니어이자 디자이너 Devguru-J의 독립 작업실입니다. 고성능 디지털 도구를 만드는 일에 몰두합니다.',
         '분산 시스템부터 에디토리얼 디자인까지 — 무거운 엔지니어링과 사람 중심 인터페이스 사이의 간극을 잇습니다. 코드를 쓰는 데서 멈추지 않고, 오래 가는 문제 해결 시스템을 설계합니다.',
         '지금은 macOS 생산성 유틸리티와 복잡한 비즈니스 운영을 위한 맞춤형 웹 애플리케이션에 집중하고 있습니다.',
       ],
