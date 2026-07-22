@@ -20,8 +20,9 @@ export const translations = {
         meta: 'MACOS · FOCUS UTILITY',
         desc: 'A macOS utility that keeps the active window bright and dims the rest of the desktop. It works without Screen Recording, Accessibility, or Input Monitoring access.',
         badges: ['No system permissions', '1% dimming control', 'Hold Fn to reveal'],
-        status: 'MACOS 13+ · APPLE SILICON',
+        status: 'VIEW ON THE APP STORE ↗',
         alt: 'Monkey Flash on macOS, with the active window bright and the rest of the desktop dimmed.',
+        url: 'https://apps.apple.com/kr/app/monkey-flash/id6790402017?mt=12',
       },
       ops: {
         meta: 'WEB · CORPORATE SITE',
@@ -101,8 +102,9 @@ export const translations = {
         meta: 'MACOS · 집중 도구',
         desc: '활성 창은 밝게 두고 나머지 화면을 어둡게 해, 한 가지 일에 집중하도록 돕는 macOS 앱입니다. 화면 기록, 손쉬운 사용, 입력 모니터링 권한 없이 작동합니다.',
         badges: ['시스템 권한 없음', '1% 단위 조절', 'Fn으로 잠시 보기'],
-        status: 'MACOS 13+ · APPLE SILICON',
+        status: 'APP STORE에서 보기 ↗',
         alt: 'macOS에서 실행 중인 Monkey Flash. 활성 창은 밝고 나머지 데스크톱은 어둡게 표시되어 있다.',
+        url: 'https://apps.apple.com/kr/app/monkey-flash/id6790402017?mt=12',
       },
       ops: {
         meta: 'WEB · 기업 웹사이트',
