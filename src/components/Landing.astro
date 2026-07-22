@@ -12,6 +12,27 @@ interface Props {
 const { lang } = Astro.props;
 const t = translations[lang];
 const path = lang === 'ko' ? '/ko/' : '/';
+
+const ui =
+  lang === 'ko'
+    ? {
+        workCat1: '01 / 제품',
+        workCat2: '02 / 고객 작업',
+        tileRow1: '기억 — SOFTWARE STUDIO',
+        tileRow2: '제품 · 디자인 · 개발',
+        tileRow3: '데스크톱 · 웹 · 클라우드',
+        email: '이메일',
+        github: 'GITHUB',
+      }
+    : {
+        workCat1: '01 / PRODUCT',
+        workCat2: '02 / CLIENT WORK',
+        tileRow1: 'MEMORY — SOFTWARE STUDIO',
+        tileRow2: 'PRODUCT · DESIGN · ENGINEERING',
+        tileRow3: 'DESKTOP · WEB · CLOUD',
+        email: 'EMAIL',
+        github: 'GITHUB',
+      };
 ---
 
 <Base title={t.meta.title} description={t.meta.description} path={path} lang={lang} hreflang>
@@ -75,7 +96,7 @@ const path = lang === 'ko' ? '/ko/' : '/';
         </div>
         <div class="reveal md:col-span-4 md:col-start-9">
           <div class="mb-6 flex flex-wrap items-center gap-4">
-            <span class="label-mono text-amber">01 / PRODUCT</span>
+            <span class="label-mono text-amber">{ui.workCat1}</span>
             <span class="label-mono text-ink-2">{t.work.mf.meta}</span>
           </div>
           <h3 class="headline-lg mb-6">MONKEY FLASH</h3>
@@ -98,7 +119,7 @@ const path = lang === 'ko' ? '/ko/' : '/';
       <div class="grid grid-cols-1 items-center gap-6 md:grid-cols-12">
         <div class="reveal order-2 md:order-1 md:col-span-4">
           <div class="mb-6 flex flex-wrap items-center gap-4">
-            <span class="label-mono text-amber">02 / CLIENT WORK</span>
+            <span class="label-mono text-amber">{ui.workCat2}</span>
             <span class="label-mono text-ink-2">{t.work.ops.meta}</span>
           </div>
           <h3 class="headline-lg mb-6">{t.work.ops.title}</h3>
@@ -219,12 +240,12 @@ const path = lang === 'ko' ? '/ko/' : '/';
             <div class="flex aspect-[4/5] flex-col justify-between bg-ink p-10 text-canvas shadow-lift">
               <span class="meta-mono uppercase text-canvas/50">{t.about.tileTop}</span>
               <span class="select-none text-[clamp(80px,10vw,140px)] font-semibold leading-none tracking-tighter">
-                DG<span class="text-amber">.</span>
+                M<span class="text-amber">.</span>
               </span>
               <div class="meta-mono space-y-2 uppercase text-canvas/50">
-                <p>DEVGURU — INCHEON, KR</p>
-                <p>37.5665° N / 126.9780° E</p>
-                <p>DESKTOP · WEB · CLOUD</p>
+                <p>{ui.tileRow1}</p>
+                <p>{ui.tileRow2}</p>
+                <p>{ui.tileRow3}</p>
               </div>
             </div>
           </div>
@@ -239,7 +260,7 @@ const path = lang === 'ko' ? '/ko/' : '/';
                 href="mailto:devguru.j610@gmail.com"
                 class="label-mono bg-container-low px-8 py-4 shadow-soft transition-all duration-300 hover:bg-ink hover:text-canvas"
               >
-                EMAIL
+                {ui.email}
               </a>
               <a
                 href="https://github.com/Devguru-J"
@@ -247,7 +268,7 @@ const path = lang === 'ko' ? '/ko/' : '/';
                 rel="noopener"
                 class="label-mono bg-container-low px-8 py-4 shadow-soft transition-all duration-300 hover:bg-ink hover:text-canvas"
               >
-                GITHUB
+                {ui.github}
               </a>
             </div>
           </div>
