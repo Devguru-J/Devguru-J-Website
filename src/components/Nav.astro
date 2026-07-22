@@ -1,112 +1,268 @@
 ---
-import LogoMorph from './LogoMorph.astro';
-import type { Lang } from '../i18n';
+import Wordmark from './Wordmark.astro';
+import { homePath, LANG_COOKIE } from '../config/site';
+import type { Lang } from '../config/site';
+import { translations } from '../i18n';
 
 interface Props {
-  lang?: Lang;
+  lang: Lang;
+  /** Same page in the other language (§7.4: the URL is the language state). */
+  altPath: string;
 }
 
-const { lang = 'en' } = Astro.props;
-const home = lang === 'ko' ? '/ko/' : '/';
-
-const links = [
-  { href: `${home}#work`, label: 'Work' },
-  { href: `${home}#capabilities`, label: 'Capabilities' },
-  { href: `${home}#principles`, label: 'Principles' },
-  { href: `${home}#about`, label: 'About' },
-  { href: `${home}#contact`, label: 'Contact' },
-];
+const { lang, altPath } = Astro.props;
+const t = translations[lang].nav;
+const home = homePath(lang);
+const altLang: Lang = lang === 'ko' ? 'en' : 'ko';
 ---
 
-<nav
-  class="sticky top-0 z-50 border-b border-line bg-canvas/80 backdrop-blur-md"
-  id="site-nav"
->
-  <div
-    class="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-6 md:px-12"
-  >
-    <a href={home} class="text-[24px] font-bold text-ink"><LogoMorph /></a>
+<a class="skip-link" href="#main">{t.skip}</a>
 
-    <div class="hidden items-center gap-8 md:flex">
+<nav class="site-nav" id="site-nav">
+  <div class="shell nav-inner">
+    <a href={home} class="nav-logo tap" aria-label={t.home}>
+      <Wordmark lang={lang} />
+    </a>
+
+    <div class="nav-desktop">
       {
-        links.map((l) => (
-          <a
-            href={l.href}
-            class="label-mono text-ink-2 transition-colors duration-200 hover:text-amber"
-          >
+        translations[lang].nav.links.map((l) => (
+          <a href={`${home}${l.href}`} class="nav-link tap">
             {l.label}
           </a>
         ))
       }
-      <span class="label-mono flex items-center gap-2">
-        <a
-          href="/"
-          data-set-lang="en"
-          class:list={['transition-colors', lang === 'en' ? 'text-ink' : 'text-ink-2 hover:text-amber']}
-          aria-current={lang === 'en' ? 'true' : undefined}>EN</a
-        >
-        <span class="text-line">/</span>
-        <a
-          href="/ko/"
-          data-set-lang="ko"
-          class:list={['transition-colors', lang === 'ko' ? 'text-ink' : 'text-ink-2 hover:text-amber']}
-          aria-current={lang === 'ko' ? 'true' : undefined}>KO</a
-        >
-      </span>
+      <span class="nav-sep" aria-hidden="true"></span>
+      <a
+        href={altPath}
+        class="nav-link nav-lang tap"
+        hreflang={altLang}
+        lang={altLang}
+        data-set-lang={altLang}
+        aria-label={t.langAria}
+      >
+        {t.langLabel}
+      </a>
+      <span class="sr-only">{t.currentLang}</span>
     </div>
 
-    <div class="flex items-center gap-5 md:hidden">
-      <span class="label-mono flex items-center gap-2">
-        <a href="/" data-set-lang="en" class:list={[lang === 'en' ? 'text-ink' : 'text-ink-2']}>EN</a>
-        <span class="text-line">/</span>
-        <a href="/ko/" data-set-lang="ko" class:list={[lang === 'ko' ? 'text-ink' : 'text-ink-2']}>KO</a>
-      </span>
-      <button
-        class="label-mono text-ink"
-        id="menu-toggle"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-        aria-label="Open menu"
-      >
-        MENU
-      </button>
-    </div>
+    <button
+      type="button"
+      class="nav-toggle tap"
+      id="menu-toggle"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label={t.openMenu}
+      data-label-open={t.openMenu}
+      data-label-close={t.closeMenu}
+    >
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span></span>
+    </button>
   </div>
 
-  <div id="mobile-menu" class="hidden border-t border-line bg-canvas md:hidden">
-    <div class="flex flex-col gap-6 px-5 py-8">
+  <div class="nav-mobile" id="mobile-menu" hidden>
+    <div class="shell nav-mobile-inner">
       {
-        links.map((l) => (
-          <a href={l.href} class="label-mono text-ink" data-menu-link>
-            {l.label.toUpperCase()}
+        translations[lang].nav.links.map((l) => (
+          <a href={`${home}${l.href}`} class="nav-mobile-link tap" data-menu-link>
+            {l.label}
           </a>
         ))
       }
+      <a
+        href={altPath}
+        class="nav-mobile-link tap"
+        hreflang={altLang}
+        lang={altLang}
+        data-set-lang={altLang}
+        aria-label={t.langAria}
+        data-menu-link
+      >
+        {t.langLabel}
+      </a>
     </div>
   </div>
 </nav>
 
-<script>
-  const toggle = document.getElementById('menu-toggle');
-  const menu = document.getElementById('mobile-menu');
-  if (toggle && menu) {
-    const close = () => {
-      menu.classList.add('hidden');
-      toggle.setAttribute('aria-expanded', 'false');
-      toggle.textContent = 'MENU';
-    };
-    toggle.addEventListener('click', () => {
-      const open = menu.classList.toggle('hidden') === false;
-      toggle.setAttribute('aria-expanded', String(open));
-      toggle.textContent = open ? 'CLOSE' : 'MENU';
-    });
-    menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', close));
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
-  // explicit language choice wins over the geo default (read by the edge function on "/")
-  document.querySelectorAll<HTMLAnchorElement>('[data-set-lang]').forEach((a) => {
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--color-line);
+    background: color-mix(in srgb, var(--color-canvas) 85%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 68px;
+  }
+
+  .nav-logo {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .nav-desktop {
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+
+  @media (min-width: 768px) {
+    .nav-desktop {
+      display: flex;
+    }
+    .nav-toggle {
+      display: none;
+    }
+  }
+
+  .nav-link {
+    padding: 0 12px;
+    color: var(--color-ink-2);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 180ms ease-out;
+  }
+  .nav-link:hover {
+    color: var(--color-ink);
+  }
+
+  .nav-sep {
+    width: 1px;
+    height: 16px;
+    margin-inline: 8px;
+    background: var(--color-line);
+  }
+
+  .nav-lang {
+    color: var(--color-ink);
+  }
+  .nav-lang:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    color: var(--color-ink);
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .nav-toggle-bars {
+    display: block;
+    width: 20px;
+  }
+  .nav-toggle-bars span {
+    display: block;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 200ms ease-out;
+  }
+  .nav-toggle-bars span + span {
+    margin-top: 5px;
+  }
+  .nav-toggle[aria-expanded='true'] .nav-toggle-bars span:first-child {
+    transform: translateY(3.25px) rotate(45deg);
+  }
+  .nav-toggle[aria-expanded='true'] .nav-toggle-bars span:last-child {
+    transform: translateY(-3.25px) rotate(-45deg);
+  }
+
+  .nav-mobile {
+    border-top: 1px solid var(--color-line);
+    background: var(--color-canvas);
+    animation: menu-in 200ms ease-out;
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+  }
+
+  .nav-mobile-inner {
+    display: flex;
+    flex-direction: column;
+    padding-block: 8px 16px;
+  }
+
+  .nav-mobile-link {
+    color: var(--color-ink);
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  @media (min-width: 768px) {
+    .nav-mobile {
+      display: none;
+    }
+  }
+</style>
+
+<script define:vars={{ cookieName: LANG_COOKIE }}>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  if (toggle && menu) {
+    const setOpen = (open) => {
+      menu.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute(
+        'aria-label',
+        open ? toggle.dataset.labelClose : toggle.dataset.labelOpen
+      );
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(menu.hidden);
+    });
+
+    // Escape closes the menu and returns focus to the control that opened it.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.hidden) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    menu.querySelectorAll('[data-menu-link]').forEach((a) => {
+      a.addEventListener('click', () => setOpen(false));
+    });
+
+    // Leaving the mobile breakpoint must not strand an open panel.
+    matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+
+  // An explicit language choice outranks geo detection on "/" (§7.4).
+  document.querySelectorAll('[data-set-lang]').forEach((a) => {
     a.addEventListener('click', () => {
-      document.cookie = `lang=${a.dataset.setLang};path=/;max-age=31536000;samesite=lax`;
+      document.cookie = `${cookieName}=${a.dataset.setLang};path=/;max-age=31536000;samesite=lax`;
     });
   });
 </script>

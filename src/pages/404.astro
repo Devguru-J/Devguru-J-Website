@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import Wordmark from '../components/Wordmark.astro';
+import { LANG_COOKIE } from '../config/site';
+import { translations } from '../i18n';
+
+/* A 404 has no locale in its URL, so English is rendered as the default and an
+   inline script switches to Korean when the path or the language cookie says so.
+   Both variants ship in the markup, so the page is complete without JavaScript. */
+const langs = ['en', 'ko'] as const;
+---
+
+<Base
+  title={translations.en.notFound.metaTitle}
+  description={translations.en.notFound.body}
+  path="/404/"
+  lang="en"
+  noindex
+>
+  <main id="main" class="shell notfound">
+    {
+      langs.map((l) => (
+        <div class="notfound-inner" lang={l} data-nf={l} hidden={l === 'ko'}>
+          <a href={l === 'ko' ? '/ko/' : '/'} class="notfound-logo" aria-label={translations[l].nav.home}>
+            <Wordmark lang={l} size={22} />
+          </a>
+          <p class="t-mono notfound-code">404</p>
+          <h1 class="t-h1 notfound-title">{translations[l].notFound.title}</h1>
+          <p class="t-lead measure notfound-body">{translations[l].notFound.body}</p>
+          <a href={l === 'ko' ? '/ko/' : '/'} class="btn btn-primary">
+            {translations[l].notFound.cta}
+          </a>
+        </div>
+      ))
+    }
+  </main>
+
+  <script is:inline define:vars={{ cookieName: LANG_COOKIE }}>
+    (function () {
+      const cookie = document.cookie.match(new RegExp('(?:^|;\\s*)' + cookieName + '=(en|ko)'));
+      const wantsKo = location.pathname.indexOf('/ko/') === 0 || (cookie && cookie[1] === 'ko');
+      if (!wantsKo) return;
+      document.documentElement.lang = 'ko';
+      document.querySelector('[data-nf="en"]').hidden = true;
+      document.querySelector('[data-nf="ko"]').hidden = false;
+    })();
+  </script>
+</Base>
+
+<style>
+  .notfound {
+    display: flex;
+    min-height: 100dvh;
+    align-items: center;
+    padding-block: 80px;
+  }
+
+  .notfound-inner {
+    max-width: 52ch;
+  }
+
+  .notfound-logo {
+    display: inline-block;
+    color: var(--color-ink);
+    text-decoration: none;
+    margin-bottom: 56px;
+  }
+
+  .notfound-code {
+    color: var(--color-accent);
+    margin-bottom: 16px;
+  }
+
+  .notfound-title {
+    margin-bottom: 20px;
+  }
+
+  .notfound-body {
+    color: var(--color-ink-2);
+    margin-bottom: 40px;
+  }
+</style>

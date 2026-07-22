@@ -14,3 +14,7 @@ stitch-prompt.md
 
 # wrangler local state
 .wrangler/
+
+# test output
+test-results/
+playwright-report/

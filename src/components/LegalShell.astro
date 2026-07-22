@@ -1,71 +1,207 @@
 ---
 import Base from '../layouts/Base.astro';
-import LogoMorph from './LogoMorph.astro';
+import Nav from './Nav.astro';
+import Footer from './Footer.astro';
+import { EMAIL, LANG_COOKIE, LEGACY_LANG_KEY } from '../config/site';
+import type { Lang } from '../config/site';
+import type { LegalDoc } from '../content/legal';
+import { translations } from '../i18n';
 
 interface Props {
+  doc: LegalDoc;
+  lang: Lang;
   title: string;
-  description: string;
+  /** Canonical path for this locale, with trailing slash. */
   path: string;
-  /** mono overline shown above the content, e.g. "MONKEY FLASH — PRIVACY POLICY" */
-  overline: string;
+  /** Same document in the other language. */
+  altPath: string;
 }
 
-const { title, description, path, overline } = Astro.props;
-const year = new Date().getFullYear();
+const { doc, lang, title, path, altPath } = Astro.props;
+const t = translations[lang];
 ---
 
-<Base title={title} description={description} path={path}>
-  <nav class="sticky top-0 z-50 border-b border-line bg-canvas/80 backdrop-blur-md">
-    <div class="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-6 md:px-12">
-      <a href="/" class="text-[24px] font-bold text-ink"><LogoMorph /></a>
-      <div class="flex items-center gap-6">
-        <div class="flex gap-1 bg-container-low p-1" role="group" aria-label="Language">
-          <button class="label-mono px-3 py-1.5 transition-colors" data-lang="en">EN</button>
-          <button class="label-mono px-3 py-1.5 transition-colors" data-lang="ko">KO</button>
-        </div>
-        <a href="/" class="label-mono link-slide hidden pb-1 text-ink-2 sm:inline">← HOME</a>
-      </div>
-    </div>
-  </nav>
+<Base
+  title={title}
+  description={doc.description}
+  path={path}
+  lang={lang}
+  altPath={altPath}
+  ogImage={`/assets/og-monkeyflash-${lang}.png`}
+>
+  <Nav lang={lang} altPath={altPath} />
 
-  <main class="mx-auto max-w-[760px] px-5 pt-20 pb-32 md:px-0">
-    <span class="label-mono mb-10 block uppercase tracking-widest text-amber">{overline}</span>
-    <slot />
+  <main id="main" class="shell legal-main">
+    <p class="t-label legal-overline">{doc.overline}</p>
+    <h1 class="t-h2 legal-heading">{doc.heading}</h1>
+    <p class="legal-standfirst">{doc.standfirst}</p>
+
+    <div class="legal">
+      {
+        doc.blocks.map((block) => {
+          switch (block.type) {
+            case 'h2':
+              return <h2>{block.text}</h2>;
+            case 'h3':
+              return <h3>{block.text}</h3>;
+            case 'ol':
+              return (
+                <ol>
+                  {block.items.map((i) => (
+                    <li>{i}</li>
+                  ))}
+                </ol>
+              );
+            case 'ul':
+              return (
+                <ul>
+                  {block.items.map((i) => (
+                    <li>{i}</li>
+                  ))}
+                </ul>
+              );
+            case 'contact':
+              return (
+                <div class="contact-card">
+                  <strong>{block.label}</strong>
+                  <br />
+                  {block.before}
+                  <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+                  {block.after}
+                </div>
+              );
+            default:
+              return 'strong' in block ? (
+                <p>
+                  <strong>{block.text}</strong>
+                </p>
+              ) : (
+                <p>{block.text}</p>
+              );
+          }
+        })
+      }
+    </div>
+
+    <p class="legal-back">
+      <a href={lang === 'ko' ? '/ko/' : '/'} class="link">{t.legal.backHome}</a>
+    </p>
   </main>
 
-  <footer class="border-t border-line">
-    <div
-      class="mx-auto flex max-w-[1280px] flex-col items-center justify-between gap-4 px-5 py-8 md:flex-row md:px-12"
-    >
-      <span class="meta-mono uppercase text-ink-2">© {year} DEVGURU-J / MONKEY FLASH</span>
-      <div class="flex gap-8">
-        <a href="/MonkeyFlash/privacy" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Privacy</a>
-        <a href="/MonkeyFlash/support" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Support</a>
-        <a href="/" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Home</a>
-      </div>
-    </div>
-  </footer>
+  <Footer lang={lang} withContact={false} />
 
-  <style>
-    [data-lang].active {
-      background: var(--color-ink);
-      color: var(--color-canvas);
-    }
-  </style>
+  <script
+    is:inline
+    define:vars={{ altPath, lang, cookieName: LANG_COOKIE, legacyKey: LEGACY_LANG_KEY }}
+  >
+    /* Backwards compatibility for the old query/localStorage language toggle.
+       The URL is now the single source of language state (§7.4), so a legacy
+       `?lang=` value is honoured once by redirecting to the real locale route. */
+    (function () {
+      try {
+        const requested = new URLSearchParams(location.search).get('lang');
+        const legacy = localStorage.getItem(legacyKey);
 
-  <script>
-    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-lang]');
-    const sections = document.querySelectorAll<HTMLElement>('[data-section]');
-    const setLang = (lang: string) => {
-      buttons.forEach((b) => b.classList.toggle('active', b.dataset.lang === lang));
-      sections.forEach((s) => (s.hidden = s.dataset.section !== lang));
-      document.documentElement.lang = lang;
-      localStorage.setItem('devguru-lang', lang);
-    };
-    buttons.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang!)));
-    // priority: explicit ?lang= param (used for per-locale App Store URLs) > saved choice > EN
-    const param = new URLSearchParams(location.search).get('lang');
-    const initial = param === 'ko' || param === 'en' ? param : (localStorage.getItem('devguru-lang') ?? 'en');
-    setLang(initial);
+        if (legacy) {
+          document.cookie =
+            cookieName + '=' + legacy + ';path=/;max-age=31536000;samesite=lax';
+          localStorage.removeItem(legacyKey);
+        }
+
+        if ((requested === 'ko' || requested === 'en') && requested !== lang) {
+          location.replace(altPath);
+        }
+      } catch {
+        /* storage blocked — the canonical URL already carries the language */
+      }
+    })();
   </script>
 </Base>
+
+<style is:global>
+  .legal-main {
+    max-width: 760px;
+    padding-block: clamp(48px, 7vw, 88px) clamp(72px, 9vw, 120px);
+  }
+
+  .legal-overline {
+    color: var(--color-accent);
+    margin-bottom: 20px;
+  }
+
+  .legal-heading {
+    margin-bottom: 10px;
+  }
+
+  .legal-standfirst {
+    color: var(--color-ink-2);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 65ch;
+    margin-bottom: 40px;
+  }
+
+  .legal h2 {
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    font-weight: 500;
+    margin: 44px 0 12px;
+  }
+
+  .legal h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 24px 0 6px;
+    color: var(--color-ink);
+  }
+
+  .legal p {
+    color: var(--color-ink-2);
+    line-height: 1.7;
+    margin-bottom: 14px;
+    max-width: 65ch;
+  }
+
+  .legal ol,
+  .legal ul {
+    color: var(--color-ink-2);
+    line-height: 1.7;
+    margin: 0 0 14px;
+    padding-left: 22px;
+    max-width: 65ch;
+  }
+
+  .legal ol {
+    list-style: decimal;
+  }
+  .legal ul {
+    list-style: disc;
+  }
+  .legal li {
+    margin-bottom: 6px;
+  }
+
+  .legal strong {
+    color: var(--color-ink);
+  }
+
+  .legal a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .legal .contact-card {
+    margin-top: 32px;
+    padding: 28px 32px;
+    background: var(--color-raised);
+    border: 1px solid var(--color-line);
+    border-radius: 4px;
+    color: var(--color-ink-2);
+    line-height: 1.8;
+  }
+
+  .legal-back {
+    margin-top: 48px;
+  }
+</style>

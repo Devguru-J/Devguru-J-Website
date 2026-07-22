@@ -1,82 +1,191 @@
 ---
-import { translations, type Lang } from '../i18n';
+import { EMAIL, LEGAL_ENTITY, homePath } from '../config/site';
+import type { Lang } from '../config/site';
+import { translations } from '../i18n';
 
 interface Props {
-  lang?: Lang;
+  lang: Lang;
+  /** Landing pages anchor within themselves; legal pages link back to home. */
+  withContact?: boolean;
 }
 
-const { lang = 'en' } = Astro.props;
-const t = translations[lang].footer;
-const home = lang === 'ko' ? '/ko/' : '/';
+const { lang, withContact = true } = Astro.props;
+const t = translations[lang];
+const f = t.footer;
+const home = homePath(lang);
+const legalBase = lang === 'ko' ? '/ko/MonkeyFlash' : '/MonkeyFlash';
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-canvas" id="contact">
-  <!-- contact statement -->
-  <div class="mx-auto max-w-[1280px] px-5 pt-24 pb-16 md:px-12 md:pt-32">
-    <span class="label-mono reveal mb-8 block text-amber">{t.overline}</span>
-    <div class="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
-      <h2 class="display-xl reveal max-w-3xl text-ink">
-        {t.headline1}<br />
-        <span class="text-ink-2">{t.headline2}</span>
-      </h2>
-      <a
-        href="mailto:devguru.j610@gmail.com"
-        class="label-mono magnetic reveal inline-block shrink-0 bg-ink px-8 py-4 text-canvas transition-colors duration-300 hover:bg-amber"
-      >
-        {t.cta}
-      </a>
-    </div>
-  </div>
+<footer class="site-footer">
+  {
+    withContact && (
+      <section class="shell section contact" id="contact" aria-labelledby="contact-heading">
+        <p class="t-label accent" data-reveal>
+          {t.contact.label}
+        </p>
+        <div class="contact-row">
+          <div data-reveal data-reveal-delay="60">
+            <h2 class="t-h2 contact-heading" id="contact-heading">
+              {t.contact.heading}
+            </h2>
+            <p class="t-lead measure muted">{t.contact.body}</p>
+          </div>
+          <a
+            href={`mailto:${EMAIL}`}
+            class="btn btn-primary contact-cta"
+            data-reveal
+            data-reveal-delay="120"
+          >
+            {t.contact.cta}
+          </a>
+        </div>
+      </section>
+    )
+  }
 
-  <div
-    class="mx-auto flex max-w-[1280px] flex-col items-start justify-between px-5 py-16 md:flex-row md:px-12"
-  >
-    <div class="mb-12 md:mb-0">
-      <div class="label-mono mb-6 font-bold text-ink">DEVGURU-J / INCHEON</div>
-      <p class="label-mono max-w-[240px] leading-relaxed text-ink-2">{t.tagline}</p>
+  <div class="shell footer-body">
+    <div class="footer-brand">
+      <p class="footer-brand-line">{f.brandLine}</p>
+      <p class="t-small muted measure">{f.desc}</p>
     </div>
-    <div class="grid grid-cols-2 gap-16">
-      <div>
-        <h5 class="label-mono mb-6 text-ink">Directory</h5>
-        <ul class="space-y-4">
-          <li><a href={`${home}#work`} class="label-mono text-ink-2 transition-colors hover:text-ink">Work</a></li>
-          <li><a href={`${home}#capabilities`} class="label-mono text-ink-2 transition-colors hover:text-ink">Capabilities</a></li>
-          <li><a href={`${home}#principles`} class="label-mono text-ink-2 transition-colors hover:text-ink">Principles</a></li>
-          <li><a href={`${home}#about`} class="label-mono text-ink-2 transition-colors hover:text-ink">About</a></li>
+
+    <nav class="footer-groups" aria-label={f.exploreLabel}>
+      <div class="footer-group">
+        <h2 class="t-label footer-group-title">{f.exploreLabel}</h2>
+        <ul>
+          {
+            f.explore.map((l) => (
+              <li>
+                <a href={`${home}${l.href}`} class="footer-link tap">
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </div>
-      <div>
-        <h5 class="label-mono mb-6 text-ink">Elsewhere</h5>
-        <ul class="space-y-4">
+
+      <div class="footer-group">
+        <h2 class="t-label footer-group-title">{f.elsewhereLabel}</h2>
+        <ul>
           <li>
-            <a
-              href="https://github.com/Devguru-J"
-              target="_blank"
-              rel="noopener"
-              class="label-mono text-ink-2 transition-colors hover:text-ink">GitHub</a
-            >
-          </li>
-          <li>
-            <a
-              href="mailto:devguru.j610@gmail.com"
-              class="label-mono text-ink-2 transition-colors hover:text-ink">Email</a
-            >
+            <a href={`mailto:${EMAIL}`} class="footer-link tap">{f.emailLabel}</a>
           </li>
         </ul>
       </div>
-    </div>
+
+      <div class="footer-group">
+        <h2 class="t-label footer-group-title">{f.legalLabel}</h2>
+        <ul>
+          <li>
+            <a href={`${legalBase}/privacy/`} class="footer-link tap">{f.privacy}</a>
+          </li>
+          <li>
+            <a href={`${legalBase}/support/`} class="footer-link tap">{f.support}</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
   </div>
 
-  <div
-    class="mx-auto flex max-w-[1280px] flex-col items-center justify-between border-t border-line/50 px-5 py-8 md:flex-row md:px-12"
-  >
-    <span class="meta-mono mb-4 uppercase text-ink-2 md:mb-0">
-      © {year} DEVGURU-J / ALL RIGHTS RESERVED
-    </span>
-    <div class="flex gap-8">
-      <a href="/MonkeyFlash/privacy" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Privacy</a>
-      <a href="/MonkeyFlash/support" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Support</a>
-    </div>
+  <div class="shell footer-base">
+    <p class="t-caption muted">© {year} {LEGAL_ENTITY[lang]}. {f.rights}</p>
   </div>
 </footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .muted {
+    color: var(--color-ink-2);
+  }
+
+  .accent {
+    color: var(--color-accent);
+  }
+
+  .contact {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .contact-heading {
+    margin: 16px 0 12px;
+  }
+
+  .contact-row {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: flex-start;
+  }
+
+  @media (min-width: 1024px) {
+    .contact-row {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 48px;
+    }
+    .contact-cta {
+      flex-shrink: 0;
+    }
+  }
+
+  .footer-body {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    padding-block: 72px 48px;
+  }
+
+  @media (min-width: 768px) {
+    .footer-body {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 72px;
+    }
+  }
+
+  .footer-brand-line {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  .footer-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, auto));
+    gap: 32px 56px;
+  }
+
+  .footer-group-title {
+    color: var(--color-ink);
+    margin-bottom: 16px;
+  }
+
+  .footer-group ul {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .footer-link {
+    color: var(--color-ink-2);
+    font-size: 14px;
+    text-decoration: none;
+    transition: color 180ms ease-out;
+  }
+  .footer-link:hover {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .footer-base {
+    border-top: 1px solid var(--color-line);
+    padding-block: 28px 40px;
+  }
+</style>

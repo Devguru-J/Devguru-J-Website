@@ -1,51 +1,138 @@
 ---
 import '../styles/global.css';
+import { SITE_ORIGIN, SAME_AS, absolute } from '../config/site';
+import type { Lang } from '../config/site';
+import { translations } from '../i18n';
 
 interface Props {
   title: string;
   description: string;
-  /** pathname for canonical URL, e.g. "/" or "/MonkeyFlash/privacy" */
+  /** Canonical pathname, always with a trailing slash, e.g. "/" or "/ko/". */
   path?: string;
-  /** document language */
-  lang?: 'en' | 'ko';
-  /** emit hreflang alternates for the bilingual landing pages (/ and /ko/) */
-  hreflang?: boolean;
+  lang?: Lang;
+  /** Path of the same page in the other language; emits hreflang alternates. */
+  altPath?: string;
+  /** Language-specific Open Graph image. */
+  ogImage?: string;
+  /** Emit Organization + WebSite JSON-LD. Home pages only (§20.3). */
+  schema?: boolean;
+  /** Keep this page out of the index (404). */
+  noindex?: boolean;
 }
 
-const { title, description, path = '/', lang = 'en', hreflang = false } = Astro.props;
-const canonical = new URL(path, Astro.site);
+const {
+  title,
+  description,
+  path = '/',
+  lang = 'en',
+  altPath,
+  ogImage,
+  schema = false,
+  noindex = false,
+} = Astro.props;
+
+const t = translations[lang];
+const canonical = absolute(path);
+const image = absolute(ogImage ?? `/assets/og-home-${lang}.png`);
+const ogLocale = lang === 'ko' ? 'ko_KR' : 'en_US';
+const altLang: Lang = lang === 'ko' ? 'en' : 'ko';
+
+/* Organization + WebSite. Only verified facts appear: no legalName, no founder,
+   no address, and `sameAs` is omitted while no public profile is published. */
+const jsonLd = schema
+  ? {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Organization',
+          '@id': `${SITE_ORIGIN}/#organization`,
+          name: t.meta.siteName,
+          alternateName: translations[altLang].meta.siteName,
+          url: canonical,
+          logo: absolute('/assets/icon-brand-512.png'),
+          description,
+          ...(SAME_AS.length > 0 ? { sameAs: SAME_AS } : {}),
+        },
+        {
+          '@type': 'WebSite',
+          '@id': `${SITE_ORIGIN}/#website`,
+          name: t.meta.siteName,
+          url: canonical,
+          description,
+          inLanguage: lang === 'ko' ? 'ko-KR' : 'en',
+          publisher: { '@id': `${SITE_ORIGIN}/#organization` },
+        },
+      ],
+    }
+  : null;
 ---
 
 <!doctype html>
-<html lang={lang} class="scroll-smooth">
+<html lang={lang === 'ko' ? 'ko' : 'en'}>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
     {
-      hreflang && (
+      altPath && (
         <>
-          <link rel="alternate" hreflang="en" href={new URL('/', Astro.site)} />
-          <link rel="alternate" hreflang="ko" href={new URL('/ko/', Astro.site)} />
-          <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site)} />
+          <link rel="alternate" hreflang={lang} href={canonical} />
+          <link rel="alternate" hreflang={altLang} href={absolute(altPath)} />
+          <link rel="alternate" hreflang="x-default" href={absolute(lang === 'en' ? path : altPath)} />
         </>
       )
     }
-    <link rel="icon" type="image/png" href="/assets/favicon.png" />
+
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/assets/favicon.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+
+    <meta property="og:site_name" content={t.meta.siteName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL('/assets/work-monkeyflash.jpg', Astro.site)} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.meta.ogImageAlt} />
+
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image:alt" content={t.meta.ogImageAlt} />
+
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
     <script is:inline>
-      document.documentElement.classList.add('js');
+      /* Arm scroll reveals before first paint, then hold a dead-man's switch.
+         The motion module sets `__revealReady` the moment its observer is
+         watching. If it never loads, or throws on the way up, the timer fires
+         and disarms — so content can never stay hidden (§27.4). Because the
+         check is conditional, a healthy page keeps revealing on scroll for as
+         long as the visitor is reading. */
+      (function () {
+        const root = document.documentElement;
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        root.classList.add('reveal-armed');
+        setTimeout(function () {
+          if (!window.__revealReady) root.classList.remove('reveal-armed');
+        }, 1500);
+      })();
     </script>
   </head>
-  <body class="antialiased">
+
+  <body>
     <slot />
+    <script>
+      import '../scripts/motion';
+    </script>
   </body>
 </html>

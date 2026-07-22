@@ -2,8 +2,9 @@
 import Base from '../layouts/Base.astro';
 import Nav from './Nav.astro';
 import Footer from './Footer.astro';
-import HeroShader from './HeroShader.astro';
-import { translations, type Lang } from '../i18n';
+import { MONKEY_FLASH, KB_INC, homePath } from '../config/site';
+import type { Lang } from '../config/site';
+import { translations, format } from '../i18n';
 
 interface Props {
   lang: Lang;
@@ -11,254 +12,502 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = translations[lang];
-const path = lang === 'ko' ? '/ko/' : '/';
+const path = homePath(lang);
+const altPath = homePath(lang === 'ko' ? 'en' : 'ko');
+
+const mf = MONKEY_FLASH;
+const kb = KB_INC;
+
+/** Localised release date. Falls back to nothing when the fact is unconfirmed. */
+const formatDate = (iso: string | null) =>
+  iso
+    ? new Intl.DateTimeFormat(lang === 'ko' ? 'ko-KR' : 'en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      }).format(new Date(iso))
+    : null;
+
+/* Technical facts line — every entry omitted when unverified (§13.1). */
+const mfFacts = [
+  mf.version && format(t.a11y.version, { version: mf.version }),
+  mf.minimumOs && format(t.a11y.requires, { os: mf.minimumOs }),
+  mf.price && mf.price[lang].formatted,
+  mf.updated && format(t.a11y.updated, { date: formatDate(mf.updated)! }),
+].filter(Boolean) as string[];
+
+const current = t.capabilities.items.filter((c) => c.current);
+const extended = t.capabilities.items.filter((c) => !c.current);
 ---
 
-<Base title={t.meta.title} description={t.meta.description} path={path} lang={lang} hreflang>
-  <Nav lang={lang} />
+<Base
+  title={t.meta.title}
+  description={t.meta.description}
+  path={path}
+  lang={lang}
+  altPath={altPath}
+  schema
+>
+  <Nav lang={lang} altPath={altPath} />
 
-  <main class="overflow-x-hidden">
-    <!-- ================= Hero ================= -->
-    <section class="relative flex min-h-[90dvh] items-center overflow-hidden px-5 pt-20 pb-32 md:px-12">
-      <HeroShader />
-      <div class="relative z-10 mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-6 md:grid-cols-12">
-        <div class="md:col-span-9 lg:col-span-8">
-          <span class="label-mono reveal mb-8 inline-block text-ink-2" data-hero="overline">
-            {t.hero.overline}
-          </span>
-          <h1 class="display-xl mb-10 text-ink" id="hero-title">
-            <span class="hero-line"><span class="hero-line-inner">{t.hero.lines[0]}</span></span>
-            <span class="hero-line"><span class="hero-line-inner">{t.hero.lines[1]}</span></span>
-            <span class="hero-line"><span class="hero-line-inner text-ink-2">{t.hero.lines[2]}</span></span>
-          </h1>
-          <p class="reveal mb-12 max-w-xl text-[18px] leading-relaxed text-ink-2" data-hero="para">
-            {t.hero.para}
-          </p>
-          <div class="reveal flex flex-col items-start gap-8 sm:flex-row sm:items-center" data-hero="cta">
-            <a
-              href="#work"
-              class="label-mono magnetic bg-ink px-8 py-4 text-canvas transition-colors duration-300 hover:bg-amber"
-            >
-              {t.hero.ctaPrimary}
-            </a>
-            <a href="#about" class="label-mono link-slide pb-1 text-ink">{t.hero.ctaSecondary}</a>
-          </div>
+  <main id="main">
+    <!-- ===================== Hero (§10.1 Direction A) ===================== -->
+    <section class="shell hero">
+      <div class="hero-inner">
+        <p class="t-label accent" data-reveal>{t.hero.label}</p>
+        <h1 class="t-display hero-headline" data-reveal data-reveal-delay="80">
+          {t.hero.headline}
+        </h1>
+        <p class="t-lead measure muted hero-para" data-reveal data-reveal-delay="160">
+          {t.hero.para}
+        </p>
+        <div class="hero-actions" data-reveal data-reveal-delay="240">
+          <a href="#work" class="btn btn-primary">{t.hero.ctaPrimary}</a>
+          <a href="#studio" class="btn btn-secondary">{t.hero.ctaSecondary}</a>
         </div>
       </div>
     </section>
 
-    <div class="mx-auto max-w-[1280px] px-5 md:px-12">
-      <div class="hline h-px bg-line"></div>
-    </div>
+    <!-- ===================== Work (§10.2, §13.1) ===================== -->
+    <section class="shell section bordered" id="work" aria-labelledby="work-heading">
+      <header class="section-head" data-reveal>
+        <h2 class="t-h2" id="work-heading">{t.work.heading}</h2>
+        <p class="t-lead measure muted">{t.work.intro}</p>
+      </header>
 
-    <!-- ================= Selected Work ================= -->
-    <section class="mx-auto max-w-[1280px] px-5 py-32 md:px-12" id="work">
-      <div class="reveal mb-24 flex items-baseline justify-between">
-        <h2 class="headline-lg">{t.work.heading}</h2>
-        <span class="label-mono text-ink-2">01 — 02</span>
-      </div>
-
-      <!-- 01 · Monkey Flash -->
-      <div class="mb-40 grid grid-cols-1 items-center gap-6 md:grid-cols-12">
-        <div class="reveal md:col-span-7">
-          <div class="parallax-frame group aspect-video bg-container shadow-soft transition-shadow duration-500 hover:shadow-lift">
-            <img
-              src="/assets/work-monkeyflash.jpg"
-              alt={t.work.mf.alt}
-              class="h-full w-full object-cover"
-              width="1600"
-              height="1000"
-              loading="eager"
-              data-parallax
-            />
-          </div>
-        </div>
-        <div class="reveal md:col-span-4 md:col-start-9">
-          <div class="mb-6 flex flex-wrap items-center gap-4">
-            <span class="label-mono text-amber">01 / PRODUCT</span>
-            <span class="label-mono text-ink-2">{t.work.mf.meta}</span>
-          </div>
-          <h3 class="headline-lg mb-6">MONKEY FLASH</h3>
-          <p class="mb-8 text-[16px] leading-relaxed text-ink-2">{t.work.mf.desc}</p>
-          <div class="mb-8 flex flex-wrap gap-2">
-            {
-              t.work.mf.badges.map((b) => (
-                <span class="meta-mono bg-container-low px-4 py-2 uppercase text-ink-2">{b}</span>
-              ))
-            }
-          </div>
-          <span class="label-mono inline-flex items-center gap-2 text-ink">
-            {t.work.mf.status}
-            <span class="dot-pulse inline-block h-1.5 w-1.5 rounded-full bg-amber"></span>
-          </span>
-        </div>
-      </div>
-
-      <!-- 02 · KB Inc. -->
-      <div class="grid grid-cols-1 items-center gap-6 md:grid-cols-12">
-        <div class="reveal order-2 md:order-1 md:col-span-4">
-          <div class="mb-6 flex flex-wrap items-center gap-4">
-            <span class="label-mono text-amber">02 / CLIENT WORK</span>
-            <span class="label-mono text-ink-2">{t.work.ops.meta}</span>
-          </div>
-          <h3 class="headline-lg mb-6">{t.work.ops.title}</h3>
-          <p class="mb-8 text-[16px] leading-relaxed text-ink-2">{t.work.ops.desc}</p>
-          <div class="mb-8 flex flex-wrap gap-2">
-            {
-              t.work.ops.badges.map((b) => (
-                <span class="meta-mono bg-container-low px-4 py-2 uppercase text-ink-2">{b}</span>
-              ))
-            }
-          </div>
+      <!-- Monkey Flash — own product -->
+      <article class="work">
+        <div class="work-media" data-reveal>
           <a
-            href={t.work.ops.url}
+            href={mf.storeUrl?.[lang]}
+            class="media-frame"
             target="_blank"
             rel="noopener"
-            class="label-mono link-slide inline-flex items-center gap-2 pb-1 text-ink"
+            tabindex="-1"
+            aria-hidden="true"
           >
-            {t.work.ops.status}
-            <span class="dot-pulse inline-block h-1.5 w-1.5 rounded-full bg-amber"></span>
+            <img
+              src={mf.image[lang].src}
+              alt={t.work.monkeyFlash.alt}
+              width={mf.image[lang].width}
+              height={mf.image[lang].height}
+              loading="eager"
+              decoding="async"
+            />
           </a>
         </div>
-        <div class="reveal order-1 md:order-2 md:col-span-7 md:col-start-6">
-          <a href={t.work.ops.url} target="_blank" rel="noopener" class="block">
-            <div class="parallax-frame group aspect-video bg-container shadow-soft transition-shadow duration-500 hover:shadow-lift">
-              <img
-                src="/assets/work-kbinc.jpg"
-                alt={t.work.ops.alt}
-                class="h-full w-full object-cover"
-                width="1600"
-                height="900"
-                loading="lazy"
-                data-parallax
-              />
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
 
-    <!-- ================= Pipeline (dark curtain) ================= -->
-    <section class="curtain bg-ink py-32 text-canvas">
-      <div class="mx-auto max-w-[1280px] px-5 md:px-12">
-        <span class="label-mono reveal mb-12 block text-ink-2">{t.pipeline.overline}</span>
-        <div class="divide-y divide-ink-2/20">
+        <div class="work-body" data-reveal data-reveal-delay="80">
+          <p class="t-label muted">{t.work.monkeyFlash.kind}</p>
+          <h3 class="t-h3 work-name">{mf.name}</h3>
+          <p class="t-body measure muted">{t.work.monkeyFlash.desc}</p>
+
+          <ul class="evidence">
+            {t.work.monkeyFlash.evidence.map((e) => <li>{e}</li>)}
+          </ul>
+
+          <p class="status">
+            <span class="sr-only">{t.a11y.statusPrefix} </span>
+            <span class="status-dot" aria-hidden="true"></span>
+            {t.status[mf.status]}
+          </p>
+
+          {mfFacts.length > 0 && <p class="t-mono facts">{mfFacts.join(' · ')}</p>}
+
           {
-            t.pipeline.rows.map((row) => (
-              <div class="reveal grid grid-cols-1 items-center gap-6 px-4 py-8 transition-colors hover:bg-white/5 md:grid-cols-12">
-                <span class="label-mono md:col-span-2 text-ink-2">{row.idx}</span>
-                <span class="headline-sm md:col-span-6">{row.name}</span>
-                <span class="label-mono md:col-span-4 text-ink-2 md:text-right">{row.status}</span>
-              </div>
-            ))
+            mf.storeUrl && (
+              <a href={mf.storeUrl[lang]} class="btn btn-secondary work-cta" target="_blank" rel="noopener">
+                {t.work.monkeyFlash.cta}
+                <span class="sr-only"> ({t.a11y.newTab})</span>
+              </a>
+            )
           }
         </div>
-      </div>
+      </article>
+
+      <!-- KB Inc. — client work -->
+      <article class="work work--flip">
+        <div class="work-media" data-reveal>
+          <a
+            href={kb.url}
+            class="media-frame"
+            target="_blank"
+            rel="noopener"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+            <img
+              src={kb.image.src}
+              alt={t.work.kbInc.alt}
+              width={kb.image.width}
+              height={kb.image.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </a>
+        </div>
+
+        <div class="work-body" data-reveal data-reveal-delay="80">
+          <p class="t-label muted">{t.work.kbInc.kind}</p>
+          <h3 class="t-h3 work-name">{kb.name[lang]}</h3>
+          <p class="t-body measure muted">{t.work.kbInc.desc}</p>
+
+          <ul class="evidence">
+            {t.work.kbInc.evidence.map((e) => <li>{e}</li>)}
+          </ul>
+
+          <p class="status">
+            <span class="sr-only">{t.a11y.statusPrefix} </span>
+            <span class="status-dot" aria-hidden="true"></span>
+            {t.status[kb.status]}
+          </p>
+
+          {
+            kb.url && (
+              <a href={kb.url} class="btn btn-secondary work-cta" target="_blank" rel="noopener">
+                {t.work.kbInc.cta}
+                <span class="sr-only"> ({t.a11y.newTab})</span>
+              </a>
+            )
+          }
+        </div>
+      </article>
     </section>
 
-    <!-- ================= Capabilities ================= -->
-    <section class="mx-auto max-w-[1280px] px-5 py-32 md:px-12" id="capabilities">
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-12">
-        <div class="reveal md:col-span-4">
-          <h2 class="headline-lg mb-12">{t.capabilities.heading}</h2>
-          <p class="text-[16px] leading-relaxed text-ink-2">{t.capabilities.intro}</p>
-        </div>
-        <div class="md:col-span-7 md:col-start-6">
-          <div class="grid grid-cols-1 gap-12 sm:grid-cols-3">
-            {
-              t.capabilities.groups.map((g) => (
-                <div class="reveal">
-                  <h4 class="label-mono mb-6 uppercase tracking-widest text-amber">{g.label}</h4>
-                  <ul class="space-y-4 text-[16px] leading-relaxed text-ink">
-                    {g.items.map((item) => (
-                      <li>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))
-            }
+    <!-- ===================== Capabilities (§12) ===================== -->
+    <section class="shell section bordered" id="capabilities" aria-labelledby="cap-heading">
+      <div class="cap-layout">
+        <header class="cap-head" data-reveal>
+          <h2 class="t-h2" id="cap-heading">{t.capabilities.heading}</h2>
+          <p class="t-body measure muted">{t.capabilities.intro}</p>
+        </header>
+
+        <div class="cap-lists">
+          <div class="cap-group">
+            <h3 class="t-label cap-group-title accent" data-reveal>
+              {t.capabilities.currentLabel}
+            </h3>
+            <dl>
+              {
+                current.map((c, i) => (
+                  <div class="cap-item" data-reveal data-reveal-delay={i * 70}>
+                    <dt class="t-h3 cap-title">{c.title}</dt>
+                    <dd class="t-body measure muted">{c.body}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </div>
+
+          <div class="cap-group">
+            <h3 class="t-label cap-group-title muted" data-reveal>
+              {t.capabilities.extendedLabel}
+            </h3>
+            <dl>
+              {
+                extended.map((c, i) => (
+                  <div class="cap-item cap-item--extended" data-reveal data-reveal-delay={i * 70}>
+                    <dt class="t-body cap-title-sm">{c.title}</dt>
+                    <dd class="t-small measure muted">{c.body}</dd>
+                  </div>
+                ))
+              }
+            </dl>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ================= Interstitial ================= -->
-    <section class="bg-container-low px-5 py-48 md:px-12">
-      <div class="reveal mx-auto max-w-[1280px] text-center">
-        <h2 class="display-xl leading-tight text-ink">
-          {t.interstitial.line1}
-          <br class="hidden md:block" />
-          <span class="italic text-ink-2">{t.interstitial.line2}</span>
-        </h2>
-      </div>
-    </section>
+    <!-- ===================== How we work (§15) ===================== -->
+    <section class="shell section bordered" id="how-we-work" aria-labelledby="process-heading">
+      <header class="section-head" data-reveal>
+        <h2 class="t-h2" id="process-heading">{t.process.heading}</h2>
+      </header>
 
-    <!-- ================= Principles ================= -->
-    <section class="mx-auto max-w-[1280px] px-5 py-32 md:px-12" id="principles">
-      <h2 class="headline-lg reveal mb-24 text-center">{t.principles.heading}</h2>
-      <div class="grid grid-cols-1 gap-x-24 gap-y-32 md:grid-cols-2">
+      <ol class="steps">
         {
-          t.principles.items.map((p, i) => (
-            <div class:list={['reveal flex gap-8', i % 2 === 1 && 'md:mt-24']}>
-              <span class="label-mono pt-1 text-amber">{String(i + 1).padStart(2, '0')}</span>
-              <div>
-                <h3 class="headline-sm mb-4">{p.title}</h3>
-                <p class="text-[16px] leading-relaxed text-ink-2">{p.body}</p>
-              </div>
-            </div>
+          t.process.steps.map((s, i) => (
+            <li class="step" data-reveal data-reveal-delay={i * 70}>
+              <span class="t-mono step-index" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 class="t-h3 step-title">{s.title}</h3>
+              <p class="t-body measure muted">{s.body}</p>
+            </li>
           ))
         }
-      </div>
+      </ol>
+
+      <p class="philosophy t-h3" data-reveal>{t.philosophy}</p>
     </section>
 
-    <!-- ================= About ================= -->
-    <section class="overflow-hidden bg-surface py-32" id="about">
-      <div class="mx-auto max-w-[1280px] px-5 md:px-12">
-        <div class="grid grid-cols-1 items-center gap-6 md:grid-cols-12">
-          <div class="reveal md:col-span-5">
-            <div class="flex aspect-[4/5] flex-col justify-between bg-ink p-10 text-canvas shadow-lift">
-              <span class="meta-mono uppercase text-canvas/50">{t.about.tileTop}</span>
-              <span class="select-none text-[clamp(80px,10vw,140px)] font-semibold leading-none tracking-tighter">
-                DG<span class="text-amber">.</span>
-              </span>
-              <div class="meta-mono space-y-2 uppercase text-canvas/50">
-                <p>DEVGURU — INCHEON, KR</p>
-                <p>37.5665° N / 126.9780° E</p>
-                <p>DESKTOP · WEB · CLOUD</p>
-              </div>
-            </div>
-          </div>
-          <div class="reveal md:col-span-6 md:col-start-7">
-            <span class="label-mono mb-6 block uppercase tracking-widest text-amber">{t.about.overline}</span>
-            <h2 class="headline-lg mb-8 leading-tight">{t.about.name}</h2>
-            <div class="space-y-6 text-[16px] leading-relaxed text-ink-2">
-              {t.about.paras.map((p) => <p>{p}</p>)}
-            </div>
-            <div class="mt-12 flex gap-4">
-              <a
-                href="mailto:devguru.j610@gmail.com"
-                class="label-mono bg-container-low px-8 py-4 shadow-soft transition-all duration-300 hover:bg-ink hover:text-canvas"
-              >
-                EMAIL
-              </a>
-              <a
-                href="https://github.com/Devguru-J"
-                target="_blank"
-                rel="noopener"
-                class="label-mono bg-container-low px-8 py-4 shadow-soft transition-all duration-300 hover:bg-ink hover:text-canvas"
-              >
-                GITHUB
-              </a>
-            </div>
-          </div>
+    <!-- ===================== Studio (§3) ===================== -->
+    <section class="shell section bordered" id="studio" aria-labelledby="studio-heading">
+      <div class="studio-layout">
+        <h2 class="t-h2 studio-heading" id="studio-heading" data-reveal>
+          {t.studio.heading}
+        </h2>
+        <div class="studio-body">
+          {
+            t.studio.paras.map((p, i) => (
+              <p class="t-lead measure" data-reveal data-reveal-delay={i * 60}>
+                {p}
+              </p>
+            ))
+          }
+          <p class="closing t-h3" data-reveal>{t.closing}</p>
         </div>
       </div>
     </section>
-
-    <Footer lang={lang} />
   </main>
 
-  <script>
-    import '../scripts/motion';
-  </script>
+  <Footer lang={lang} />
 </Base>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .muted {
+    color: var(--color-ink-2);
+  }
+  .accent {
+    color: var(--color-accent);
+  }
+  .bordered {
+    border-top: 1px solid var(--color-line);
+  }
+
+  /* ---------------- Hero ---------------- */
+
+  .hero {
+    padding-block: clamp(72px, 12vh, 140px) clamp(88px, 12vw, 152px);
+  }
+
+  .hero-inner {
+    max-width: 62ch;
+  }
+
+  .hero-headline {
+    margin: 24px 0 32px;
+  }
+
+  .hero-para {
+    margin-bottom: 40px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* ---------------- Section heads ---------------- */
+
+  .section-head {
+    margin-bottom: clamp(48px, 6vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* ---------------- Work ---------------- */
+
+  .work {
+    display: grid;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .work + .work {
+    margin-top: clamp(72px, 9vw, 120px);
+    padding-top: clamp(72px, 9vw, 120px);
+    border-top: 1px solid var(--color-line);
+  }
+
+  @media (min-width: 1024px) {
+    .work {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .work-media {
+      grid-column: 1 / span 7;
+    }
+    .work-body {
+      grid-column: 9 / span 4;
+    }
+    .work--flip .work-media {
+      grid-column: 6 / span 7;
+      grid-row: 1;
+    }
+    .work--flip .work-body {
+      grid-column: 1 / span 4;
+      grid-row: 1;
+    }
+  }
+
+  .work-name {
+    margin: 12px 0 16px;
+  }
+
+  .evidence {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 24px 0;
+  }
+  .evidence li {
+    padding: 6px 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 2px;
+    font-size: 13px;
+    color: var(--color-ink-2);
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+  /* a static marker, not a pulse (§13.3) */
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-success);
+  }
+
+  .facts {
+    margin-top: 10px;
+    color: var(--color-ink-3);
+  }
+
+  .work-cta {
+    margin-top: 28px;
+  }
+
+  /* ---------------- Capabilities ---------------- */
+
+  .cap-layout {
+    display: grid;
+    gap: 48px;
+  }
+
+  @media (min-width: 1024px) {
+    .cap-layout {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .cap-head {
+      grid-column: 1 / span 4;
+      position: sticky;
+      top: 108px;
+      align-self: start;
+    }
+    .cap-lists {
+      grid-column: 6 / span 7;
+    }
+  }
+
+  .cap-head h2 {
+    margin-bottom: 16px;
+  }
+
+  .cap-group + .cap-group {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .cap-group-title {
+    margin-bottom: 28px;
+  }
+
+  .cap-item + .cap-item {
+    margin-top: 32px;
+  }
+
+  .cap-title {
+    margin-bottom: 8px;
+  }
+
+  .cap-title-sm {
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  /* ---------------- How we work ---------------- */
+
+  .steps {
+    display: grid;
+    gap: 40px;
+    counter-reset: step;
+  }
+
+  @media (min-width: 768px) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 56px 48px;
+    }
+  }
+
+  .step-index {
+    display: block;
+    color: var(--color-accent);
+    margin-bottom: 12px;
+  }
+
+  .step-title {
+    margin-bottom: 10px;
+  }
+
+  .philosophy {
+    margin-top: clamp(64px, 8vw, 96px);
+    padding-top: clamp(40px, 5vw, 56px);
+    border-top: 1px solid var(--color-line);
+    max-width: 24ch;
+    color: var(--color-ink);
+  }
+
+  /* ---------------- Studio ---------------- */
+
+  .studio-layout {
+    display: grid;
+    gap: 32px;
+  }
+
+  @media (min-width: 1024px) {
+    .studio-layout {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .studio-heading {
+      grid-column: 1 / span 3;
+    }
+    .studio-body {
+      grid-column: 5 / span 7;
+    }
+  }
+
+  .studio-body > p + p {
+    margin-top: 24px;
+  }
+
+  .closing {
+    margin-top: 48px;
+    padding-top: 40px;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-ink);
+  }
+</style>

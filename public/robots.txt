@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://devguru-j.com/sitemap-index.xml
