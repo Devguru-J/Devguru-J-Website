@@ -78,7 +78,8 @@ export interface Product {
   /** Per-storefront links and prices; `null` where not verified. */
   storeUrl: Record<Lang, string> | null;
   price: Record<Lang, ProductPrice> | null;
-  image: Media;
+  /** Screenshot per locale, so each page shows the app in its own language. */
+  image: Record<Lang, Media>;
 }
 
 export interface ClientWork {
@@ -110,9 +111,14 @@ export const MONKEY_FLASH: Product = {
     en: { currency: 'USD', formatted: '$1.99' },
     ko: { currency: 'KRW', formatted: '₩3,300' },
   },
-  // Cropped from the verified screenshot to remove the baked-in Korean
-  // marketing overlay, so one shot is correct on both locales (§24.3).
-  image: { src: '/assets/work-monkeyflash-product.jpg', width: 1024, height: 880 },
+  // Cropped from the verified App Store screenshots to remove the baked-in
+  // marketing overlay. One capture per locale, so the English page shows the
+  // app's English UI and the Korean page its Korean UI (§24.3). Both crops use
+  // the same framing and aspect, so the two cards lay out identically.
+  image: {
+    en: { src: '/assets/work-monkeyflash-product-en.jpg', width: 1024, height: 880 },
+    ko: { src: '/assets/work-monkeyflash-product-ko.jpg', width: 1024, height: 880 },
+  },
 };
 
 /** KB Inc. — client work, disclosure confirmed by the client. */

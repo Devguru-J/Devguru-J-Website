@@ -5,7 +5,8 @@ const OUT = 'public/assets';
 
 // Warm canvas, brand name, industry descriptor, a single brass rule.
 // No small text (§20.3).
-const shot = readFileSync('public/assets/work-monkeyflash.jpg').toString('base64');
+const shot = (lang) =>
+  readFileSync(`public/assets/work-monkeyflash-product-${lang}.jpg`).toString('base64');
 
 const page = (opts) => `
 <!doctype html><html lang="${opts.lang}"><head><meta charset="utf-8">
@@ -21,8 +22,11 @@ const page = (opts) => `
     padding:76px 84px; position:relative; overflow:hidden;
   }
   .mark { width:52px; height:52px; }
+  /* When a product shot is present it occupies the right third, so the type
+     block is held clear of it rather than running underneath. */
+  .type { max-width:${opts.art ? '620px' : '100%'}; }
   .name {
-    font-size:${opts.lang === 'ko' ? '104px' : '108px'};
+    font-size:${opts.art ? '76px' : opts.lang === 'ko' ? '104px' : '108px'};
     font-weight:600; line-height:1;
     letter-spacing:${opts.lang === 'ko' ? '0.01em' : '-0.04em'};
   }
@@ -34,20 +38,20 @@ const page = (opts) => `
   }
   .rule { width:120px; height:3px; background:#945E1B; margin-top:40px; }
   .art {
-    position:absolute; right:-90px; bottom:-70px; width:560px;
-    border-radius:8px; box-shadow:0 24px 60px -18px rgba(26,26,24,.28);
+    position:absolute; right:-56px; bottom:-96px; width:440px;
+    border-radius:10px; box-shadow:0 24px 60px -18px rgba(26,26,24,.32);
     ${opts.art ? '' : 'display:none;'}
   }
 </style></head><body>
   <svg class="mark" viewBox="0 0 32 32" fill="none" stroke="#1A1A18" stroke-width="4" stroke-linecap="square">
     <path d="M6 18 V6 H18"/><path d="M26 14 V26 H14"/>
   </svg>
-  <div>
+  <div class="type">
     <div class="name">${opts.name}</div>
     <div class="desc">${opts.desc}</div>
     <div class="rule"></div>
   </div>
-  <img class="art" src="data:image/jpeg;base64,${shot}">
+  <img class="art" src="data:image/jpeg;base64,${opts.art ? shot(opts.lang) : ''}">
 </body></html>`;
 
 const jobs = [
@@ -66,10 +70,17 @@ const jobs = [
     art: false,
   },
   {
-    file: 'og-monkeyflash.png',
+    file: 'og-monkeyflash-en.png',
     lang: 'en',
     name: 'Monkey Flash',
     desc: 'macOS focus utility',
+    art: true,
+  },
+  {
+    file: 'og-monkeyflash-ko.png',
+    lang: 'ko',
+    name: 'Monkey Flash',
+    desc: 'macOS 집중 도구',
     art: true,
   },
 ];

@@ -33,8 +33,13 @@ Asset regeneration (only needed when the brand mark or OG design changes):
 
 ```sh
 npm run generate:icons   # favicon.png, apple-touch-icon.png, icon-brand-512.png
-npm run generate:og      # og-home-en.png, og-home-ko.png, og-monkeyflash.png
+npm run generate:og      # og-home-{en,ko}.png, og-monkeyflash-{en,ko}.png
 ```
+
+The Monkey Flash product shots (`work-monkeyflash-product-{en,ko}.jpg`) are crops
+of the App Store screenshots in the app repo, taken to remove the baked-in
+marketing overlay. Both crops share one framing and aspect so the two locales'
+cards lay out identically. Re-crop from the same sources if the app UI changes.
 
 ## Routes
 
@@ -107,8 +112,6 @@ These are current, verified, and intentionally unchanged:
 
 ## Not yet resolved
 
-- The Monkey Flash screenshot shows the app's Korean UI on both locales. An
-  English-language capture would make the English page fully correct.
 - No GitHub or social profile is published, so `sameAs` is omitted from the
   `Organization` JSON-LD.
 

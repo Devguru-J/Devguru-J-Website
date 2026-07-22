@@ -101,6 +101,31 @@ test.describe('metadata (§27.3)', () => {
     });
   }
 
+  for (const { path, lang } of LOCALES) {
+    test(`${path} shows the product screenshot for its own locale`, async ({ page }) => {
+      await page.goto(path);
+      await expect(page.locator('#work img').first()).toHaveAttribute(
+        'src',
+        `/assets/work-monkeyflash-product-${lang}.jpg`
+      );
+      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+        'content',
+        new RegExp(`og-home-${lang}\\.png$`)
+      );
+    });
+  }
+
+  test('legal pages use the product OG image for their locale', async ({ page }) => {
+    for (const path of LEGAL) {
+      await page.goto(path);
+      const lang = path.startsWith('/ko/') ? 'ko' : 'en';
+      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+        'content',
+        new RegExp(`og-monkeyflash-${lang}\\.png$`)
+      );
+    }
+  });
+
   test('home pages emit valid Organization + WebSite JSON-LD', async ({ page }) => {
     await page.goto('/');
     const raw = await page.locator('script[type="application/ld+json"]').textContent();

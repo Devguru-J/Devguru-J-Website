@@ -87,10 +87,10 @@ const extended = t.capabilities.items.filter((c) => !c.current);
             aria-hidden="true"
           >
             <img
-              src={mf.image.src}
+              src={mf.image[lang].src}
               alt={t.work.monkeyFlash.alt}
-              width={mf.image.width}
-              height={mf.image.height}
+              width={mf.image[lang].width}
+              height={mf.image[lang].height}
               loading="eager"
               decoding="async"
             />
