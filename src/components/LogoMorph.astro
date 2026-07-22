@@ -1,0 +1,84 @@
+---
+// Wordmark morph: "Developerguru-Jeff" appears letter by letter,
+// then "eloper" and "eff" collapse away leaving "Devguru-J".
+const parts: { c: string; drop: boolean }[] = [
+  ...['D', 'e', 'v'].map((c) => ({ c, drop: false })),
+  ...['e', 'l', 'o', 'p', 'e', 'r'].map((c) => ({ c, drop: true })),
+  ...['g', 'u', 'r', 'u', '-', 'J'].map((c) => ({ c, drop: false })),
+  ...['e', 'f', 'f'].map((c) => ({ c, drop: true })),
+];
+
+const STEP = 0.05; // per-letter entrance stagger
+const DROP_AT = 1.6; // when the collapse starts
+
+let dropIndex = 0;
+const letters = parts.map((p, i) => ({
+  ...p,
+  ai: (i * STEP).toFixed(2),
+  di: p.drop ? (DROP_AT + dropIndex++ * 0.1).toFixed(2) : null,
+}));
+---
+
+<span class="logo-morph" role="img" aria-label="Devguru-J">
+  {
+    letters.map((l) =>
+      l.drop ? (
+        <span class="lg" style={`--ai:${l.ai}s;--di:${l.di}s`}>{l.c}</span>
+      ) : (
+        <span class="lk" style={`--ai:${l.ai}s`}>{l.c}</span>
+      )
+    )
+  }
+</span>
+
+<style>
+  .logo-morph {
+    display: inline-flex;
+    align-items: baseline;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .logo-morph .lk {
+    animation: logoIn 0.4s ease var(--ai) both;
+  }
+  .logo-morph .lg {
+    overflow: hidden;
+    max-width: 0.8em;
+    animation:
+      logoIn 0.4s ease var(--ai) both,
+      logoOut 0.7s ease var(--di) forwards;
+  }
+  @keyframes logoIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes logoOut {
+    0% {
+      opacity: 1;
+      max-width: 0.8em;
+    }
+    45% {
+      opacity: 0;
+      max-width: 0.8em;
+    }
+    100% {
+      opacity: 0;
+      max-width: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .logo-morph .lk {
+      animation: none;
+      opacity: 1;
+    }
+    .logo-morph .lg {
+      display: none;
+    }
+  }
+</style>
