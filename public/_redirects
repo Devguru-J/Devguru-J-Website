@@ -1,2 +1,13 @@
-/privacy /MonkeyFlash/privacy 301
-/support /MonkeyFlash/support 301
+# Legacy aliases → final canonical paths, one hop only (§21.3).
+# Targets carry the trailing slash so Astro's own trailing-slash rule
+# does not add a second 308.
+/privacy      /MonkeyFlash/privacy/     301
+/support      /MonkeyFlash/support/     301
+/privacy/     /MonkeyFlash/privacy/     301
+/support/     /MonkeyFlash/support/     301
+
+# Korean aliases
+/ko/privacy   /ko/MonkeyFlash/privacy/  301
+/ko/support   /ko/MonkeyFlash/support/  301
+/ko/privacy/  /ko/MonkeyFlash/privacy/  301
+/ko/support/  /ko/MonkeyFlash/support/  301

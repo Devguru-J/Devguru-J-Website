@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Memory">
+  <!--
+    Company mark — §16.2 Direction B.
+    Two corners that imply a square without closing it: the path turns once and
+    returns. Rotationally symmetric, monochrome, legible at 16px. Deliberately
+    not letter-shaped, so it cannot be misread as a Hangul jamo.
+    This is the company mark and is never applied over a product icon (§13.3).
+  -->
+  <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="square">
+    <path d="M6 18 V6 H18" />
+    <path d="M26 14 V26 H14" />
+  </g>
+</svg>

@@ -1,165 +1,411 @@
-export type Lang = 'en' | 'ko';
+import type { Lang } from './config/site';
 
-export const translations = {
-  en: {
-    meta: {
-      title: 'Devguru-J — Independent Software Studio',
-      description:
-        'Devguru is the independent workspace of Devguru-J, an Incheon-based engineer building precise software across desktop, web, and cloud — including Monkey Flash for macOS.',
+export type { Lang };
+
+/**
+ * Presentational copy only.
+ *
+ * Operational facts (domain, email, prices, store URLs, product status) live in
+ * `src/config/site.ts` and are never duplicated here (§13.1, §24.4).
+ *
+ * Korean and English keys are symmetric by construction: `ko` is typed against
+ * the shape of `en`, so a missing or extra key is a type error.
+ */
+const en = {
+  meta: {
+    siteName: 'Memory',
+    title: 'Memory — Independent Software Engineering Studio',
+    description:
+      'Memory is an independent engineering studio building useful, well-made software for desktop, web, cloud, and emerging platforms.',
+    ogTitle: 'Memory — Software that earns its place',
+    ogImageAlt: 'Memory — independent software engineering studio',
+    /** Page title suffix rule (§20.2): `[Page] — Memory`. */
+    titleSuffix: 'Memory',
+  },
+
+  nav: {
+    links: [
+      { href: '#work', label: 'Work' },
+      { href: '#studio', label: 'Studio' },
+      { href: '#contact', label: 'Contact' },
+    ],
+    langLabel: '한국어',
+    langAria: 'View in Korean',
+    currentLang: 'Current language: English',
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
+    home: 'Memory home',
+    skip: 'Skip to content',
+  },
+
+  hero: {
+    label: 'INDEPENDENT SOFTWARE ENGINEERING STUDIO',
+    headline: 'Software that earns its place.',
+    para: 'Memory designs and builds products for desktop, web, cloud, and emerging platforms. We choose the right features, then make them work as they should.',
+    ctaPrimary: 'View the work',
+    ctaSecondary: 'About the studio',
+  },
+
+  work: {
+    heading: 'Selected work',
+    intro: 'Products and selected client work, shaped around real use.',
+    kindProduct: 'Product',
+    kindClient: 'Client work',
+    monkeyFlash: {
+      kind: 'Product · macOS focus utility',
+      desc: 'A macOS utility that keeps the active window bright and dims the rest of the desktop, without Screen Recording or Accessibility access.',
+      evidence: ['No system permissions', '1% dimming control', 'Hold Fn to reveal'],
+      cta: 'View on the App Store',
+      alt: 'Monkey Flash on macOS, with the active window bright and the rest of the desktop dimmed.',
     },
-    hero: {
-      overline: 'INDEPENDENT DEVELOPER — INCHEON, KOREA',
-      lines: ['Building what should exist.', 'Nothing is impossible.', 'Just engineering.'],
-      para: 'I design and build software across desktop, web, cloud, and emerging platforms—turning everyday friction and complex business problems into clear, useful products.',
-      ctaPrimary: 'EXPLORE THE WORK',
-      ctaSecondary: 'ABOUT DEVGURU',
-    },
-    work: {
-      heading: 'Selected Work',
-      mf: {
-        meta: 'MACOS · FOCUS UTILITY',
-        desc: 'A dimmer switch for your attention. Keeps the active window bright and quietly lowers everything else—no Accessibility, Screen Recording, or any system permission required.',
-        badges: ['Zero permissions', '1% dim control', 'Fn reveal'],
-        status: 'COMING TO THE MAC APP STORE',
-        alt: 'Monkey Flash on macOS: the active window stays bright while the rest of the desktop is dimmed.',
-      },
-      ops: {
-        meta: 'WEB · CORPORATE SITE',
-        title: 'KB INC.',
-        desc: 'A heavy-vehicle parts distributor, brought forward a decade. The official site was rebuilt from a 2014 Dreamweaver template into a modern industrial static site—bilingual by default, with catalogs readable in the browser and an inquiry form that actually reaches the sales desk.',
-        badges: ['Astro static build', 'KO / EN toggle', 'Inquiry form'],
-        status: 'LIVE AT KBINC.KR',
-        alt: 'The KB Inc. homepage: a dark industrial hero with a VDL Weweler air-suspension render alongside the headline.',
-        url: 'https://kbinc.kr',
-      },
-    },
-    pipeline: {
-      overline: 'NEXT — PIPELINE',
-      rows: [
-        { idx: '01 / RELEASE', name: 'Monkey Flash 1.0 — Mac App Store', status: 'IN REVIEW' },
-        { idx: '02 / WIP', name: 'Productivity utility', status: 'IN DEVELOPMENT' },
-        { idx: '03 / R&D', name: 'Automation toolkit', status: 'RESEARCH PHASE' },
-      ],
-    },
-    capabilities: {
-      heading: 'Capabilities',
-      intro: 'A multidisciplinary approach to building technical products from zero to one.',
-      groups: [
-        { label: 'Product', items: ['Strategy & Vision', 'UI/UX Design', 'Prototyping', 'Systems Design'] },
-        { label: 'Engineering', items: ['macOS Native Apps', 'Frontend Architectures', 'Cloud Infrastructure', 'Performance Audit'] },
-        { label: 'Delivery', items: ['Agile Execution', 'Direct Collaboration', 'Technical SEO', 'Post-launch Support'] },
-      ],
-    },
-    interstitial: {
-      line1: 'No fixed platform. No fixed category.',
-      line2: 'Just the right product for the problem.',
-    },
-    principles: {
-      heading: 'Guiding Principles',
-      items: [
-        { title: 'Precision over speed', body: 'I build correctly once, rather than fast twice. Every line of code is intentional.' },
-        { title: 'Functional beauty', body: 'Design is not what it looks like, but how it works. Clarity is the highest aesthetic goal.' },
-        { title: 'Technical depth', body: 'Powerful tools shouldn’t be hidden behind dumbed-down interfaces. I embrace the command line.' },
-        { title: 'Digital craft', body: 'Software as an artisanal craft. Attention to detail is the competitive advantage.' },
-      ],
-    },
-    about: {
-      tileTop: 'The independent workspace of',
-      overline: 'The Builder',
-      name: 'Devguru-J',
-      paras: [
-        'Devguru is the independent workspace of Devguru-J, an Incheon-based engineer and designer obsessed with building high-performance digital tools.',
-        'With a background spanning distributed systems and editorial design, I bridge the gap between heavy engineering and human-centric interfaces. I don’t just write code; I design systems that solve problems for the long term.',
-        'Currently focused on macOS productivity utilities and specialized web applications for complex business operations.',
-      ],
-    },
-    footer: {
-      overline: 'HAVE A PROJECT IN MIND?',
-      headline1: 'Let’s build the thing',
-      headline2: 'that should exist.',
-      cta: 'START A CONVERSATION',
-      tagline: 'Precision engineering and editorial design for modern software.',
+    kbInc: {
+      kind: 'Client work · Corporate website',
+      desc: 'A bilingual industrial website redesigned around three essential tasks: finding products, reading catalogues, and reaching the sales team.',
+      evidence: ['Static Astro build', 'Korean & English', 'Catalogues & enquiries'],
+      cta: 'Visit site ↗',
+      alt: 'KB Inc. homepage introducing its air-suspension products.',
     },
   },
 
-  ko: {
-    meta: {
-      title: 'Devguru-J — 독립 소프트웨어 스튜디오',
-      description:
-        'Devguru는 인천에서 활동하는 엔지니어 Devguru-J의 독립 작업실입니다. 데스크톱·웹·클라우드를 넘나들며 정밀한 소프트웨어를 만듭니다 — macOS용 Monkey Flash 포함.',
-    },
-    hero: {
-      overline: 'INDEPENDENT DEVELOPER — INCHEON, KOREA',
-      lines: ['있어야 할 것을 만듭니다.', '불가능한 건 없습니다.', '엔지니어링이 있을 뿐.'],
-      para: '데스크톱, 웹, 클라우드, 그리고 새로운 플랫폼까지 — 일상의 불편함과 복잡한 비즈니스 문제를 명쾌하고 쓸모 있는 제품으로 바꿉니다.',
-      ctaPrimary: '작업 살펴보기',
-      ctaSecondary: 'DEVGURU 소개',
-    },
-    work: {
-      heading: '주요 작업',
-      mf: {
-        meta: 'MACOS · FOCUS UTILITY',
-        desc: '주의력을 위한 조광 스위치. 활성 창만 밝게 남기고 나머지는 조용히 낮춥니다 — Accessibility, 화면 기록 등 어떤 시스템 권한도 요구하지 않습니다.',
-        badges: ['권한 제로', '1% 딤 조절', 'Fn 임시 해제'],
-        status: 'MAC APP STORE 출시 예정',
-        alt: 'macOS에서 실행 중인 Monkey Flash: 활성 창만 밝게 유지되고 나머지 데스크톱은 어둡게 처리된 모습.',
+  capabilities: {
+    heading: 'Capabilities',
+    intro: 'Current work centers on desktop and web. The scope extends to cloud systems, automation, and new platforms when the product calls for it.',
+    currentLabel: 'Current focus',
+    extendedLabel: 'Extended scope',
+    items: [
+      {
+        title: 'Desktop apps',
+        body: 'Fast, dependable applications that feel at home on the operating system, from first launch to everyday use.',
+        current: true,
       },
-      ops: {
-        meta: 'WEB · CORPORATE SITE',
-        title: '케이비(주)',
-        desc: '특장차 핵심 부품 유통사의 공식 사이트를 10년 만에 앞당겼습니다. 2014년 Dreamweaver 템플릿에 머물러 있던 사이트를 모던 인더스트리얼 감각의 정적 사이트로 다시 지었습니다. 한국어·영어를 기본으로, 카탈로그는 브라우저에서 바로 열람하고, 문의는 실제 영업 담당자에게 도착합니다.',
-        badges: ['Astro 정적 빌드', '한 · 영 전환', '문의 폼'],
-        status: 'KBINC.KR 운영 중',
-        alt: '케이비(주) 홈페이지 메인: 어두운 인더스트리얼 히어로에 VDL Weweler 에어서스펜션 렌더가 헤드라인과 나란히 놓인 모습.',
-        url: 'https://kbinc.kr',
+      {
+        title: 'Web products',
+        body: 'Fast, accessible web products—from focused sites to applications for complex operational work.',
+        current: true,
       },
-    },
-    pipeline: {
-      overline: 'NEXT — PIPELINE',
-      rows: [
-        { idx: '01 / RELEASE', name: 'Monkey Flash 1.0 — Mac App Store', status: 'IN REVIEW' },
-        { idx: '02 / WIP', name: '생산성 유틸리티', status: 'IN DEVELOPMENT' },
-        { idx: '03 / R&D', name: '자동화 툴킷', status: 'RESEARCH PHASE' },
-      ],
-    },
-    capabilities: {
-      heading: '할 수 있는 것',
-      intro: '0에서 1까지, 기술 제품을 완성하는 다학제적 접근.',
-      groups: [
-        { label: 'Product', items: ['전략 & 비전', 'UI/UX 디자인', '프로토타이핑', '시스템 설계'] },
-        { label: 'Engineering', items: ['macOS 네이티브 앱', '프론트엔드 아키텍처', '클라우드 인프라', '성능 최적화'] },
-        { label: 'Delivery', items: ['애자일 실행', '1:1 직접 협업', '테크니컬 SEO', '출시 후 지원'] },
-      ],
-    },
-    interstitial: {
-      line1: '정해진 플랫폼도, 정해진 카테고리도 없습니다.',
-      line2: '문제에 꼭 맞는 제품이 있을 뿐.',
-    },
-    principles: {
-      heading: '일하는 원칙',
-      items: [
-        { title: '속도보다 정확함', body: '빠르게 두 번 만드는 대신, 한 번에 제대로 만듭니다. 모든 코드 한 줄에 의도가 있습니다.' },
-        { title: '기능이 곧 아름다움', body: '디자인은 어떻게 보이느냐가 아니라 어떻게 작동하느냐의 문제입니다. 명료함이 최고의 미학입니다.' },
-        { title: '기술적 깊이', body: '강력한 도구가 단순화라는 이름 뒤에 숨을 필요는 없습니다. 커맨드라인을 기꺼이 끌어안습니다.' },
-        { title: '디지털 크래프트', body: '소프트웨어를 공예처럼 다룹니다. 디테일에 대한 집착이 곧 경쟁력입니다.' },
-      ],
-    },
-    about: {
-      tileTop: 'The independent workspace of',
-      overline: 'The Builder',
-      name: 'Devguru-J',
-      paras: [
-        'Devguru는 인천에서 활동하는 엔지니어이자 디자이너 Devguru-J의 독립 작업실입니다. 고성능 디지털 도구를 만드는 일에 몰두합니다.',
-        '분산 시스템부터 에디토리얼 디자인까지 — 무거운 엔지니어링과 사람 중심 인터페이스 사이의 간극을 잇습니다. 코드를 쓰는 데서 멈추지 않고, 오래 가는 문제 해결 시스템을 설계합니다.',
-        '지금은 macOS 생산성 유틸리티와 복잡한 비즈니스 운영을 위한 맞춤형 웹 애플리케이션에 집중하고 있습니다.',
-      ],
-    },
-    footer: {
-      overline: 'HAVE A PROJECT IN MIND?',
-      headline1: '있어야 할 것을,',
-      headline2: '함께 만들어요.',
-      cta: '대화 시작하기',
-      tagline: '현대 소프트웨어를 위한 정밀한 엔지니어링과 에디토리얼 디자인.',
-    },
+      {
+        title: 'Focused tools',
+        body: 'Focused utilities for repetitive or technical work, with a narrow scope and an interface designed to become familiar quickly.',
+        current: true,
+      },
+      {
+        title: 'Cloud systems',
+        body: 'APIs, data flows, and deployment designed as one operational system, with observability and recovery built in.',
+        current: false,
+      },
+      {
+        title: 'Automation',
+        body: 'Repeatable workflows that remove manual handoffs, make failures visible, and recover cleanly.',
+        current: false,
+      },
+      {
+        title: 'New platforms',
+        body: 'Early product work for new devices and interaction models, built around what the platform makes possible.',
+        current: false,
+      },
+    ],
+  },
+
+  process: {
+    heading: 'How we work',
+    steps: [
+      {
+        title: 'Define the job first.',
+        body: 'Before features, identify where the work breaks down and what the user needs to finish.',
+      },
+      {
+        title: 'Keep design and engineering together.',
+        body: 'Interface, data, performance, and accessibility are decisions about the same product.',
+      },
+      {
+        title: 'Prove the core early.',
+        body: 'Get the essential path working, then refine it with evidence from real use.',
+      },
+      {
+        title: 'Plan for life after launch.',
+        body: 'Updates, support, and a clear end-of-life path are part of the product.',
+      },
+    ],
+  },
+
+  philosophy: 'The product steps back. The work moves forward.',
+
+  studio: {
+    heading: 'The studio',
+    paras: [
+      'Memory is an independent software studio for useful, well-made products. Design and engineering move together, from the first decision to the last detail.',
+      'Feature count is not the measure. Performance, reliability, accessibility, and interaction are designed together from the outset, because each one changes how the product works.',
+      'The name has two roots: the human instinct to return to what works, and computer memory—the working space behind every operation. It is not a storage-service promise.',
+      'Memory began as a one-person studio, stated plainly. Its scope can grow; its standard should not: useful software that stays out of the user’s way.',
+    ],
+  },
+
+  closing: 'The next product starts with a clear job.',
+
+  contact: {
+    label: 'CONTACT',
+    heading: 'Have a problem worth solving?',
+    body: 'For product collaborations, technical challenges, or questions about the work, send a note.',
+    cta: 'Send an email',
+  },
+
+  footer: {
+    brandLine: 'Memory — Independent Software Studio',
+    desc: 'Software for desktop, web, cloud, and emerging platforms.',
+    exploreLabel: 'Explore',
+    elsewhereLabel: 'Elsewhere',
+    explore: [
+      { href: '#work', label: 'Work' },
+      { href: '#capabilities', label: 'Capabilities' },
+      { href: '#how-we-work', label: 'How we work' },
+      { href: '#studio', label: 'Studio' },
+    ],
+    emailLabel: 'Email',
+    legalLabel: 'Legal',
+    privacy: 'Monkey Flash Privacy',
+    support: 'Monkey Flash Support',
+    rights: 'All rights reserved.',
+  },
+
+  /** Product/work status labels (§13.3). Always read as text, never colour alone. */
+  status: {
+    available: 'Available',
+    inDevelopment: 'In development',
+    experimental: 'Experimental',
+    comingSoon: 'Coming soon',
+    inReview: 'In review',
+    maintained: 'Maintained',
+    discontinued: 'Discontinued',
+    supportEnded: 'Support ended',
+    live: 'Live',
+  },
+
+  a11y: {
+    statusPrefix: 'Status:',
+    newTab: 'Opens in a new tab',
+    updated: 'Updated {date}',
+    version: 'Version {version}',
+    requires: 'Requires {os} or later',
+  },
+
+  notFound: {
+    title: 'This page isn’t here.',
+    body: 'It may have moved, or the address may be incorrect. Start again from the homepage.',
+    cta: 'Back to home',
+    metaTitle: 'Page not found — Memory',
+  },
+
+  legal: {
+    privacyTitle: 'Monkey Flash Privacy Policy — Memory',
+    supportTitle: 'Monkey Flash Support — Memory',
+    backHome: 'Back to home',
   },
 } as const;
+
+/** Korean copy. Typed against `en` so both languages stay structurally identical. */
+const ko: Structural<typeof en> = {
+  meta: {
+    siteName: '기억',
+    title: '기억 — 소프트웨어 엔지니어링 스튜디오',
+    description:
+      '기억은 데스크톱, 웹, 클라우드와 새로운 플랫폼을 위한 쓸모 있는 소프트웨어를 설계하고 만드는 독립 스튜디오입니다.',
+    ogTitle: '기억 — 제 몫을 다하는 소프트웨어',
+    ogImageAlt: '기억 — 독립 소프트웨어 엔지니어링 스튜디오',
+    titleSuffix: '기억',
+  },
+
+  nav: {
+    links: [
+      { href: '#work', label: '작업' },
+      { href: '#studio', label: '스튜디오' },
+      { href: '#contact', label: '문의' },
+    ],
+    langLabel: 'English',
+    langAria: '영어로 보기',
+    currentLang: '현재 언어: 한국어',
+    openMenu: '메뉴 열기',
+    closeMenu: '메뉴 닫기',
+    home: '기억 홈',
+    skip: '본문으로 건너뛰기',
+  },
+
+  hero: {
+    label: '독립 소프트웨어 엔지니어링 스튜디오',
+    headline: '제 몫을 다하는 소프트웨어.',
+    para: '기억은 데스크톱, 웹, 클라우드와 새로운 플랫폼을 위한 제품을 설계하고 개발합니다. 기능을 늘리기보다, 필요한 기능이 정확히 작동하도록 끝까지 다듬습니다.',
+    ctaPrimary: '제품과 작업 보기',
+    ctaSecondary: '스튜디오 소개',
+  },
+
+  work: {
+    heading: '제품과 작업',
+    intro: '직접 만드는 제품과 실제 사용 환경에 맞춰 설계한 작업을 소개합니다.',
+    kindProduct: '제품',
+    kindClient: '프로젝트',
+    monkeyFlash: {
+      kind: '제품 · macOS 집중 도구',
+      desc: '활성 창은 밝게 두고 나머지 화면만 어둡게 해, 한 가지 일에 집중하도록 돕는 macOS 앱입니다. 화면 기록이나 손쉬운 사용 권한 없이 작동합니다.',
+      evidence: ['시스템 권한 없음', '1% 단위 조절', 'Fn으로 잠시 해제'],
+      cta: 'App Store에서 보기',
+      alt: 'Monkey Flash를 실행한 macOS 화면. 활성 창은 밝고 나머지 영역은 어둡게 표시되어 있다.',
+    },
+    kbInc: {
+      kind: '프로젝트 · 기업 웹사이트',
+      desc: '제품을 찾고, 카탈로그를 읽고, 영업팀에 문의하는 흐름을 한국어와 영어로 다시 설계했습니다.',
+      evidence: ['Astro 정적 빌드', '한국어·영어', '카탈로그·문의'],
+      cta: '사이트 방문 ↗',
+      alt: '케이비 홈페이지에서 에어서스펜션 제품을 소개하는 첫 화면.',
+    },
+  },
+
+  capabilities: {
+    heading: '만드는 영역',
+    intro: '현재는 데스크톱 앱과 웹 제품을 중심으로 만듭니다. 문제에 따라 클라우드, 자동화, 새로운 플랫폼까지 범위를 넓힙니다.',
+    currentLabel: '현재 중심',
+    extendedLabel: '확장 범위',
+    items: [
+      {
+        title: '데스크톱 앱',
+        body: '운영체제의 흐름을 존중하는 빠르고 안정적인 앱을 만듭니다. 설치, 설정, 업데이트까지 사용 경험 전체를 다룹니다.',
+        current: true,
+      },
+      {
+        title: '웹 제품',
+        body: '정보를 보여주는 사이트부터 복잡한 업무를 다루는 웹 앱까지, 빠르고 접근하기 쉽게 설계하고 개발합니다.',
+        current: true,
+      },
+      {
+        title: '도구',
+        body: '반복해서 쓰는 작은 유틸리티와 개발자 도구를 만듭니다. 기능은 좁게 잡고, 자주 쓸수록 더 빠르게 손에 익도록 다듬습니다.',
+        current: true,
+      },
+      {
+        title: '클라우드 시스템',
+        body: 'API, 데이터 흐름, 배포 환경을 하나의 운영 체계로 설계합니다. 장애를 알아차리고 복구하기 쉬운 구조를 우선합니다.',
+        current: false,
+      },
+      {
+        title: '자동화',
+        body: '사람이 매번 옮기고 확인하던 일을 정확한 흐름으로 바꿉니다. 실패를 알아차리고 다시 이어 갈 방법까지 설계합니다.',
+        current: false,
+      },
+      {
+        title: '새로운 플랫폼',
+        body: '새로운 기기와 입력 방식에서는 익숙한 화면을 옮기기보다, 그 환경에서만 가능한 쓰임부터 찾습니다.',
+        current: false,
+      },
+    ],
+  },
+
+  process: {
+    heading: '일하는 방식',
+    steps: [
+      {
+        title: '할 일을 먼저 정합니다.',
+        body: '기능 목록보다 먼저 누가 어디에서 막히고, 무엇을 끝내야 하는지 살핍니다.',
+      },
+      {
+        title: '설계와 개발을 나누지 않습니다.',
+        body: '화면, 데이터, 성능, 접근성을 한 제품의 결정으로 다룹니다.',
+      },
+      {
+        title: '핵심부터 작동시킵니다.',
+        body: '가장 중요한 흐름을 먼저 만들고, 실제 사용에서 얻은 근거로 다듬습니다.',
+      },
+      {
+        title: '출시 뒤까지 생각합니다.',
+        body: '업데이트, 지원, 종료 방식까지 제품의 일부로 설계합니다.',
+      },
+    ],
+  },
+
+  philosophy: '제품은 눈에 띄기보다, 일이 잘 끝나게 해야 합니다.',
+
+  studio: {
+    heading: '스튜디오',
+    paras: [
+      '기억은 데스크톱, 웹, 클라우드와 새로운 플랫폼을 위한 소프트웨어를 만드는 독립 스튜디오입니다. 디자인과 엔지니어링을 한 흐름으로 다루며, 필요한 기능이 정확히 작동할 때까지 다듬습니다.',
+      '기능의 수보다 필요한 기능이 정확히 작동하는지를 중요하게 봅니다. 성능, 안정성, 접근성, 인터랙션은 마지막에 보태는 마감이 아니라 처음부터 설계해야 할 제품의 일부입니다.',
+      '이름은 저장 서비스를 뜻하지 않습니다. 사람에게는 다시 찾게 되는 경험을, 컴퓨터에는 모든 동작을 받치는 작업 공간을 가리킵니다. 두 의미는 쓰는 동안 방해하지 않고, 시간이 지나도 다시 선택할 만한 제품이라는 하나의 기준으로 이어집니다.',
+      '기억은 한 사람의 독립 스튜디오에서 시작했습니다. 규모를 부풀리지 않고 맡은 범위를 끝까지 책임집니다. 앞으로 제품과 협업의 범위가 넓어져도 이 기준은 바뀌지 않습니다.',
+    ],
+  },
+
+  closing: '필요한 일을 더 분명하게 만드는 제품을 찾습니다.',
+
+  contact: {
+    label: '문의',
+    heading: '함께 풀 문제가 있나요?',
+    body: '제품 협업이나 기술적인 문제, 작업에 관한 질문이라면 메일을 보내 주세요.',
+    cta: '이메일 보내기',
+  },
+
+  footer: {
+    brandLine: '기억 — 독립 소프트웨어 스튜디오',
+    desc: '데스크톱, 웹, 클라우드와 새로운 플랫폼을 위한 소프트웨어를 만듭니다.',
+    exploreLabel: '둘러보기',
+    elsewhereLabel: '연결',
+    explore: [
+      { href: '#work', label: '작업' },
+      { href: '#capabilities', label: '만드는 영역' },
+      { href: '#how-we-work', label: '일하는 방식' },
+      { href: '#studio', label: '스튜디오' },
+    ],
+    emailLabel: '이메일',
+    legalLabel: '법적 고지',
+    privacy: 'Monkey Flash 개인정보처리방침',
+    support: 'Monkey Flash 지원',
+    rights: '모든 권리 보유.',
+  },
+
+  status: {
+    available: '이용 가능',
+    inDevelopment: '개발 중',
+    experimental: '실험 단계',
+    comingSoon: '출시 예정',
+    inReview: '심사 중',
+    maintained: '유지보수 중',
+    discontinued: '제공 종료',
+    supportEnded: '지원 종료',
+    live: '운영 중',
+  },
+
+  a11y: {
+    statusPrefix: '상태:',
+    newTab: '새 탭에서 열림',
+    updated: '{date} 업데이트',
+    version: '버전 {version}',
+    requires: '{os} 이상 필요',
+  },
+
+  notFound: {
+    title: '찾으시는 페이지가 없습니다.',
+    body: '주소가 바뀌었거나 페이지가 사라졌을 수 있습니다. 홈페이지에서 다시 찾아보세요.',
+    cta: '홈으로 돌아가기',
+    metaTitle: '페이지를 찾을 수 없습니다 — 기억',
+  },
+
+  legal: {
+    privacyTitle: 'Monkey Flash 개인정보처리방침 — 기억',
+    supportTitle: 'Monkey Flash 지원 — 기억',
+    backHome: '홈으로 돌아가기',
+  },
+};
+
+/**
+ * Mirrors a copy tree's shape while letting every leaf string differ.
+ * Guarantees Korean and English stay key-for-key symmetric (§26 phase 2).
+ */
+type Structural<T> = T extends readonly (infer E)[]
+  ? Structural<E>[]
+  : T extends string
+    ? string
+    : T extends boolean
+      ? boolean
+      : { -readonly [K in keyof T]: Structural<T[K]> };
+
+export const translations = { en, ko } as const;
+
+/** Fill `{token}` placeholders in an a11y/microcopy string. */
+export const format = (template: string, values: Record<string, string>): string =>
+  template.replace(/\{(\w+)\}/g, (match, key: string) => values[key] ?? match);
