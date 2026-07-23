@@ -1,0 +1,105 @@
+---
+// Wordmark morph, carried over from the v1 design's LogoMorph:
+// the full phrase appears letter by letter, then the filler letters
+// collapse away leaving the wordmark, and the amber dot pops in.
+// KO: "기술력 억수로 좋데이!" → "기억."   EN: "WORKING MEMORY" → "MEMORY."
+interface Props {
+  lang?: 'en' | 'ko';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const parts: { c: string; drop: boolean }[] =
+  lang === 'ko'
+    ? [
+        { c: '기', drop: false },
+        ...['술', '력', ' '].map((c) => ({ c, drop: true })),
+        { c: '억', drop: false },
+        ...['수', '로', ' ', '좋', '데', '이', '!'].map((c) => ({ c, drop: true })),
+      ]
+    : [
+        ...['W', 'O', 'R', 'K', 'I', 'N', 'G', ' '].map((c) => ({ c, drop: true })),
+        ...['M', 'E', 'M', 'O', 'R', 'Y'].map((c) => ({ c, drop: false })),
+      ];
+
+const name = lang === 'ko' ? '기억' : 'MEMORY';
+
+const STEP = 0.05; // per-letter entrance stagger
+const DROP_AT = 1.6; // when the collapse starts
+
+let dropIndex = 0;
+const letters = parts.map((p, i) => ({
+  ...p,
+  ai: (i * STEP).toFixed(2),
+  di: p.drop ? (DROP_AT + dropIndex++ * 0.1).toFixed(2) : null,
+}));
+
+// the dot arrives once the collapse is mostly done
+const dotAt = (DROP_AT + dropIndex * 0.1 + 0.25).toFixed(2);
+---
+
+<span class="logo-morph" role="img" aria-label={`${name}.`}>
+  {
+    letters.map((l) =>
+      l.drop ? (
+        <span class="lg" style={`--ai:${l.ai}s;--di:${l.di}s`}>{l.c}</span>
+      ) : (
+        <span class="lk" style={`--ai:${l.ai}s`}>{l.c}</span>
+      )
+    )
+  }<span class="logo-dot ld" style={`--ai:${dotAt}s`}>.</span>
+</span>
+
+<style>
+  .logo-morph {
+    display: inline-flex;
+    align-items: baseline;
+    line-height: 1;
+    white-space: pre;
+  }
+  .logo-morph .lk,
+  .logo-morph .ld {
+    animation: logoIn 0.4s ease var(--ai) both;
+  }
+  .logo-morph .lg {
+    overflow: hidden;
+    max-width: 0.8em;
+    animation:
+      logoIn 0.4s ease var(--ai) both,
+      logoOut 0.7s ease var(--di) forwards;
+  }
+  @keyframes logoIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes logoOut {
+    0% {
+      opacity: 1;
+      max-width: 0.8em;
+    }
+    45% {
+      opacity: 0;
+      max-width: 0.8em;
+    }
+    100% {
+      opacity: 0;
+      max-width: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .logo-morph .lk,
+    .logo-morph .ld {
+      animation: none;
+      opacity: 1;
+    }
+    .logo-morph .lg {
+      display: none;
+    }
+  }
+</style>
