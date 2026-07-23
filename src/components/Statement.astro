@@ -1,0 +1,26 @@
+---
+import { content, type Lang } from '../i18n';
+const { lang = 'en' } = Astro.props as { lang?: Lang };
+const t = content[lang];
+
+const imgs = [
+  '/assets/work-monkeyflash.jpg',
+  '/assets/settings-visual.png',
+  '/assets/work-kbinc.jpg',
+  '/assets/menu-popover.png',
+];
+---
+
+<section class="statement" id="about" data-bg="#F4F4F2">
+  <h2>
+    {
+      t.statement.map((item) =>
+        typeof item === 'number' ? (
+          <span class="imk"><img src={imgs[item]} alt="" loading="lazy" /></span>
+        ) : (
+          <span class="w">{item}</span>
+        )
+      )
+    }
+  </h2>
+</section>

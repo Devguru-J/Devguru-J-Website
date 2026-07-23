@@ -1,0 +1,33 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import MenuPanel from '../../components/MenuPanel.astro';
+import Hero from '../../components/Hero.astro';
+import Services from '../../components/Services.astro';
+import Statement from '../../components/Statement.astro';
+import Work from '../../components/Work.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import VideoFeature from '../../components/VideoFeature.astro';
+import ContactFooter from '../../components/ContactFooter.astro';
+
+const lang = 'en';
+---
+
+<Layout lang={lang}>
+  <div class="ocm-underlay"></div>
+  <MenuPanel lang={lang} />
+  <div class="ocm-wrap">
+    <div class="ocm-wrap-inner">
+      <Header lang={lang} />
+      <main>
+        <Hero lang={lang} />
+        <Services lang={lang} />
+        <Statement lang={lang} />
+        <Work lang={lang} />
+        <Testimonials lang={lang} />
+        <VideoFeature lang={lang} />
+        <ContactFooter lang={lang} />
+      </main>
+    </div>
+  </div>
+</Layout>

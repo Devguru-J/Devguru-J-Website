@@ -1,0 +1,14 @@
+---
+import { content, type Lang } from '../i18n';
+const { lang = 'en' } = Astro.props as { lang?: Lang };
+const t = content[lang];
+---
+
+<section class="hero" id="top" data-bg="#C58A2D">
+  <h1 class="hero-title split-heading" data-reveal="load">{t.hero.title}</h1>
+  <div class="hero-meta">
+    <span class="micro" data-anim data-delay="300">{t.hero.metaLeft}</span>
+    <span class="tagline" data-anim data-delay="350">{t.hero.tagline}</span>
+    <span class="micro" data-anim data-delay="400">{t.hero.metaRight}</span>
+  </div>
+</section>

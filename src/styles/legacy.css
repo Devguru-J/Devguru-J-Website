@@ -1,0 +1,166 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+
+@theme {
+  --color-canvas: #fafaf8;
+  --color-surface: #ffffff;
+  --color-ink: #1a1a18;
+  --color-ink-2: #6f6f6a;
+  --color-line: #e2e2df;
+  --color-amber: #c58a2d;
+  --color-container: #eeeeec;
+  --color-container-low: #f4f4f2;
+  --color-paper: #f5f3ee;
+
+  --font-sans: 'Geist Variable', 'Pretendard Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Pretendard Variable', ui-monospace, 'SF Mono', monospace;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+  word-break: keep-all; /* Korean: never break inside a word */
+  overflow-wrap: break-word; /* …but still wrap unbreakable long tokens (URLs etc.) */
+}
+
+/* soft elevation instead of hard 1px borders */
+@utility shadow-soft {
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+}
+@utility shadow-lift {
+  box-shadow: 0 12px 32px -8px rgb(26 26 24 / 0.14);
+}
+
+::selection {
+  background-color: var(--color-amber);
+  color: #fff;
+}
+
+/* ---- type utilities matching the Stitch design system ---- */
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+@utility meta-mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  font-weight: 400;
+}
+
+@utility display-xl {
+  font-size: clamp(40px, 5.2vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+
+@utility headline-lg {
+  font-size: clamp(26px, 2.6vw, 32px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+@utility headline-sm {
+  font-size: 24px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+/* ---- motion primitives (activated only when JS is present) ---- */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.js .hero-line-inner {
+  display: block;
+  transform: translateY(110%);
+}
+
+.hero-line {
+  display: block;
+  overflow: hidden;
+}
+
+.js .hline {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+/* amber underline slide-in for text links */
+.link-slide {
+  position: relative;
+}
+.link-slide::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: var(--color-amber);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.link-slide:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* soft pulse for the availability dot */
+@keyframes dot-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(197 138 45 / 0.5);
+  }
+  60% {
+    box-shadow: 0 0 0 6px rgb(197 138 45 / 0);
+  }
+}
+.dot-pulse {
+  animation: dot-pulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+/* work image parallax frame: extra height + vertical travel only,
+   so the image never gets cropped horizontally */
+.parallax-frame {
+  overflow: hidden;
+}
+.parallax-frame img {
+  height: 112%;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal,
+  .js .hero-line-inner,
+  .js .hline {
+    opacity: 1;
+    transform: none;
+  }
+  .dot-pulse {
+    animation: none;
+  }
+  .parallax-frame img {
+    height: 100%;
+    transform: none;
+  }
+}

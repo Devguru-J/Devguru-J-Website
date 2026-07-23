@@ -1,0 +1,21 @@
+---
+import { content, type Lang } from '../i18n';
+const { lang = 'en' } = Astro.props as { lang?: Lang };
+const t = content[lang];
+
+// Placeholder reel (no studio footage yet) — swap videoSrc for real footage.
+const videoSrc = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4';
+const poster = '/assets/work-monkeyflash.jpg';
+---
+
+<section class="video-feature" data-bg="#D6A04A">
+  <div class="video-frame" data-anim>
+    <video src={videoSrc} poster={poster} muted loop playsinline autoplay preload="metadata"></video>
+    <span class="play-pill">{t.video.pill}</span>
+  </div>
+</section>
+
+<div class="lightbox" aria-hidden="true">
+  <button class="lightbox-close">Close</button>
+  <video src={videoSrc} controls playsinline></video>
+</div>

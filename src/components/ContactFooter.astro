@@ -1,0 +1,52 @@
+---
+import { content, type Lang } from '../i18n';
+const { lang = 'en' } = Astro.props as { lang?: Lang };
+const t = content[lang];
+const c = t.contact;
+---
+
+<section class="contact" id="contact" data-bg="#D6A04A">
+  <form data-anim action={`mailto:${c.email}`} method="get">
+    <div class="row2">
+      <input type="text" name="first" placeholder={c.placeholders.first} autocomplete="given-name" />
+      <input type="text" name="last" placeholder={c.placeholders.last} autocomplete="family-name" />
+    </div>
+    <div class="row2">
+      <input type="email" name="email" placeholder={c.placeholders.email} autocomplete="email" />
+      <input type="tel" name="phone" placeholder={c.placeholders.phone} autocomplete="tel" />
+    </div>
+    <div class="checks">
+      {
+        c.interests.map((it) => (
+          <label class="check">
+            <input type="checkbox" name="interest" value={it} />
+            <span class="box" />
+            {it}
+          </label>
+        ))
+      }
+    </div>
+    <button type="submit" class="btn-submit">{c.submit}</button>
+  </form>
+
+  <div class="contact-info" data-anim data-delay="150">
+    <div class="group">
+      <p class="label">{c.sayHello}</p>
+      <a class="big-link" href={`mailto:${c.email}`}>{c.email}</a>
+    </div>
+    <div class="group">
+      <p class="label">{c.getSocial}</p>
+      <div class="socials">
+        {
+          c.socials.map((s) => (
+            <a class="big-link" href={s.href} target="_blank" rel="noopener">{s.label}</a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer-mark" data-bg="#D6A04A">
+  <div class="giant split-heading">{t.footerGiant}</div>
+</footer>

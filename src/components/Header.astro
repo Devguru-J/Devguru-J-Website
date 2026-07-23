@@ -1,0 +1,17 @@
+---
+import { content, type Lang } from '../i18n';
+const { lang = 'en' } = Astro.props as { lang?: Lang };
+const t = content[lang];
+---
+
+<header class="site-header">
+  <a href="#top" class="logo">MEMORY<span class="logo-dot">.</span></a>
+  <div class="header-right">
+    <a href={t.header.langHref} class="lang-link">{t.header.langLabel}</a>
+    <a href="#contact" class="btn-pill">{t.header.cta}</a>
+    <button class="burger" aria-label="Navigation Menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>

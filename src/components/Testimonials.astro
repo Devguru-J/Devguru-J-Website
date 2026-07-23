@@ -1,0 +1,29 @@
+---
+import { content, type Lang } from '../i18n';
+const { lang = 'en' } = Astro.props as { lang?: Lang };
+const t = content[lang];
+---
+
+<section class="testimonials" data-bg="#F4F4F2">
+  <button class="t-nav prev" aria-label="Previous principle">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 5l-7 7 7 7" /></svg>
+  </button>
+  <div class="t-viewport" data-anim>
+    {
+      t.principles.map((q, i) => (
+        <figure class={`t-slide${i === 0 ? ' active' : ''}`}>
+          <span class="avatar avatar-mark" aria-hidden="true">M<i>.</i></span>
+          <blockquote>{q.text}</blockquote>
+          <figcaption class="who">
+            <div class="name">{q.name}</div>
+            <div class="role">{q.role}</div>
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+  <button class="t-nav next" aria-label="Next principle">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 5l7 7-7 7" /></svg>
+  </button>
+  <div class="t-counter"><span class="cur">1</span> / <span>{t.principles.length}</span></div>
+</section>
