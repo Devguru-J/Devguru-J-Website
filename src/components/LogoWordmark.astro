@@ -63,7 +63,9 @@ const dotAt = (DROP_AT + dropIndex * 0.1 + 0.25).toFixed(2);
   }
   .logo-morph .lg {
     overflow: hidden;
-    max-width: 0.8em;
+    /* wide enough for the widest glyph (W, full-width hangul) so
+       letters never clip before the collapse */
+    max-width: 1.25em;
     animation:
       logoIn 0.4s ease var(--ai) both,
       logoOut 0.7s ease var(--di) forwards;
@@ -81,11 +83,11 @@ const dotAt = (DROP_AT + dropIndex * 0.1 + 0.25).toFixed(2);
   @keyframes logoOut {
     0% {
       opacity: 1;
-      max-width: 0.8em;
+      max-width: 1.25em;
     }
     45% {
       opacity: 0;
-      max-width: 0.8em;
+      max-width: 1.25em;
     }
     100% {
       opacity: 0;
