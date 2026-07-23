@@ -58,7 +58,7 @@ export const translations = {
     principles: {
       heading: 'Working Principles',
       items: [
-        { title: 'Purpose before features', body: 'Start with the job the product must do. Features follow only when they make that work clearer or easier.' },
+        { title: 'Purpose before features', body: 'Start with the job the product must do. Only what makes that work clearer or easier stays.' },
         { title: 'Design and engineering together', body: 'Interface, data, performance, and accessibility are treated as decisions about the same product.' },
         { title: 'The core comes first', body: 'Get the essential path working first, then refine it with evidence from real use.' },
         { title: 'Responsibility after launch', body: 'Updates, support, and a clear end-of-life path are part of the product.' },
@@ -70,8 +70,8 @@ export const translations = {
       name: 'Memory',
       paras: [
         'Memory is a one-person independent studio designing and building software for desktop and web.',
-        'Product direction, interface design, and engineering stay in one process, keeping decisions clear from the first sketch to the working product.',
-        'Current public work includes a macOS utility and a bilingual corporate website. Future work may extend into cloud systems and new platforms when the problem calls for it.',
+        'Each product begins with a question, not a feature list: what problem is this for, and is software the right answer. From there, product direction, interface design, and engineering stay in one process, keeping decisions clear from the first sketch to the working product.',
+        'Current public work includes a macOS utility and a bilingual corporate website. More will follow under the same name — not a collection of apps, but a body of work built to last. That is what the name means.',
       ],
     },
     footer: {
@@ -152,8 +152,8 @@ export const translations = {
       name: '기억',
       paras: [
         '기억은 한 사람이 제품 설계와 개발을 직접 맡는 독립 소프트웨어 스튜디오입니다.',
-        '제품 방향, 인터페이스, 엔지니어링을 하나의 흐름으로 다뤄 첫 구상부터 실제로 작동하는 제품까지 판단의 기준을 분명하게 유지합니다.',
-        '현재 공개된 작업은 macOS 유틸리티와 한국어·영어 기업 웹사이트입니다. 앞으로는 문제에 따라 클라우드 시스템과 새로운 플랫폼까지 범위를 넓힙니다.',
+        '모든 제품은 기능 목록이 아니라 질문에서 시작합니다. 누가 어떤 불편을 겪고 있는지, 소프트웨어가 정말 맞는 답인지. 그 위에서 제품 방향, 인터페이스, 엔지니어링을 하나의 흐름으로 다뤄 첫 구상부터 완성까지 판단의 기준을 지킵니다.',
+        '지금 공개된 작업은 macOS 유틸리티와 한국어·영어 기업 웹사이트입니다. 같은 이름 아래 제품을 하나씩 더해 갑니다. 목표는 많은 앱이 아니라, 오래 남는 제품입니다. 이름이 기억인 이유입니다.',
       ],
     },
     footer: {
