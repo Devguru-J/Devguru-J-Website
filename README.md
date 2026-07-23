@@ -1,4 +1,4 @@
-# devguru-j.com
+# bymemory.dev
 
 Personal site of Devguru-J — independent software builder in Seoul.
 Showcases products (Monkey Flash for macOS) and hosts its Privacy Policy / Support pages.
@@ -25,7 +25,7 @@ Cloudflare Pages, connected to this repo:
 
 - Build command: `npm run build`
 - Output directory: `dist`
-- Production domain: `devguru-j.com`
+- Production domain: `bymemory.dev`
 
 ## Pages
 

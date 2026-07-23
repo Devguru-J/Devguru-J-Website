@@ -10,8 +10,10 @@ const { lang = 'en' } = Astro.props;
 const parts: { c: string; drop: boolean }[] =
   lang === 'ko'
     ? [
-        ...['사', '람', '의', ' '].map((c) => ({ c, drop: true })),
-        ...['기', '억'].map((c) => ({ c, drop: false })),
+        { c: '기', drop: false },
+        ...['술', '력', ' '].map((c) => ({ c, drop: true })),
+        { c: '억', drop: false },
+        ...['수', '로', ' ', '좋', '데', '이', '!'].map((c) => ({ c, drop: true })),
       ]
     : [
         ...['W', 'o', 'r', 'k', 'i', 'n', 'g', ' '].map((c) => ({ c, drop: true })),
