@@ -12,6 +12,11 @@ node_modules/
 reference/
 stitch-prompt.md
 memory_site_export/
+salient_dirty_rat_complete_edition/
+.superpowers/
+
+# playwright artifacts
+.playwright-mcp/
 
 # wrangler local state
 .wrangler/
