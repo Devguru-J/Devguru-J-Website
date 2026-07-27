@@ -1,0 +1,59 @@
+---
+import { BRAND, INTERLUDE } from '../../content/brand';
+import type { Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const [first, second] = INTERLUDE.lines[locale];
+---
+
+<section class="interlude scene scene--ink" data-surface="ink">
+  <div class="frame grid interlude__inner">
+    <p class="c-1-3 meta meta--muted interlude__label">{INTERLUDE.label[locale]}</p>
+    <p class="c-1-10 h2 interlude__line">{first}</p>
+    <p class="c-3-12 h2 interlude__line interlude__line--second">{second}</p>
+    <p class="c-9-12 serif interlude__signature">{BRAND.line}</p>
+  </div>
+</section>
+
+<style>
+  /* One background inversion is the whole effect. No card, icon or metric. */
+  .interlude {
+    min-height: 72dvh;
+    display: flex;
+    align-items: center;
+    padding-block: var(--gap-inner);
+  }
+
+  .interlude__inner {
+    width: 100%;
+    row-gap: clamp(18px, 2vw, 34px);
+  }
+
+  .interlude__label {
+    margin-bottom: clamp(24px, 4vw, 56px);
+  }
+
+  .interlude__line--second {
+    color: var(--fg-muted);
+  }
+
+  .interlude__signature {
+    margin-top: clamp(40px, 6vw, 96px);
+    justify-self: end;
+    text-align: right;
+    font-size: clamp(18px, 1.6vw, 24px);
+    color: var(--fg-muted);
+  }
+
+  @media (max-width: 767px) {
+    .interlude__signature {
+      justify-self: start;
+      text-align: left;
+      margin-top: 40px;
+    }
+  }
+</style>

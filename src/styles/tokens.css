@@ -1,0 +1,142 @@
+/* ==========================================================================
+   Quiet Tuxedo — brand tokens
+   Single source of truth for palette, type scale, frame, space, motion.
+   Values are fixed by reference/remodelling/memory-branding-for-real/
+   04-visual-system.md and 06-motion-parity-spec.md. Do not retune locally.
+   ========================================================================== */
+
+:root {
+  /* --- Surface -------------------------------------------------------- */
+  --ink-950: #090909;
+  --ink-900: #151515;
+  --paper-100: #f3f3f0;
+  --paper-50: #fcfcfa;
+  --graphite-600: #686864;
+  --silver-300: #b8b8b2;
+  --line-dark: rgba(9, 9, 9, 0.16);
+  --line-light: rgba(252, 252, 250, 0.18);
+
+  /* Semantic surface pair. Overridden by [data-surface] below. */
+  --surface: var(--paper-100);
+  --surface-raised: var(--paper-50);
+  --fg: var(--ink-950);
+  --fg-muted: var(--graphite-600);
+  --hairline: var(--line-dark);
+  --mat: rgba(9, 9, 9, 0.05);
+
+  /* --- Type families -------------------------------------------------- */
+  --font-kr: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-latin: 'Instrument Sans Variable', 'Instrument Sans', 'Geist Variable',
+    var(--font-kr);
+  --font-serif: 'Instrument Serif', 'Times New Roman', serif;
+  --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, SFMono-Regular,
+    monospace;
+
+  /* Body stack: Latin metrics first, Pretendard picks up Hangul. */
+  --font-body: var(--font-latin);
+
+  /* --- Type scale (04 §5) --------------------------------------------- */
+  --t-brand-line: clamp(64px, 9.2vw, 156px);
+  --t-hero-kr: clamp(46px, 6.4vw, 104px);
+  --t-section: clamp(44px, 6vw, 92px);
+  --t-project: clamp(42px, 5.4vw, 86px);
+  --t-h2: clamp(32px, 3.8vw, 58px);
+  --t-h3: clamp(22px, 2vw, 30px);
+  --t-lead: clamp(18px, 1.55vw, 24px);
+  --t-body: clamp(16px, 1.05vw, 18px);
+  --t-meta: clamp(11px, 0.85vw, 13px);
+
+  --track-latin-display: -0.045em;
+  --track-kr-display: -0.028em;
+  --lh-kr-display: 1.04;
+  --lh-latin-display: 0.92;
+  --lh-body: 1.72;
+
+  /* --- Frame (04 §6) --------------------------------------------------- */
+  --frame-visual: 1800px;
+  --frame-content: 1480px;
+  --reading: 64ch;
+  --lead-width: 46ch;
+  --pad-x: clamp(20px, 4.4vw, 84px);
+  --gutter: clamp(16px, 1.6vw, 28px);
+  --cols: 12;
+
+  /* --- Vertical rhythm (04 §7) ---------------------------------------- */
+  --gap-section: clamp(128px, 15vw, 260px);
+  --gap-inner: clamp(56px, 7vw, 120px);
+  --gap-project: clamp(112px, 13vw, 224px);
+  --gap-lg: 48px;
+  --gap-md: 32px;
+  --gap-sm: 24px;
+
+  --header-h: 84px;
+  --hero-top: calc(var(--header-h) + clamp(80px, 9vw, 152px));
+
+  /* --- Motion (06 §3) — Salient parity tokens -------------------------- */
+  --hero-bg-duration: 2500ms;
+  --hero-bg-ease: cubic-bezier(0.1, 0.55, 0.4, 1);
+  --hero-word-duration: 400ms;
+  --hero-word-stagger: 370ms;
+  --hero-support-duration: 650ms;
+
+  --asset-duration: 2300ms;
+  --asset-ease: cubic-bezier(0.2, 0.65, 0.3, 1);
+  --asset-inner-opacity: 250ms;
+
+  --menu-open-transform: 850ms;
+  --menu-open-transform-ease: cubic-bezier(0.2, 0.75, 0.5, 1);
+  --menu-open-opacity: 500ms;
+  --menu-bg-open: 300ms;
+  --menu-first-delay: 160ms;
+  --menu-stagger: 20ms;
+  --menu-close-background: 550ms;
+  --menu-close-content: 250ms;
+  --menu-close-reset: 450ms;
+
+  --preview-duration: 800ms;
+  --preview-exit: 300ms;
+  --sticky-fade: 200ms;
+
+  --route-wipe: 1200ms;
+  --route-ease: cubic-bezier(0.45, 0, 0.35, 1);
+
+  /* Memory house micro-motion — never mixed into a parity effect. */
+  --ui-fast: 220ms;
+  --ui-medium: 450ms;
+  --ui-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* --- Layers ---------------------------------------------------------- */
+  --z-grain: 1;
+  --z-preview: 40;
+  --z-header: 60;
+  --z-menu: 80;
+  --z-skip: 100;
+}
+
+/* Surface inversion. One attribute flips every semantic colour. */
+[data-surface='ink'] {
+  --surface: var(--ink-950);
+  --surface-raised: var(--ink-900);
+  --fg: var(--paper-50);
+  --fg-muted: var(--silver-300);
+  --hairline: var(--line-light);
+  --mat: rgba(252, 252, 250, 0.05);
+}
+
+[data-surface='paper'] {
+  --surface: var(--paper-100);
+  --surface-raised: var(--paper-50);
+  --fg: var(--ink-950);
+  --fg-muted: var(--graphite-600);
+  --hairline: var(--line-dark);
+  --mat: rgba(9, 9, 9, 0.05);
+}
+
+@media (max-width: 999px) {
+  :root {
+    --header-h: 72px;
+    --gap-section: clamp(96px, 18vw, 136px);
+    --gap-project: clamp(88px, 16vw, 136px);
+  }
+}

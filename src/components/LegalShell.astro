@@ -1,12 +1,25 @@
 ---
-import Base from '../layouts/Base.astro';
-import LogoMorph from './LogoMorph.astro';
+/**
+ * Shell for the Monkey Flash legal pages.
+ *
+ * Only this shell is restyled. `privacy.astro` and `support.astro` — their body
+ * copy, their effective dates and their own <style is:global> blocks — stay
+ * byte-for-byte untouched. Those blocks reference three custom properties
+ * (--color-ink, --color-ink-2, --color-amber) and --font-mono, which are
+ * aliased onto the new token system below so the documents keep rendering
+ * without a single edit to their content.
+ *
+ * These are bilingual single routes: the URL never changes, the visible section
+ * and html[lang] do (03 §8).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT } from '../content/brand';
 
 interface Props {
   title: string;
   description: string;
   path: string;
-  /** mono overline shown above the content, e.g. "MONKEY FLASH — PRIVACY POLICY" */
+  /** Mono overline above the content, e.g. "MONKEY FLASH — PRIVACY POLICY". */
   overline: string;
 }
 
@@ -14,58 +27,201 @@ const { title, description, path, overline } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
-<Base title={title} description={description} path={path}>
-  <nav class="sticky top-0 z-50 border-b border-line bg-canvas/80 backdrop-blur-md">
-    <div class="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-6 md:px-12">
-      <a href="/" class="text-[24px] font-bold text-ink"><LogoMorph /></a>
-      <div class="flex items-center gap-6">
-        <div class="flex gap-1 bg-container-low p-1" role="group" aria-label="Language">
-          <button class="label-mono px-3 py-1.5 transition-colors" data-lang="en">EN</button>
-          <button class="label-mono px-3 py-1.5 transition-colors" data-lang="ko">KO</button>
+<BaseLayout
+  locale="en"
+  path={path}
+  title={title}
+  description={description}
+  chrome={false}
+  singleRoute
+>
+  <div class="legal-shell scene" data-surface="paper">
+    <nav class="legal-nav">
+      <div class="frame legal-nav__inner">
+        <a class="legal-brand" href="/">Memory</a>
+        <div class="legal-nav__end">
+          <div class="legal-lang" role="group" aria-label="Language">
+            <button type="button" class="meta" data-lang="en">EN</button>
+            <span class="legal-lang__sep" aria-hidden="true">/</span>
+            <button type="button" class="meta" data-lang="ko">KO</button>
+          </div>
+          <a class="meta legal-home" href="/">← Home</a>
         </div>
-        <a href="/" class="label-mono link-slide hidden pb-1 text-ink-2 sm:inline">← HOME</a>
       </div>
+    </nav>
+
+    <div class="frame legal-main">
+      <p class="meta meta--muted legal-overline">{overline}</p>
+      <slot />
     </div>
-  </nav>
 
-  <main class="mx-auto max-w-[760px] px-5 pt-20 pb-32 md:px-0">
-    <span class="label-mono mb-10 block uppercase tracking-widest text-amber">{overline}</span>
-    <slot />
-  </main>
-
-  <footer class="border-t border-line">
-    <div
-      class="mx-auto flex max-w-[1280px] flex-col items-center justify-between gap-4 px-5 py-8 md:flex-row md:px-12"
-    >
-      <span class="meta-mono uppercase text-ink-2">© {year} MEMORY / MONKEY FLASH</span>
-      <div class="flex gap-8">
-        <a href="/MonkeyFlash/privacy" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Privacy</a>
-        <a href="/MonkeyFlash/support" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Support</a>
-        <a href="/" class="meta-mono uppercase text-ink-2 transition-colors hover:text-ink">Home</a>
+    <footer class="legal-foot">
+      <div class="frame legal-foot__inner">
+        <span class="meta meta--muted">© {year} Memory / Monkey Flash</span>
+        <div class="legal-foot__links">
+          <a class="meta" href="/MonkeyFlash/privacy/">Privacy</a>
+          <a class="meta" href="/MonkeyFlash/support/">Support</a>
+          <a class="meta" href={`mailto:${CONTACT.email}`}>Email</a>
+        </div>
       </div>
-    </div>
-  </footer>
+    </footer>
+  </div>
+</BaseLayout>
 
-  <style>
-    [data-lang].active {
-      background: var(--color-ink);
-      color: var(--color-canvas);
+<style is:global>
+  /* Compatibility aliases for the untouched legal page style blocks. */
+  :root {
+    --color-ink: var(--ink-950);
+    --color-ink-2: var(--graphite-600);
+    --color-amber: var(--ink-950);
+  }
+
+  .legal-shell {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .legal-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--paper-100) 92%, transparent);
+    backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .legal-nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: var(--header-h);
+  }
+
+  .legal-brand {
+    font-family: var(--font-serif);
+    font-size: 25px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .legal-nav__end {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .legal-lang {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .legal-lang button {
+    min-height: 44px;
+    opacity: 0.5;
+    transition: opacity var(--ui-fast) var(--ui-ease);
+  }
+
+  .legal-lang button:hover,
+  .legal-lang button:focus-visible {
+    opacity: 1;
+  }
+
+  .legal-lang button.active {
+    opacity: 1;
+  }
+
+  .legal-lang__sep {
+    opacity: 0.3;
+    font-family: var(--font-mono);
+    font-size: var(--t-meta);
+  }
+
+  .legal-home {
+    display: none;
+    align-items: center;
+    min-height: 44px;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--ui-fast) var(--ui-ease);
+  }
+
+  .legal-home:hover,
+  .legal-home:focus-visible {
+    border-bottom-color: currentColor;
+  }
+
+  .legal-main {
+    flex: 1;
+    /* Reading width, not the full content frame. */
+    max-width: 76ch;
+    margin-inline: auto;
+    padding-top: clamp(56px, 8vw, 104px);
+    padding-bottom: clamp(96px, 12vw, 160px);
+  }
+
+  .legal-overline {
+    margin-bottom: clamp(36px, 5vw, 64px);
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .legal-foot {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .legal-foot__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-block: 32px;
+  }
+
+  .legal-foot__links {
+    display: flex;
+    gap: 28px;
+  }
+
+  .legal-foot__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--ui-fast) var(--ui-ease);
+  }
+
+  .legal-foot__links a:hover,
+  .legal-foot__links a:focus-visible {
+    border-bottom-color: currentColor;
+  }
+
+  @media (min-width: 640px) {
+    .legal-home {
+      display: inline-flex;
     }
-  </style>
+  }
+</style>
 
-  <script>
-    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-lang]');
-    const sections = document.querySelectorAll<HTMLElement>('[data-section]');
-    const setLang = (lang: string) => {
-      buttons.forEach((b) => b.classList.toggle('active', b.dataset.lang === lang));
-      sections.forEach((s) => (s.hidden = s.dataset.section !== lang));
-      document.documentElement.lang = lang;
-      localStorage.setItem('devguru-lang', lang);
-    };
-    buttons.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang!)));
-    // priority: explicit ?lang= param (used for per-locale App Store URLs) > saved choice > EN
-    const param = new URLSearchParams(location.search).get('lang');
-    const initial = param === 'ko' || param === 'en' ? param : (localStorage.getItem('devguru-lang') ?? 'en');
-    setLang(initial);
-  </script>
-</Base>
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-lang]');
+  const sections = document.querySelectorAll<HTMLElement>('[data-section]');
+  const setLang = (lang: string) => {
+    buttons.forEach((b) => b.classList.toggle('active', b.dataset.lang === lang));
+    sections.forEach((s) => (s.hidden = s.dataset.section !== lang));
+    document.documentElement.lang = lang;
+    localStorage.setItem('devguru-lang', lang);
+    document.cookie = `lang=${lang}; path=/; max-age=31536000; samesite=lax`;
+  };
+  buttons.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang!)));
+  // Priority: explicit ?lang= param (used for per-locale App Store URLs) >
+  // saved choice > English, matching the documents' own source order.
+  const param = new URLSearchParams(location.search).get('lang');
+  const initial =
+    param === 'ko' || param === 'en'
+      ? param
+      : (localStorage.getItem('devguru-lang') ?? 'en');
+  setLang(initial);
+</script>

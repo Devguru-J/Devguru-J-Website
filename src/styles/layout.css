@@ -1,0 +1,273 @@
+/* ==========================================================================
+   Layout primitives — the cut
+   A 12-column desktop grid, 8 on tablet, one column below 768px. Every
+   asymmetric composition starts from a named column span, never a nudge.
+   ========================================================================== */
+
+.frame {
+  width: 100%;
+  max-width: var(--frame-content);
+  margin-inline: auto;
+  padding-inline: var(--pad-x);
+}
+
+.frame--visual {
+  max-width: var(--frame-visual);
+}
+
+.frame--bleed {
+  max-width: none;
+  padding-inline: var(--pad-x);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+/* Column spans. `c-a-b` = starts at column a, ends before column b+1. */
+.c-1-3 { grid-column: 1 / 4; }
+.c-1-4 { grid-column: 1 / 5; }
+.c-1-5 { grid-column: 1 / 6; }
+.c-1-6 { grid-column: 1 / 7; }
+.c-1-7 { grid-column: 1 / 8; }
+.c-1-9 { grid-column: 1 / 10; }
+.c-1-10 { grid-column: 1 / 11; }
+.c-1-11 { grid-column: 1 / 12; }
+.c-1-12 { grid-column: 1 / 13; }
+.c-2-8 { grid-column: 2 / 9; }
+.c-2-9 { grid-column: 2 / 10; }
+.c-2-11 { grid-column: 2 / 12; }
+.c-2-7 { grid-column: 2 / 8; }
+.c-3-7 { grid-column: 3 / 8; }
+.c-3-12 { grid-column: 3 / 13; }
+.c-4-8 { grid-column: 4 / 9; }
+.c-4-9 { grid-column: 4 / 10; }
+.c-4-12 { grid-column: 4 / 13; }
+.c-8-12 { grid-column: 8 / 13; }
+.c-5-12 { grid-column: 5 / 13; }
+.c-6-8 { grid-column: 6 / 9; }
+.c-7-12 { grid-column: 7 / 13; }
+.c-9-10 { grid-column: 9 / 11; }
+.c-9-12 { grid-column: 9 / 13; }
+.c-10-12 { grid-column: 10 / 13; }
+.c-11-12 { grid-column: 11 / 13; }
+
+.section {
+  padding-block: var(--gap-section);
+}
+
+.section--tight {
+  padding-block: var(--gap-inner);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.stack-sm { gap: var(--gap-sm); }
+.stack-md { gap: var(--gap-md); }
+.stack-lg { gap: var(--gap-lg); }
+.stack-xl { gap: var(--gap-inner); }
+
+.hairline {
+  border: 0;
+  border-top: 1px solid var(--hairline);
+  margin: 0;
+}
+
+/* --- Media --------------------------------------------------------------- */
+
+.media {
+  position: relative;
+  overflow: hidden;
+  background: var(--mat);
+}
+
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.media--16-10 { aspect-ratio: 16 / 10; }
+.media--16-9 { aspect-ratio: 16 / 9; }
+.media--4-5 { aspect-ratio: 4 / 5; }
+.media--1-1 { aspect-ratio: 1 / 1; }
+
+/* Muted previews, true-colour case media (D04). */
+.media--muted img {
+  filter: grayscale(1) contrast(1.02);
+  transition: filter var(--ui-medium) var(--ui-ease);
+}
+
+.media--muted:hover img,
+a:hover .media--muted img,
+a:focus-visible .media--muted img {
+  filter: grayscale(0.25) contrast(1);
+}
+
+.media--contain {
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 3vw, 44px);
+  background: var(--mat);
+}
+
+.media--contain img {
+  height: auto;
+  object-fit: contain;
+  max-height: 100%;
+}
+
+.caption {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--hairline);
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  letter-spacing: 0.06em;
+  color: var(--fg-muted);
+  max-width: 46ch;
+}
+
+/* --- CTA (04 §10) -------------------------------------------------------- */
+
+.cta {
+  --cta-fg: var(--fg);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  color: var(--cta-fg);
+  font-family: var(--font-latin);
+  font-size: clamp(15px, 1.05vw, 17px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition: transform var(--ui-fast) var(--ui-ease);
+}
+
+html[lang='ko'] .cta {
+  font-family: var(--font-kr);
+}
+
+.cta__label {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+.cta__label span {
+  display: block;
+  transition: transform var(--ui-medium) var(--ui-ease);
+}
+
+.cta__label span:last-child {
+  position: absolute;
+  inset: 0;
+  transform: translateY(105%);
+}
+
+.cta:hover .cta__label span:first-child,
+.cta:focus-visible .cta__label span:first-child {
+  transform: translateY(-105%);
+}
+
+.cta:hover .cta__label span:last-child,
+.cta:focus-visible .cta__label span:last-child {
+  transform: translateY(0);
+}
+
+.cta__arrow {
+  flex: none;
+  width: 16px;
+  transition: transform var(--ui-medium) var(--ui-ease);
+}
+
+.cta:hover .cta__arrow,
+.cta:focus-visible .cta__arrow {
+  transform: translateX(4px);
+}
+
+.cta:active {
+  transform: scale(0.98);
+}
+
+/* Underline system — the only text-link emphasis on the site. */
+.cta--line .cta__label::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.35;
+  transition: opacity var(--ui-fast) var(--ui-ease);
+}
+
+.cta--line:hover .cta__label::after,
+.cta--line:focus-visible .cta__label::after {
+  opacity: 1;
+}
+
+/* Inverted pill — reserved for the single primary action per scene. */
+.cta--pill {
+  padding: 0 28px;
+  border-radius: 999px;
+  background: var(--fg);
+  color: var(--surface);
+  --cta-fg: var(--surface);
+}
+
+.cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 28px;
+}
+
+/* --- Responsive recomposition -------------------------------------------- */
+
+@media (max-width: 999px) {
+  :root {
+    --cols: 8;
+  }
+
+  .c-1-3, .c-1-4 { grid-column: 1 / 4; }
+  .c-1-5, .c-1-6, .c-1-7 { grid-column: 1 / 6; }
+  .c-1-9, .c-1-10, .c-1-11, .c-1-12 { grid-column: 1 / 9; }
+  .c-2-7, .c-2-8, .c-2-9, .c-2-11 { grid-column: 1 / 9; }
+  .c-3-7 { grid-column: 1 / 6; }
+  .c-3-12, .c-5-12, .c-7-12 { grid-column: 1 / 9; }
+  .c-4-8, .c-4-9, .c-4-12 { grid-column: 1 / 9; }
+  .c-8-12 { grid-column: 1 / 9; }
+  .c-9-12, .c-10-12 { grid-column: 5 / 9; }
+  .c-6-8 { grid-column: 1 / 4; }
+  .c-9-10 { grid-column: 4 / 7; }
+  .c-11-12 { grid-column: 7 / 9; }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --cols: 1;
+  }
+
+  .grid > * {
+    grid-column: 1 / -1 !important;
+  }
+
+  .cta-group .cta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .cta--pill {
+    padding: 14px 24px;
+  }
+}

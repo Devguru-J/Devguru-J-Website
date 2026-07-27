@@ -1,0 +1,227 @@
+---
+import { BRAND, CONTACT, UI } from '../../content/brand';
+import { PRIMARY_NAV } from '../../content/navigation';
+import { alternatePath, localePath, type Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  path: string;
+}
+
+const { locale, path } = Astro.props;
+
+const href = (item: (typeof PRIMARY_NAV)[number]) =>
+  item.anchor
+    ? `${localePath(locale, item.path)}#${item.anchor}`
+    : localePath(locale, item.path);
+---
+
+<div
+  class="menu"
+  id="site-menu"
+  role="dialog"
+  aria-modal="true"
+  aria-label={UI.menu[locale]}
+  data-menu
+  data-menu-state="closed"
+>
+  <div class="menu__backdrop" data-menu-close></div>
+
+  <div class="menu__left">
+    <ul class="menu__links">
+      {
+        PRIMARY_NAV.map((item) => (
+          <li class="menu__link-item">
+            <a class="menu__link" href={href(item)}>
+              {item.label[locale]}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="menu__right">
+    <div class="menu__aside-item">
+      <p class="meta menu__label">{BRAND.wordmark}</p>
+      <p class="menu__descriptor">{BRAND.descriptor[locale]}</p>
+    </div>
+
+    <div class="menu__aside-item">
+      <p class="meta menu__label">{UI.languageGroup[locale]}</p>
+      <p class="menu__aside-links">
+        <a href={localePath('ko', path)} data-lang-set="ko">한국어</a>
+        <span aria-hidden="true">/</span>
+        <a href={localePath('en', path)} data-lang-set="en">English</a>
+      </p>
+    </div>
+
+    <div class="menu__aside-item">
+      <p class="meta menu__label">{UI.elsewhere[locale]}</p>
+      <p class="menu__aside-links menu__aside-links--stack">
+        <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+        <a href={CONTACT.github} target="_blank" rel="noopener">GitHub</a>
+        <a href={CONTACT.appStore} target="_blank" rel="noopener">App Store</a>
+      </p>
+    </div>
+  </div>
+
+  <button class="menu__close" type="button" data-menu-close>
+    <span class="meta">{UI.close[locale]}</span>
+    <span class="menu__cross" aria-hidden="true"></span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('#site-menu [data-lang-set]').forEach((el) => {
+    el.addEventListener('click', () => {
+      document.cookie = `lang=${el.dataset.langSet}; path=/; max-age=31536000; samesite=lax`;
+    });
+  });
+</script>
+
+<style>
+  /* Layout only. Every timing value for this overlay lives in motion.css so
+     the Salient choreography has a single owner. */
+  .menu {
+    color: var(--paper-50);
+    color-scheme: dark;
+  }
+
+  .menu__left,
+  .menu__right {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: calc(var(--header-h) + 40px) var(--pad-x) 48px;
+  }
+
+  .menu__left {
+    justify-content: center;
+  }
+
+  .menu__right {
+    justify-content: flex-end;
+    gap: 40px;
+    border-left: 1px solid var(--line-light);
+  }
+
+  .menu__links {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(4px, 1vw, 12px);
+  }
+
+  .menu__link {
+    display: inline-block;
+    padding: 6px 0;
+    font-family: var(--font-latin);
+    font-size: clamp(38px, 7vw, 76px);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.045em;
+    opacity: 0.82;
+    transition: opacity var(--ui-fast) var(--ui-ease);
+  }
+
+  :global(html[lang='ko']) .menu__link {
+    font-family: var(--font-kr);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .menu__link:hover,
+  .menu__link:focus-visible {
+    opacity: 1;
+  }
+
+  .menu__label {
+    color: var(--silver-300);
+    margin-bottom: 10px;
+  }
+
+  .menu__descriptor {
+    font-size: 17px;
+  }
+
+  .menu__aside-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 16px;
+  }
+
+  .menu__aside-links--stack {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .menu__aside-links a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--ui-fast) var(--ui-ease);
+  }
+
+  .menu__aside-links a:hover,
+  .menu__aside-links a:focus-visible {
+    border-bottom-color: currentColor;
+  }
+
+  .menu__close {
+    position: absolute;
+    top: 0;
+    right: var(--pad-x);
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .menu__cross {
+    position: relative;
+    width: 16px;
+    height: 16px;
+  }
+
+  .menu__cross::before,
+  .menu__cross::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .menu__cross::before {
+    transform: rotate(45deg);
+  }
+
+  .menu__cross::after {
+    transform: rotate(-45deg);
+  }
+
+  /* Below the split's minimum comfortable width it becomes one vertical flow
+     rather than two cramped columns. */
+  @media (max-width: 719px) {
+    .menu {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr auto;
+      overflow-y: auto;
+    }
+
+    .menu__right {
+      border-left: 0;
+      border-top: 1px solid var(--line-light);
+      gap: 28px;
+      padding-block: 32px;
+    }
+
+    .menu__left {
+      padding-bottom: 24px;
+    }
+  }
+</style>

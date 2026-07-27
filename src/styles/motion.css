@@ -1,0 +1,325 @@
+/* ==========================================================================
+   Motion — Salient 18.2.1 parity layer
+   Every duration, delay, offset and easing below is transcribed from the
+   theme source as catalogued in 06-motion-parity-spec.md. House micro-motion
+   (CTA label swap) lives in layout.css and is never mixed in here.
+   ========================================================================== */
+
+/* --- A. Page-header hero (06 §4) ---------------------------------------- */
+
+/* Hidden states apply only once the controller has flagged the document, so
+   content is fully visible when JavaScript never runs. */
+.js-motion .hero[data-hero-state='primed'] .hero-word > span,
+.js-motion .hero[data-hero-state='entering'] .hero-word > span {
+  will-change: transform;
+}
+
+.js-motion .hero-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Serif descenders and the Hangul optical box need headroom inside the mask. */
+  padding-block: 0.12em;
+  margin-block: -0.12em;
+}
+
+.js-motion .hero-word > span {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform var(--hero-word-duration) cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.js-motion .hero[data-hero-state='entering'] .hero-word > span,
+.js-motion .hero[data-hero-state='complete'] .hero-word > span {
+  transform: translateY(0);
+}
+
+.js-motion .hero-support {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity var(--hero-support-duration) ease,
+    transform var(--hero-support-duration) ease;
+}
+
+.js-motion .hero[data-hero-state='entering'] .hero-support,
+.js-motion .hero[data-hero-state='complete'] .hero-support {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Background/media plane settle: scale 1.2 → 1 over 2500ms. */
+.js-motion .hero-plane__inner {
+  transform: scale(1.2);
+  transition: transform var(--hero-bg-duration) var(--hero-bg-ease);
+}
+
+.js-motion .hero[data-hero-state='entering'] .hero-plane__inner,
+.js-motion .hero[data-hero-state='complete'] .hero-plane__inner {
+  transform: scale(1);
+}
+
+/* --- B. Asset reveal (06 §7) -------------------------------------------- */
+
+/* Source structure and the source's own spelling are preserved so the parity
+   manifest maps 1:1 onto Salient's `ro-reveal-from-bottom`. */
+.img-with-aniamtion-wrap {
+  overflow: hidden;
+}
+
+.img-with-aniamtion-wrap .inner {
+  display: block;
+}
+
+.js-motion .img-with-aniamtion-wrap[data-animation='ro-reveal-from-bottom'][data-reveal='primed'] {
+  will-change: transform;
+}
+
+.js-motion .img-with-aniamtion-wrap[data-animation='ro-reveal-from-bottom'][data-reveal='primed'] > .inner,
+.js-motion .img-with-aniamtion-wrap[data-animation='ro-reveal-from-bottom'][data-reveal='entering'] > .inner {
+  transition:
+    transform var(--asset-duration) var(--asset-ease),
+    opacity var(--asset-inner-opacity) ease;
+}
+
+.js-motion .img-with-aniamtion-wrap[data-animation='ro-reveal-from-bottom'][data-reveal='primed'] {
+  transform: translate3d(0, 250px, 0);
+  transition: transform var(--asset-duration) var(--asset-ease);
+}
+
+.js-motion .img-with-aniamtion-wrap[data-animation='ro-reveal-from-bottom'][data-reveal='primed'] > .inner {
+  transform: rotate(25deg);
+  opacity: 0;
+}
+
+.js-motion .img-with-aniamtion-wrap[data-animation='ro-reveal-from-bottom'][data-reveal='primed'] .hover-wrap-inner img {
+  transform: rotate(-25deg);
+  transition: transform var(--asset-duration) var(--asset-ease);
+}
+
+.js-motion .img-with-aniamtion-wrap[data-animation='ro-reveal-from-bottom'][data-reveal='entering'] {
+  transform: translate3d(0, 0, 0);
+  transition: transform var(--asset-duration) var(--asset-ease);
+}
+
+.js-motion .img-with-aniamtion-wrap[data-animation='ro-reveal-from-bottom'][data-reveal='entering'] > .inner {
+  transform: rotate(0deg);
+  opacity: 1;
+}
+
+.js-motion .img-with-aniamtion-wrap[data-animation='ro-reveal-from-bottom'][data-reveal='entering'] .hover-wrap-inner img {
+  transform: rotate(0deg);
+  transition: transform var(--asset-duration) var(--asset-ease);
+}
+
+/* --- C. Fullscreen split menu (06 §8) ----------------------------------- */
+
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.menu[data-menu-state='open'],
+.menu[data-menu-state='closing'] {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.menu__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--ink-950);
+  opacity: 0;
+  transition: opacity var(--menu-close-background) ease;
+}
+
+.menu[data-menu-state='open'] .menu__backdrop {
+  opacity: 1;
+  transition: opacity var(--menu-bg-open) ease;
+}
+
+.menu__link-item,
+.menu__aside-item {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.menu__aside-item {
+  transform: translateY(35px);
+}
+
+.menu[data-menu-state='open'] .menu__link-item,
+.menu[data-menu-state='open'] .menu__aside-item {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--menu-open-opacity) ease,
+    transform var(--menu-open-transform) var(--menu-open-transform-ease);
+}
+
+/* Closing fades content only; the offset is restored later with a 10ms
+   transition so the exit never replays the open stagger. */
+.menu[data-menu-state='closing'] .menu__link-item,
+.menu[data-menu-state='closing'] .menu__aside-item {
+  opacity: 0;
+  transform: translateY(0);
+  transition: opacity var(--menu-close-content) ease;
+}
+
+.menu[data-menu-state='closing'][data-menu-reset='true'] .menu__link-item,
+.menu[data-menu-state='closing'][data-menu-reset='true'] .menu__aside-item {
+  transition: transform 10ms linear;
+  transform: translateY(40px);
+}
+
+.menu[data-menu-state='closing'][data-menu-reset='true'] .menu__aside-item {
+  transform: translateY(35px);
+}
+
+/* --- D. Project pointer-follow preview (06 §5) -------------------------- */
+
+.follow-preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 250px;
+  z-index: var(--z-preview);
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.3);
+  transition:
+    transform var(--preview-exit) ease,
+    opacity var(--preview-exit) ease;
+}
+
+.follow-preview__inner {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.8);
+  transition: transform var(--preview-exit) ease;
+}
+
+.follow-preview[data-preview-state='entering'],
+.follow-preview[data-preview-state='active'] {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    transform var(--preview-duration) ease,
+    opacity var(--preview-duration) ease;
+}
+
+.follow-preview[data-preview-state='entering'] .follow-preview__inner,
+.follow-preview[data-preview-state='active'] .follow-preview__inner {
+  transform: scale(1);
+  transition: transform var(--preview-duration) ease;
+}
+
+.follow-preview__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.follow-preview__img[data-active='true'] {
+  opacity: 1;
+}
+
+/* --- E. Sticky media crossfade (06 §6) ---------------------------------- */
+
+.sticky-media__item {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  /* Outgoing waits 100ms after the class commit before its 200ms fade. */
+  transition: opacity var(--sticky-fade) ease 100ms;
+}
+
+.sticky-media__item[data-active='true'] {
+  opacity: 1;
+  transition: opacity var(--sticky-fade) ease 0ms;
+}
+
+/* --- F. Route wipe (06 §9) ---------------------------------------------- */
+
+@property --salient-view-transition-gradient-wipe-progress {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@media (min-width: 1000px) {
+  html[data-route-wipe='on'] {
+    view-transition-name: none;
+  }
+
+  @keyframes salient-gradient-wipe {
+    from {
+      --salient-view-transition-gradient-wipe-progress: 0;
+    }
+    to {
+      --salient-view-transition-gradient-wipe-progress: 1;
+    }
+  }
+
+  html[data-route-wipe='on']::view-transition-old(root) {
+    animation: none;
+    opacity: 1;
+    z-index: 0;
+  }
+
+  html[data-route-wipe='on']::view-transition-new(root) {
+    animation: salient-gradient-wipe var(--route-wipe) var(--route-ease) forwards;
+    opacity: 1;
+    position: relative;
+    z-index: 1000;
+    mask-image: linear-gradient(
+      270deg,
+      #000 calc(-70% + 170% * var(--salient-view-transition-gradient-wipe-progress)),
+      transparent calc(170% * var(--salient-view-transition-gradient-wipe-progress))
+    );
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+  }
+}
+
+/* --- Reduced motion ------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  /* Content is exposed complete on first paint — nothing stays hidden. */
+  .js-motion .hero-word > span,
+  .js-motion .hero-support,
+  .js-motion .hero-plane__inner {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .js-motion .img-with-aniamtion-wrap[data-animation='ro-reveal-from-bottom'],
+  .js-motion .img-with-aniamtion-wrap[data-animation='ro-reveal-from-bottom'] > .inner,
+  .js-motion .img-with-aniamtion-wrap[data-animation='ro-reveal-from-bottom'] .hover-wrap-inner img {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .sticky-media__item {
+    transition: none;
+  }
+}

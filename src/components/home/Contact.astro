@@ -1,0 +1,107 @@
+---
+import { CONTACT, CONTACT_SCENE } from '../../content/brand';
+import type { Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<section
+  class="contact scene scene--ink"
+  data-surface="ink"
+  id={CONTACT_SCENE.id}
+  aria-labelledby="contact-heading"
+>
+  <div class="frame grid contact__inner">
+    <p class="c-1-3 eyebrow contact__eyebrow">{CONTACT_SCENE.eyebrow[locale]}</p>
+
+    <h2 id="contact-heading" class="c-1-9 display contact__heading">
+      {
+        CONTACT_SCENE.heading[locale].map((line, i) => (
+          <>
+            {i > 0 && <br />}
+            {line}
+          </>
+        ))
+      }
+    </h2>
+
+    <p class="c-1-5 body body--muted contact__body">{CONTACT_SCENE.body[locale]}</p>
+
+    <div class="c-9-12 contact__action">
+      <a class="cta cta--pill" href={`mailto:${CONTACT.email}`}>
+        <span class="cta__label">
+          <span>{CONTACT_SCENE.cta[locale]}</span>
+          <span aria-hidden="true">{CONTACT_SCENE.cta[locale]}</span>
+        </span>
+        <svg class="cta__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M1 8h13M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.25" />
+        </svg>
+      </a>
+      <a class="contact__email meta" href={`mailto:${CONTACT.email}`}>
+        {CONTACT.email}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    min-height: 82dvh;
+    display: flex;
+    align-items: center;
+    padding-block: var(--gap-section) var(--gap-inner);
+  }
+
+  .contact__inner {
+    width: 100%;
+    row-gap: var(--gap-md);
+    align-items: end;
+  }
+
+  .contact__eyebrow {
+    margin-bottom: clamp(28px, 4vw, 64px);
+  }
+
+  .contact__heading {
+    margin-bottom: clamp(32px, 5vw, 72px);
+  }
+
+  .contact__action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .contact__email {
+    color: var(--fg-muted);
+    border-bottom: 1px solid transparent;
+    transition:
+      color var(--ui-fast) var(--ui-ease),
+      border-color var(--ui-fast) var(--ui-ease);
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .contact__email:hover,
+  .contact__email:focus-visible {
+    color: var(--fg);
+    border-bottom-color: currentColor;
+  }
+
+  @media (max-width: 767px) {
+    .contact__heading {
+      margin-bottom: 32px;
+    }
+
+    .contact__action {
+      width: 100%;
+      margin-top: 8px;
+    }
+  }
+</style>

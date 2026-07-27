@@ -1,0 +1,394 @@
+---
+import AssetReveal from './media/AssetReveal.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { UI } from '../content/brand';
+import {
+  CASE_LABELS,
+  getProject,
+  INDEX_PROJECTS,
+  nextProject,
+} from '../content/projects';
+import { localePath, type Locale } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const project = getProject(slug);
+const copy = project.copy[locale];
+const next = nextProject(slug);
+const index = INDEX_PROJECTS.findIndex((p) => p.slug === slug) + 1;
+
+const [galleryLarge, ...gallerySupport] = project.media.gallery;
+---
+
+<BaseLayout
+  locale={locale}
+  path={`/portfolio/${project.slug}/`}
+  title={project.seo.title[locale]}
+  description={project.seo.description[locale]}
+  image={project.seo.image}
+>
+  {/* 01 — Identity */}
+  <section class="scene case-hero" data-surface="ink">
+    <div class="frame grid case-hero__inner">
+      <p class="c-1-3 meta meta--muted">
+        {String(index).padStart(2, '0')} / {String(INDEX_PROJECTS.length).padStart(2, '0')}
+      </p>
+      <p class="c-3-7 meta meta--muted case-hero__type">
+        {project.type[locale]} · {project.platform[locale]}
+      </p>
+      <p class="c-10-12 meta meta--muted case-hero__status">{project.statusLabel[locale]}</p>
+
+      <h1 class="c-1-11 title-project case-hero__title">{project.title}</h1>
+
+      <p class="c-1-7 display-kr case-hero__statement">
+        {
+          copy.statement.map((line, i) => (
+            <>
+              {i > 0 && <br />}
+              {line}
+            </>
+          ))
+        }
+      </p>
+
+      <div class="c-9-12 case-hero__meta">
+        <div>
+          <p class="meta meta--muted">{CASE_LABELS.role[locale]}</p>
+          <p class="body">{project.role[locale]}</p>
+        </div>
+        <a class="cta cta--line" href={project.externalUrl} target="_blank" rel="noopener">
+          <span class="cta__label">
+            <span>{project.externalCta[locale]}</span>
+            <span aria-hidden="true">{project.externalCta[locale]}</span>
+          </span>
+          <svg class="cta__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 13L13 3M6 3h7v7" stroke="currentColor" stroke-width="1.25" />
+          </svg>
+          <span class="visually-hidden">{UI.externalNote[locale]}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* 02 — Hero media */}
+  <div class="scene case-media" data-surface="ink">
+    <div class="frame frame--visual">
+      <AssetReveal>
+        <figure class={`media media--${project.media.hero.ratio ?? '16-10'} case-media__frame`}>
+          <img
+            src={project.media.hero.src}
+            width={project.media.hero.width}
+            height={project.media.hero.height}
+            alt={project.media.hero.alt[locale]}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </figure>
+      </AssetReveal>
+    </div>
+  </div>
+
+  {/* 03–04 — Context and Reason */}
+  <section class="scene section case-text" data-surface="paper">
+    <div class="frame">
+      <div class="grid case-block">
+        <p class="c-1-3 eyebrow">{CASE_LABELS.context[locale]}</p>
+        <h2 class="c-4-8 h2">{copy.lead}</h2>
+        <div class="c-9-12">
+          <p class="body">{copy.context}</p>
+        </div>
+      </div>
+
+      <div class="grid case-block">
+        <p class="c-1-3 eyebrow">{CASE_LABELS.reason[locale]}</p>
+        <div class="c-4-12 case-reason">
+          <p class="lead">{copy.reason}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* 05 — Decisions */}
+  <section class="scene section case-decisions" data-surface="paper" aria-labelledby="decisions">
+    <div class="frame">
+      <p class="eyebrow case-decisions__label" id="decisions">
+        {CASE_LABELS.decisions[locale]}
+      </p>
+      <ol class="case-decisions__list">
+        {
+          copy.decisions.map((decision, i) => (
+            <li class="grid case-decision">
+              <p class="c-1-3 meta meta--muted">{String(i + 1).padStart(2, '0')}</p>
+              <h3 class="c-3-7 h3">{decision.title}</h3>
+              <p class="c-8-12 body body--muted">{decision.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  {/* 06–07 — Refinement and Delivered */}
+  <section class="scene section case-close" data-surface="ink">
+    <div class="frame grid case-close__inner">
+      <p class="c-1-3 eyebrow">{CASE_LABELS.refinement[locale]}</p>
+      <p class="c-4-9 h3 case-close__refinement">{copy.refinement}</p>
+
+      <div class="c-1-5 case-close__delivered">
+        <p class="meta meta--muted case-close__label">{CASE_LABELS.delivered[locale]}</p>
+        <ul class="case-close__list">
+          {copy.delivered.map((item) => <li class="body">{item}</li>)}
+        </ul>
+      </div>
+
+      <div class="c-7-12 case-close__status">
+        <p class="meta meta--muted case-close__label">{CASE_LABELS.status[locale]}</p>
+        <p class="body">{copy.status}</p>
+      </div>
+    </div>
+  </section>
+
+  {/* 08 — Gallery */}
+  <section class="scene section case-gallery" data-surface="paper" aria-label={CASE_LABELS.gallery[locale]}>
+    <div class="frame">
+      <figure class="case-gallery__large">
+        <div class={`media media--${galleryLarge.ratio ?? '16-10'}`}>
+          <img
+            src={galleryLarge.src}
+            width={galleryLarge.width}
+            height={galleryLarge.height}
+            alt={galleryLarge.alt[locale]}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        {galleryLarge.caption && <figcaption class="caption">{galleryLarge.caption[locale]}</figcaption>}
+      </figure>
+
+      <div class="grid case-gallery__pair">
+        {
+          gallerySupport.map((item, i) => (
+            <figure class:list={['case-gallery__support', i === 1 && 'case-gallery__support--offset']}>
+              <div class={`media media--${item.ratio ?? '1-1'}`}>
+                <img
+                  src={item.src}
+                  width={item.width}
+                  height={item.height}
+                  alt={item.alt[locale]}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              {item.caption && <figcaption class="caption">{item.caption[locale]}</figcaption>}
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* 09 — Exit */}
+  <section class="scene case-exit" data-surface="ink">
+    <div class="frame">
+      <a class="case-next" href={localePath(locale, `/portfolio/${next.slug}/`)}>
+        <span class="meta meta--muted">{UI.nextProject[locale]}</span>
+        <span class="grid case-next__row">
+          <span class="c-1-7 title-project case-next__title">{next.title}</span>
+          <span class="c-9-12 media media--16-10 media--muted case-next__media">
+            <img
+              src={next.media.hero.src}
+              width={next.media.hero.width}
+              height={next.media.hero.height}
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
+          </span>
+        </span>
+      </a>
+
+      <p class="case-exit__back">
+        <a class="cta cta--line" href={localePath(locale, '/work/')}>
+          <span class="cta__label">
+            <span>{UI.backToWork[locale]}</span>
+            <span aria-hidden="true">{UI.backToWork[locale]}</span>
+          </span>
+        </a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .case-hero {
+    min-height: 80dvh;
+    display: flex;
+    align-items: flex-end;
+    padding-top: var(--hero-top);
+    padding-bottom: var(--gap-inner);
+  }
+
+  .case-hero__inner {
+    width: 100%;
+    row-gap: clamp(24px, 3vw, 44px);
+  }
+
+  .case-hero__status {
+    justify-self: end;
+    text-align: right;
+  }
+
+  .case-hero__title {
+    margin-top: clamp(32px, 5vw, 80px);
+  }
+
+  .case-hero__statement {
+    font-size: clamp(26px, 2.6vw, 40px);
+    line-height: 1.34;
+  }
+
+  .case-hero__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    align-self: end;
+  }
+
+  .case-media {
+    padding-bottom: 0;
+  }
+
+  .case-media__frame {
+    border-radius: 2px;
+  }
+
+  .case-block {
+    row-gap: var(--gap-md);
+  }
+
+  .case-block + .case-block {
+    margin-top: var(--gap-inner);
+    padding-top: var(--gap-inner);
+    border-top: 1px solid var(--hairline);
+  }
+
+  .case-reason .lead {
+    max-width: 56ch;
+  }
+
+  .case-decisions {
+    padding-top: 0;
+  }
+
+  .case-decisions__label {
+    margin-bottom: var(--gap-md);
+  }
+
+  .case-decision {
+    row-gap: 12px;
+    padding-block: clamp(40px, 5vw, 72px);
+    border-top: 1px solid var(--hairline);
+  }
+
+  .case-decisions__list li:last-child {
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .case-close__inner {
+    row-gap: var(--gap-inner);
+  }
+
+  .case-close__refinement {
+    margin-bottom: clamp(24px, 4vw, 56px);
+  }
+
+  .case-close__label {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .case-close__list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .case-gallery__large {
+    margin-bottom: clamp(32px, 4vw, 56px);
+  }
+
+  .case-gallery__pair {
+    row-gap: var(--gap-lg);
+  }
+
+  .case-gallery__support {
+    grid-column: 1 / 8;
+  }
+
+  /* Support B starts lower to hold the intentional 7:5 asymmetry. */
+  .case-gallery__support--offset {
+    grid-column: 9 / 13;
+    margin-top: clamp(40px, 7vw, 120px);
+  }
+
+  .case-exit {
+    padding-block: var(--gap-inner) clamp(48px, 6vw, 96px);
+  }
+
+  .case-next {
+    display: block;
+    padding-block: clamp(32px, 4vw, 56px);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .case-next__row {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .case-next__title {
+    color: var(--fg-muted);
+    transition: color var(--ui-medium) var(--ui-ease);
+  }
+
+  .case-next:hover .case-next__title,
+  .case-next:focus-visible .case-next__title {
+    color: var(--fg);
+  }
+
+  .case-next__media {
+    border-radius: 2px;
+  }
+
+  .case-exit__back {
+    margin-top: var(--gap-md);
+  }
+
+  @media (max-width: 999px) {
+    .case-gallery__support,
+    .case-gallery__support--offset {
+      grid-column: 1 / 9;
+      margin-top: 0;
+    }
+
+    .case-next__row {
+      grid-template-columns: 1fr;
+      row-gap: 20px;
+    }
+
+    .case-next__title,
+    .case-next__media {
+      grid-column: 1;
+    }
+  }
+</style>

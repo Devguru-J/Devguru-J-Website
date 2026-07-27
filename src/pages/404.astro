@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { META, NOT_FOUND } from '../content/brand';
+import { localePath } from '../lib/i18n';
+
+/* One 404 document serves both trees: Korean leads, English follows. It opts
+   out of the route wipe and carries no content-entry or CTA micro-motion —
+   focus and hover states change instantly (06 §9, §10). */
+---
+
+<BaseLayout
+  locale="ko"
+  path="/404"
+  title={META.notFound.title.ko}
+  description={NOT_FOUND.body.ko}
+  robots="noindex,follow"
+  singleRoute
+  chrome={false}
+  noRouteWipe
+>
+  <section class="scene notfound" data-surface="ink">
+    <div class="frame notfound__inner">
+      <a class="notfound__brand" href="/">Memory</a>
+
+      <p class="notfound__code" aria-hidden="true">404</p>
+
+      <div class="notfound__text">
+        <h1 class="h3">{NOT_FOUND.heading.ko}</h1>
+        <p class="h3 notfound__en">{NOT_FOUND.heading.en}</p>
+        <p class="body body--muted notfound__body">
+          {NOT_FOUND.body.ko}<br />{NOT_FOUND.body.en}
+        </p>
+      </div>
+
+      <nav class="notfound__links" aria-label="404">
+        <a href={localePath('ko', '/')}>{NOT_FOUND.home.ko} · {NOT_FOUND.home.en}</a>
+        <a href={localePath('ko', '/work/')}>{NOT_FOUND.work.ko} · {NOT_FOUND.work.en}</a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    padding-block: clamp(48px, 8vw, 96px);
+  }
+
+  .notfound__inner {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(24px, 3vw, 40px);
+    align-items: flex-start;
+  }
+
+  .notfound__brand {
+    font-family: var(--font-serif);
+    font-size: 25px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .notfound__code {
+    font-family: var(--font-serif);
+    font-size: clamp(120px, 22vw, 300px);
+    line-height: 0.86;
+    letter-spacing: -0.06em;
+  }
+
+  .notfound__text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .notfound__en {
+    color: var(--fg-muted);
+  }
+
+  .notfound__body {
+    margin-top: 14px;
+  }
+
+  .notfound__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline);
+    width: 100%;
+  }
+
+  /* No label swap, no arrow translation, no scale — the state simply changes. */
+  .notfound__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    font-size: 15px;
+    border-bottom: 1px solid transparent;
+  }
+
+  .notfound__links a:hover,
+  .notfound__links a:focus-visible {
+    border-bottom-color: currentColor;
+  }
+</style>

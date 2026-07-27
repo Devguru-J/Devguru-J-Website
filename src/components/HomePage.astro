@@ -1,0 +1,32 @@
+---
+import ApproachStory from './home/ApproachStory.astro';
+import BrandInterlude from './home/BrandInterlude.astro';
+import Contact from './home/Contact.astro';
+import Hero from './home/Hero.astro';
+import SelectedWork from './home/SelectedWork.astro';
+import Studio from './home/Studio.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { META } from '../content/brand';
+import type { Locale } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+{/* IA order: 정체 → 증거 → 태도 → 방식 → 사람 → 대화 */}
+<BaseLayout
+  locale={locale}
+  path="/"
+  title={META.home.title[locale]}
+  description={META.home.description[locale]}
+>
+  <Hero locale={locale} />
+  <SelectedWork locale={locale} />
+  <BrandInterlude locale={locale} />
+  <ApproachStory locale={locale} />
+  <Studio locale={locale} />
+  <Contact locale={locale} />
+</BaseLayout>
