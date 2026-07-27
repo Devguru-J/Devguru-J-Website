@@ -1,7 +1,10 @@
 /* ==========================================================================
-   Typography — the shirt, the collar, the cuff
-   Latin display is Instrument Sans/Serif; Hangul is Pretendard. Both sit on
-   the same optical baseline, so locale never changes the layout contract.
+   Typography — Salient's two faces, nothing else
+   Zalando Sans carries display, body and labels; Source Serif Pro is the one
+   accent. Salient ships no monospace and never sets metadata in one, so
+   labels are the sans at a small size with open tracking.
+   Hangul arrives through the Pretendard declarations made under these same
+   two family names, so a locale switch never changes the type system.
    ========================================================================== */
 
 /* --- Display roles ------------------------------------------------------ */
@@ -11,76 +14,66 @@
   font-weight: 400;
   font-size: var(--t-brand-line);
   line-height: var(--lh-latin-display);
-  letter-spacing: -0.055em;
+  letter-spacing: -0.04em;
   text-wrap: balance;
 }
 
-/* Latin metrics lead, Pretendard picks up Hangul from the fallback chain, so
-   one class serves both locales without duplicating the DOM. */
 .display-kr {
-  font-family: var(--font-latin);
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: var(--t-hero-kr);
-  line-height: 1.06;
-  letter-spacing: -0.038em;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
 }
 
 html[lang='ko'] .display-kr {
-  font-family: var(--font-kr);
-  font-weight: 600;
   line-height: var(--lh-kr-display);
   letter-spacing: var(--track-kr-display);
 }
 
 .display {
-  font-family: var(--font-latin);
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: var(--t-section);
-  line-height: 1.02;
+  line-height: 1.06;
   letter-spacing: var(--track-latin-display);
 }
 
 html[lang='ko'] .display {
-  font-family: var(--font-kr);
-  font-weight: 600;
   line-height: var(--lh-kr-display);
   letter-spacing: var(--track-kr-display);
 }
 
 .title-project {
-  font-family: var(--font-latin);
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: var(--t-project);
-  line-height: 1;
-  letter-spacing: -0.05em;
-}
-
-.h2 {
-  font-family: var(--font-latin);
-  font-weight: 500;
-  font-size: var(--t-h2);
-  line-height: 1.06;
+  line-height: 1.02;
   letter-spacing: -0.04em;
 }
 
-html[lang='ko'] .h2 {
-  font-family: var(--font-kr);
+.h2 {
+  font-family: var(--font-display);
   font-weight: 600;
-  line-height: 1.28;
+  font-size: var(--t-h2);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+html[lang='ko'] .h2 {
+  line-height: 1.3;
   letter-spacing: var(--track-kr-display);
 }
 
 .h3 {
-  font-family: var(--font-latin);
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: var(--t-h3);
-  line-height: 1.24;
-  letter-spacing: -0.025em;
+  line-height: 1.28;
+  letter-spacing: -0.022em;
 }
 
 html[lang='ko'] .h3 {
-  font-family: var(--font-kr);
-  font-weight: 600;
   line-height: 1.42;
 }
 
@@ -107,42 +100,48 @@ html[lang='ko'] .h3 {
   margin-top: 1.1em;
 }
 
-/* --- Metadata ----------------------------------------------------------- */
+/* --- Labels ------------------------------------------------------------- */
 
 .meta {
-  font-family: var(--font-mono);
+  font-family: var(--font-meta);
   font-size: var(--t-meta);
   line-height: 1.5;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .meta--muted {
   color: var(--fg-muted);
 }
 
+/* Salient marks a section with a small caps label, not a rule-and-mono
+   construction. */
 .eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-meta);
   font-size: var(--t-meta);
-  letter-spacing: 0.16em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--fg-muted);
-  display: flex;
-  align-items: center;
-  gap: 14px;
 }
 
-.eyebrow::before {
-  content: '';
-  width: clamp(24px, 3vw, 56px);
-  height: 1px;
-  background: currentColor;
-  opacity: 0.55;
-  flex: none;
+/* --- Serif accent ------------------------------------------------------- */
+
+.serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: -0.015em;
 }
 
-/* Locale-specific fixed line breaks. */
+.serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+/* --- Locale-specific fixed line breaks ---------------------------------- */
+
 .br-ko {
   display: none;
 }
@@ -159,18 +158,4 @@ html[lang='ko'] .br-en {
   .br-mobile-off {
     display: none;
   }
-}
-
-/* --- Serif accent ------------------------------------------------------- */
-
-.serif {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: -0.02em;
-}
-
-.serif-italic {
-  font-family: var(--font-serif);
-  font-style: italic;
 }

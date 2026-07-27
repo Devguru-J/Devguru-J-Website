@@ -127,7 +127,7 @@ a:focus-visible .media--muted img {
   margin-top: 14px;
   padding-top: 12px;
   border-top: 1px solid var(--hairline);
-  font-family: var(--font-mono);
+  font-family: var(--font-meta);
   font-size: var(--t-meta);
   letter-spacing: 0.06em;
   color: var(--fg-muted);
@@ -144,7 +144,7 @@ a:focus-visible .media--muted img {
   gap: 12px;
   min-height: 48px;
   color: var(--cta-fg);
-  font-family: var(--font-latin);
+  font-family: var(--font-sans);
   font-size: clamp(15px, 1.05vw, 17px);
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -152,7 +152,7 @@ a:focus-visible .media--muted img {
 }
 
 html[lang='ko'] .cta {
-  font-family: var(--font-kr);
+  font-family: var(--font-sans);
 }
 
 .cta__label {

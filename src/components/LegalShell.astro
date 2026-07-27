@@ -74,6 +74,9 @@ const year = new Date().getFullYear();
     --color-ink: var(--ink-950);
     --color-ink-2: var(--graphite-600);
     --color-amber: var(--ink-950);
+    /* The legal bodies set their effective date in --font-mono. Salient has no
+       monospace face, so the alias resolves to the label stack. */
+    --font-mono: var(--font-meta);
   }
 
   .legal-shell {
@@ -135,7 +138,7 @@ const year = new Date().getFullYear();
 
   .legal-lang__sep {
     opacity: 0.3;
-    font-family: var(--font-mono);
+    font-family: var(--font-meta);
     font-size: var(--t-meta);
   }
 

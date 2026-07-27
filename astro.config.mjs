@@ -1,10 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
 
+// Static output, no adapter. Cloudflare Pages runs `npm run build` → `dist`.
 export default defineConfig({
   site: 'https://bymemory.dev',
-  vite: {
-    plugins: [tailwindcss()],
-  },
 });

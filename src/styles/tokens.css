@@ -25,16 +25,18 @@
   --mat: rgba(9, 9, 9, 0.05);
 
   /* --- Type families -------------------------------------------------- */
-  --font-kr: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
-    'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  --font-latin: 'Instrument Sans Variable', 'Instrument Sans', 'Geist Variable',
-    var(--font-kr);
-  --font-serif: 'Instrument Serif', 'Times New Roman', serif;
-  --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, SFMono-Regular,
-    monospace;
+  /* Salient ships exactly two faces. Both carry Hangul through the Pretendard
+     declarations in /assets/salient-fonts.css, so one family name covers both
+     locales and nothing outside the theme is introduced. */
+  --font-sans: 'Zalando Sans', -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', sans-serif;
+  --font-serif: 'Source Serif Pro', Georgia, serif;
 
-  /* Body stack: Latin metrics first, Pretendard picks up Hangul. */
-  --font-body: var(--font-latin);
+  --font-body: var(--font-sans);
+  --font-display: var(--font-sans);
+  /* Metadata is the sans at a small size with open tracking — Salient has no
+     monospace face and never sets labels in one. */
+  --font-meta: var(--font-sans);
 
   /* --- Type scale (04 §5) --------------------------------------------- */
   --t-brand-line: clamp(64px, 9.2vw, 156px);
@@ -52,6 +54,11 @@
   --lh-kr-display: 1.04;
   --lh-latin-display: 0.92;
   --lh-body: 1.72;
+
+  /* Salient's modern demos round their media and columns generously; the
+     theme's own scale, not a 2px hairline corner. */
+  --radius-media: clamp(10px, 1.1vw, 18px);
+  --radius-pill: 999px;
 
   /* --- Frame (04 §6) --------------------------------------------------- */
   --frame-visual: 1800px;
