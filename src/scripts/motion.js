@@ -638,12 +638,134 @@ function initMobileNav() {
 /* 9. Bootstrap                                                        */
 /* ------------------------------------------------------------------ */
 
+/* ------------------------------------------------------------------ */
+/*  Fancy unordered list                                                */
+/*  Salient element-fancy-unordered-list — items rest at opacity 0 /    */
+/*  left -20px and settle on the same 88% waypoint the columns use.     */
+/* ------------------------------------------------------------------ */
+
+function initFancyLists() {
+  document.querySelectorAll('.nectar-fancy-ul[data-animation="true"]').forEach((list) => {
+    const items = list.querySelectorAll('li');
+    addWaypoint(list, COL_IMG_OFFSET, () => {
+      list.classList.add('animated-in');
+      // Salient staggers list children the same way it staggers columns.
+      items.forEach((li, i) => {
+        li.style.transitionDelay = `${i * 70}ms`;
+      });
+    });
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/*  Page submenu (chapter index)                                        */
+/*  Salient uses a Bootstrap ScrollSpy 3.2.0 fork (js/src/init.js       */
+/*  ~3955). Ported rules:                                               */
+/*    · offset 10 plus the submenu's own height                         */
+/*    · active = last target whose top <= scrollTop + offset            */
+/*    · scrolled to the bottom → last target wins                       */
+/*    · above the first target → nothing is active                      */
+/* ------------------------------------------------------------------ */
+
+const SCROLLSPY_OFFSET = 10;
+
+function initChapterIndex() {
+  const bar = document.querySelector('.page-submenu');
+  if (!bar) return;
+
+  const links = Array.from(bar.querySelectorAll('ul li > a'));
+  if (!links.length) return;
+
+  let targets = [];
+  let activeTarget = null;
+  let barHeight = 0;
+
+  const refresh = () => {
+    barHeight = bar.getBoundingClientRect().height;
+    targets = links
+      .map((a) => {
+        const href = a.getAttribute('href') || '';
+        const el = href.length > 1 ? document.querySelector(href) : null;
+        if (!el) return null;
+        return { href, li: a.parentElement, top: el.getBoundingClientRect().top + window.scrollY };
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.top - b.top);
+  };
+
+  const activate = (target) => {
+    if (activeTarget === target) return;
+    activeTarget = target;
+    links.forEach((a) => a.parentElement.classList.remove('current-menu-item'));
+    if (target) target.li.classList.add('current-menu-item');
+  };
+
+  const process = () => {
+    if (!targets.length) return;
+    const scroll = window.scrollY + SCROLLSPY_OFFSET + barHeight;
+    const max = document.documentElement.scrollHeight - window.innerHeight - SCROLLSPY_OFFSET;
+
+    if (scroll >= max) return activate(targets[targets.length - 1]);
+    if (scroll < targets[0].top) return activate(null);
+
+    for (let i = targets.length - 1; i >= 0; i--) {
+      const next = targets[i + 1];
+      if (scroll >= targets[i].top && (!next || scroll <= next.top)) {
+        return activate(targets[i]);
+      }
+    }
+    return undefined;
+  };
+
+  // Salient toggles `.stuck` instead of using position: sticky — the theme's
+  // html/body overflow-x rules kill sticky. The wrapper keeps the height so
+  // the page doesn't jump the moment the bar goes fixed.
+  const wrapper = bar.parentElement;
+  let stuckAt = 0;
+
+  const measure = () => {
+    const wasStuck = bar.classList.contains('stuck');
+    if (wasStuck) bar.classList.remove('stuck');
+    stuckAt = wrapper.getBoundingClientRect().top + window.scrollY;
+    wrapper.style.height = `${bar.getBoundingClientRect().height}px`;
+    if (wasStuck) bar.classList.add('stuck');
+  };
+
+  const stick = () => {
+    bar.classList.toggle('stuck', window.scrollY >= stuckAt);
+  };
+
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      stick();
+      process();
+    });
+  };
+
+  measure();
+  refresh();
+  stick();
+  process();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => {
+    measure();
+    refresh();
+    stick();
+    process();
+  }, { passive: true });
+}
+
 function boot() {
   ROOT.classList.add('js');
 
   initHeader();
   initMobileNav();
   initMouseFollow();
+  initChapterIndex();
 
   if (PREFERS_REDUCED) {
     document
@@ -660,6 +782,7 @@ function boot() {
     initColAnimations();
     initSplitHeadings();
     initScrollOpacityHeadings();
+    initFancyLists();
 
     window.addEventListener('scroll', scheduleWaypoints, { passive: true });
     window.addEventListener('resize', scheduleWaypoints, { passive: true });

@@ -54,15 +54,51 @@ devguru_website/            ← 저장소 루트 (= 예전 memory_website/site/)
 
 | 경로 | 파일 | 내용 |
 | --- | --- | --- |
-| `/` | `src/pages/index.astro` | 히어로 → 선언 → 01 이름 → 02 작업 → 03 만드는 방식 → 04 태도 |
+| `/` | `src/pages/index.astro` | 히어로 → 선언 → 01~08 챕터 → 간주 → 푸터 (아래 §2-1) |
 | `/work/` | `src/pages/work/index.astro` | 작업 목록 |
 | `/work/{slug}/` | `src/pages/work/[slug].astro` | 작업 상세 (`works` 배열에서 자동 생성) |
 | `/studio/` | `src/pages/studio.astro` | 만든 사람 · 작업 방식 · 규모 |
 | `/contact/` | `src/pages/contact.astro` | 연락 (푸터 없음 — `hideFooter`) |
 | `/404` | `src/pages/404.astro` | (푸터 없음) |
 
-홈의 섹션 번호(01~04)는 **하드코딩**이다. 섹션을 추가·삭제하면
-`eyebrow__index` 숫자를 직접 다시 매겨야 한다.
+### 2-1. 홈의 열 개 구간 (2026-07-28)
+
+서사는 **잃음 → 기준 → 약속 → 증거 → 방법 → 정직 → 초대** 순으로 흐른다.
+읽는 사람이 01에서 자기 경험을 떠올리고, 02에서 왜 그러는지 알게 되고,
+03에서 실제로 만든 것을 보고, 08에서 과장하지 않는다는 걸 확인한 뒤 연락에 닿는다.
+
+| 구간 | id | 배경 | 내용 |
+| --- | --- | --- | --- |
+| 히어로 | — | 흰 | 그때까지 남아 있으면 좋겠습니다 + 2054년 |
+| 선언 | — | 흰 | 등대는 배를 부르지 않습니다 |
+| 01 사라진 것들 | `lost` | 검 | 공감의 축. 종료된 서비스 경험 |
+| 02 정한 기준 | `standard` | 흰 | 14년 된 키보드 · 원칙 5개 |
+| 03 켜 둔 것들 | `works` | 흰 | 작업 목록 |
+| 04 등을 세우는 순서 | `order` | 검 | 다섯 단계 |
+| 05 유리를 닦는 일 | `glass` | 검 | 유지보수가 작업의 본체 |
+| 06 곁에 있는 방식 | `beside` | 흰 | Monkey Flash |
+| 07 등대지기 한 사람 | `keeper` | 흰 | 규모를 감추지 않음 |
+| 08 하지 않는 말 | `unsaid` | 검 | 쓰지 않는 표현 |
+| 간주 | — | 검 | 히어로 문장이 흐르며 수미상관 |
+
+**번호와 라벨은 `src/data/chapters.ts` 배열 순서에서 나온다.** 하드코딩이 아니다.
+섹션을 넣거나 빼면 eyebrow 번호와 상단 목차가 함께 따라온다. `id` 는 목차 앵커라
+바꾸면 링크가 끊긴다.
+
+### 세계관 — 등대
+
+`concept.md`(아카이브, 열지 않음)의 절제 원칙 위에 등대 은유를 얹었다.
+**비유는 라벨과 대제목에만 쓰고 본문은 담백하게 둔다.** 제품=등, 유지보수=유리를 닦는 일,
+출시=처음 불을 켠 날, 작업 목록=켜 둔 것들.
+
+> **봉인 — 절대 쓰지 않는다:** 길을 밝히다 · 이정표 · 나침반 · 등불이 되어 드리다 ·
+> 항해를 돕다 · 어둠 속에서 · 희망의 빛.
+> 사용자를 인도하는 프레임 전부다. 이 브랜드는 "사용자의 관심을 계속 요구하지 않는다"가
+> 원칙이라, 방향을 제시하는 순간 태도가 무너진다. 배는 목적지를 스스로 안다.
+
+Monkey Flash 가 화면을 덮고 지금 창만 밝게 남기는 앱이라 이 은유에서 유일하게
+사실 그대로지만, **"Monkey Flash는 등대입니다"라고 설명하지 않는다.**
+알아채는 편이 낫고, 설명하는 순간 촌스러워진다.
 
 ---
 
@@ -153,6 +189,9 @@ border-color: rgba(0,0,0,0.14);
 | **커서 추종 이미지** | `featured_image_follow` + `NectarIconMouseFollow('post-grid-images')` | 20vw / 4:3 `position:fixed`, lerp **0.1**, `mappedX = 0.5*winW + (clientX/winW)*(winW/2)`, `clip-path inset(20%)→0%` `0.6s cubic-bezier(.1,.75,.5,1)` |
 | **제목 쓸림** | `nectar_reveal_fade_in` | mask `linear-gradient(90deg,#fff 33.3%,rgba(255,255,255,.1) 66.6%)`, `mask-size 300% 100%`, `0.85s cubic-bezier(0.4,0,0.3,1)` |
 | **스크롤 인디케이터** | `nudgeMouse` / `trackBallSlide` | `2.4s` 무한 |
+| **흐르는 문장** | `css/src/elements/element-scrolling-text.css` | `translateX(-20%)→(-120%)`, `linear infinite`, 프리셋 slower `45s` · slowest `30s` · 기본 `15s` · slow `14s` · medium `7s` · fast `4s`, `data-spacing` 시 `padding-left:0.45em` |
+| **챕터 목차** | `element-page-submenu.css` + `init.js` Bootstrap ScrollSpy 3.2.0 포크(~3955행) | `.stuck` 시 `position:fixed; top:0`, `transition: all 0.3s`, 활성 판정 오프셋 `10` + 바 높이, 바닥에서는 마지막 항목, 첫 섹션 위에서는 활성 없음, 활성 클래스 `.current-menu-item` |
+| **강조 목록** | `element-fancy-unordered-list.css` | 항목 초기값 `opacity:0; left:-20px`, `data-list-icon="dot"` 은 `content:"•"` + `padding-left:15px` |
 
 ### 배경 반전은 "섹션 블록"이 아니다
 

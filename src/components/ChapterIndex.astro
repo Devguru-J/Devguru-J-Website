@@ -1,0 +1,118 @@
+---
+/**
+ * Salient `page-submenu` — sticky chapter bar.
+ *
+ * Ported from css/src/elements/element-page-submenu.css and the Bootstrap
+ * ScrollSpy 3.2.0 fork in js/src/init.js (line ~3955). Kept behaviours:
+ *   · `.stuck` pins the bar to the top, `transition: all 0.3s`
+ *   · active target = last section whose top <= scrollTop + offset(10) + barH
+ *   · scrolled past the last section → last item stays active
+ *   · above the first section → nothing is active
+ * The active item gets `.current-menu-item`, Salient's own class name.
+ */
+import { homeChapters, chapterNo } from '../data/chapters';
+---
+
+{/* Salient wraps the bar in a sticky-wrapper that keeps the space when the
+    bar goes fixed, so the page doesn't jump at the moment it sticks. */}
+<div class="sticky-wrapper">
+  <nav class="page-submenu" data-sticky="true" aria-label="챕터">
+  <ul>
+    {
+      homeChapters.map((c, i) => (
+        <li>
+          <a href={`#${c.id}`}>
+            <span class="page-submenu__no">{chapterNo(i)}</span>
+            <span class="page-submenu__label">{c.label}</span>
+          </a>
+        </li>
+      ))
+      }
+    </ul>
+  </nav>
+</div>
+
+<style>
+  /* html/body 에 overflow-x: hidden 이 걸려 있어 position: sticky 가 죽습니다.
+     Salient 원본도 sticky 가 아니라 .stuck + fixed 로 처리합니다 —
+     토글은 motion.js 가 합니다. */
+  .page-submenu {
+    position: relative;
+    z-index: 8000;
+    background: var(--nectar-page-background-color, #fff);
+    color: var(--nectar-page-text-color, #000);
+    border-bottom: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+    /* Salient: .page-submenu.stuck { transition: all 0.3s } */
+    transition: all 0.3s,
+      background-color var(--page-color-change-section-transition-time),
+      color var(--page-color-change-section-transition-time);
+  }
+
+  /* Salient: .page-submenu.stuck { position:fixed; top:0; left:0; width:100% } */
+  .page-submenu:global(.stuck) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .page-submenu ul {
+    display: flex;
+    gap: clamp(1rem, 2.4vw, 2.5rem);
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-inline: var(--gutter);
+    padding-block: 14px;
+    margin: 0;
+  }
+
+  .page-submenu ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .page-submenu li {
+    flex: none;
+  }
+
+  .page-submenu a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.55em;
+    font-size: var(--fs-meta);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    opacity: 0.35;
+    /* Salient horizontal-list-item colour easing. */
+    transition: opacity 0.45s cubic-bezier(0.25, 1, 0.33, 1);
+  }
+
+  .page-submenu a:hover,
+  .page-submenu a:focus-visible {
+    opacity: 1;
+  }
+
+  .page-submenu__no {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.1em;
+  }
+
+  .page-submenu :global(.current-menu-item) a {
+    opacity: 1;
+  }
+
+  .page-submenu :global(.current-menu-item) .page-submenu__label {
+    border-bottom: 1px solid currentColor;
+  }
+
+  /* 좁은 화면에서는 번호만 남긴다 — 여덟 개가 한 줄에 들어가지 않는다. */
+  @media (max-width: 860px) {
+    .page-submenu__label {
+      display: none;
+    }
+
+    .page-submenu ul {
+      gap: 1.25rem;
+    }
+  }
+</style>

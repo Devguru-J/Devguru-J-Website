@@ -4,8 +4,16 @@ import SplitHeading from '../components/SplitHeading.astro';
 import Reveal from '../components/Reveal.astro';
 import Cta from '../components/Cta.astro';
 import WorkList from '../components/WorkList.astro';
+import ChapterIndex from '../components/ChapterIndex.astro';
+import ScrollingText from '../components/ScrollingText.astro';
 import { publishedWorks as works } from '../data/works';
-import { site } from '../data/site';
+import { homeChapters, chapterNo } from '../data/chapters';
+
+/** 챕터 번호·라벨은 data/chapters.ts 의 순서에서 나옵니다. 손으로 매기지 않습니다. */
+const ch = (id: string) => {
+  const i = homeChapters.findIndex((c) => c.id === id);
+  return { no: chapterNo(i), label: homeChapters[i].label };
+};
 
 const principles = [
   '한 번 쓰고 사라지는 대신 계속 찾게 되는 제품',
@@ -66,7 +74,7 @@ const avoided = [
       </Reveal>
 
       <SplitHeading tag="h1" class="hero__title" delay={150}>
-        적게 만듭니다.<br />오래 책임지려고요.
+        그때까지<br />남아 있으면 좋겠습니다.
       </SplitHeading>
 
       <div class="hero__foot">
@@ -76,9 +84,9 @@ const avoided = [
 
         <Reveal animation="slight-fade-in-from-bottom" delay={620} class="hero__lead">
           <p class="lead">
-            기억은 작고 분명한 문제 하나를 골라, 오래 쓸 수 있을 때까지 다듬는
-            독립 소프트웨어 스튜디오입니다.
-            한 사람이 처음부터 마지막까지 만듭니다.
+            2054년, 제가 환갑이 되는 해입니다.
+            그 해에도 누군가 이 주소를 눌러 사이트가 열리고,
+            앱 하나가 예전처럼 실행되기를 바라며 만듭니다.
           </p>
           {/* 영문 서명(site.tagline)은 히어로에 두지 않는다. 헤드라인과 뜻이 겹쳐
               같은 말을 두 번 하게 된다. 푸터·연락 페이지 하단과 탭 제목에만 남긴다. */}
@@ -86,6 +94,8 @@ const avoided = [
       </div>
     </div>
   </section>
+
+  <ChapterIndex />
 
   <!-- ═══════════════════════ STATEMENT ═══════════════════════ -->
   <section
@@ -95,42 +105,80 @@ const avoided = [
   >
     <div class="container">
       <SplitHeading tag="p" effect="scroll-opacity-reveal" class="statement__text">
-        좋은 소프트웨어는 사용자의 관심을 계속 요구하지 않습니다.
-        필요할 때 정확히 작동하고, 일상의 흐름을 방해하지 않으며,
-        어느 순간 자연스럽게 익숙한 도구가 됩니다.
+        등대는 배를 부르지 않습니다.
+        그저 같은 자리에서 켜져 있습니다.
       </SplitHeading>
     </div>
   </section>
 
-  <!-- ═══════════════════════ 01 · 이름 ═══════════════════════ -->
+  <!-- ═══════════════════ 01 · 사라진 것들 ═══════════════════ -->
   <section
-    class="section chapter chapter--name"
+    id="lost"
+    class="section chapter"
     data-color-change-section-bg-color="#000000"
     data-color-change-section-text-color="#ffffff"
   >
     <div class="container">
       <Reveal animation="fade-in" class="chapter__head">
         <p class="eyebrow">
-          <span class="eyebrow__index">01</span><span>이름</span>
+          <span class="eyebrow__index">{ch('lost').no}</span><span>{ch('lost').label}</span>
         </p>
       </Reveal>
 
       <div class="grid chapter__grid">
         <div class="chapter__title-col">
           <SplitHeading tag="h2" class="chapter__title">
-            기억은 저장에 대한<br />이야기가 아닙니다.
+            오래 쓰던 것이<br />사라진 적 있을 겁니다.
           </SplitHeading>
         </div>
 
         <div class="chapter__body-col">
           <Reveal animation="slight-fade-in-from-bottom" delay={120}>
             <p class="lead">
-              여기서 말하는 <em>Memory</em>는 정보의 저장이 아니라,
-              사람들이 계속 찾게 되는 제품이 자연스럽게 남기는 흔적을 뜻합니다.
+              어느 날 종료 공지가 뜨고, 로그인이 막히고, 남는 건 즐겨찾기뿐인 일.
+              저도 그런 걸 몇 개 잃었습니다.
+              사진 몇 장은 건졌지만, 거기 적어둔 글은 못 건졌습니다.
             </p>
             <p class="chapter__quote">
-              기억에 남기기 위해 과장하는 것이 아니라,<br />
-              계속 쓸 만하기 때문에 기억되는 제품.
+              그때 아쉬웠던 건 기능이 아니라,<br />
+              그 안에 쌓인 시간이었습니다.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 02 · 정한 기준 ═══════════════════ -->
+  <section
+    id="standard"
+    class="section chapter"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <Reveal animation="fade-in" class="chapter__head">
+        <p class="eyebrow">
+          <span class="eyebrow__index">{ch('standard').no}</span><span>{ch('standard').label}</span>
+        </p>
+      </Reveal>
+
+      <div class="grid chapter__grid">
+        <div class="chapter__title-col">
+          <SplitHeading tag="h2" class="chapter__title">
+            제가 가장 오래 쓰고 있는 건<br />소프트웨어가 아닙니다.
+          </SplitHeading>
+        </div>
+        <div class="chapter__body-col">
+          <Reveal animation="slight-fade-in-from-bottom" delay={120}>
+            <p class="lead">
+              십사 년째 같은 키보드를 씁니다. 스틸시리즈 6Gv2, 요즘은 팔지 않는 모델입니다.
+              십 년 넘게 손에 든 라이터도 하나 있습니다.
+              그동안 제가 쓰던 소프트웨어는 여러 번 바뀌었고, 몇 개는 아예 사라졌습니다.
+            </p>
+            <p class="chapter__quote">
+              오래 남는 쪽은 늘 물건이었습니다.<br />
+              소프트웨어도 그럴 수 있으면 좋겠습니다.
             </p>
           </Reveal>
         </div>
@@ -149,9 +197,9 @@ const avoided = [
     </div>
   </section>
 
-  <!-- ═══════════════════════ 02 · 작업 ═══════════════════════ -->
+  <!-- ═══════════════════ 03 · 켜 둔 것들 ═══════════════════ -->
   <section
-    id="work"
+    id="works"
     class="section chapter"
     data-color-change-section-bg-color="#ffffff"
     data-color-change-section-text-color="#000000"
@@ -159,14 +207,14 @@ const avoided = [
     <div class="container">
       <Reveal animation="fade-in" class="chapter__head">
         <p class="eyebrow">
-          <span class="eyebrow__index">02</span><span>작업</span>
+          <span class="eyebrow__index">{ch('works').no}</span><span>{ch('works').label}</span>
         </p>
       </Reveal>
 
       <div class="grid chapter__grid">
         <div class="chapter__title-col">
           <SplitHeading tag="h2" class="chapter__title">
-            설명보다<br />결과물이 앞서도록.
+            말은 닿지 않습니다.<br />불빛만 닿습니다.
           </SplitHeading>
         </div>
         <div class="chapter__body-col">
@@ -188,30 +236,31 @@ const avoided = [
     </div>
   </section>
 
-  <!-- ═══════════════════ 03 · 만드는 방식 ═══════════════════ -->
+  <!-- ═════════════ 04 · 등을 세우는 순서 ═════════════ -->
   <section
+    id="order"
     class="section chapter"
-    data-color-change-section-bg-color="#ffffff"
-    data-color-change-section-text-color="#000000"
+    data-color-change-section-bg-color="#000000"
+    data-color-change-section-text-color="#ffffff"
   >
     <div class="container">
       <Reveal animation="fade-in" class="chapter__head">
         <p class="eyebrow">
-          <span class="eyebrow__index">03</span><span>만드는 방식</span>
+          <span class="eyebrow__index">{ch('order').no}</span><span>{ch('order').label}</span>
         </p>
       </Reveal>
 
       <div class="grid chapter__grid">
         <div class="chapter__title-col">
           <SplitHeading tag="h2" class="chapter__title">
-            다섯 번의<br />판단을 거칩니다.
+            세우는 데 넷,<br />켜두는 데 하나.
           </SplitHeading>
         </div>
         <div class="chapter__body-col">
           <Reveal animation="slight-fade-in-from-bottom" delay={120}>
             <p class="lead">
-              한 사람이 처음부터 마지막까지 관여합니다.
-              규모를 크게 보이게 포장하는 대신, 그 사실을 작업 방식으로 보여줍니다.
+              다섯 번의 판단을 거칩니다. 마지막 하나는 출시 다음의 일이고,
+              그게 가장 깁니다.
             </p>
           </Reveal>
         </div>
@@ -231,8 +280,117 @@ const avoided = [
     </div>
   </section>
 
-  <!-- ═══════════════════════ 04 · 태도 ═══════════════════════ -->
+  <!-- ═══════════════ 05 · 유리를 닦는 일 ═══════════════ -->
   <section
+    id="glass"
+    class="section chapter"
+    data-color-change-section-bg-color="#000000"
+    data-color-change-section-text-color="#ffffff"
+  >
+    <div class="container">
+      <Reveal animation="fade-in" class="chapter__head">
+        <p class="eyebrow">
+          <span class="eyebrow__index">{ch('glass').no}</span><span>{ch('glass').label}</span>
+        </p>
+      </Reveal>
+
+      <div class="grid chapter__grid">
+        <div class="chapter__title-col">
+          <SplitHeading tag="h2" class="chapter__title">
+            밝기를 올리는 대신<br />유리를 닦습니다.
+          </SplitHeading>
+        </div>
+        <div class="chapter__body-col">
+          <Reveal animation="slight-fade-in-from-bottom" delay={120}>
+            <p class="lead">
+              전환이 끊기는 순간, 아무도 마주치지 않기를 바라는 예외 상황,
+              누구도 칭찬하지 않는 문장.
+              처음 볼 때는 보이지 않지만 오래 쓰면 반드시 드러나는 것들입니다.
+              저는 여기에 시간을 가장 많이 씁니다.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 06 · 곁에 있는 방식 ═══════════════ -->
+  <section
+    id="beside"
+    class="section chapter"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <Reveal animation="fade-in" class="chapter__head">
+        <p class="eyebrow">
+          <span class="eyebrow__index">{ch('beside').no}</span><span>{ch('beside').label}</span>
+        </p>
+      </Reveal>
+
+      <div class="grid chapter__grid">
+        <div class="chapter__title-col">
+          <SplitHeading tag="h2" class="chapter__title">
+            좋은 도구는<br />꺼봐야 압니다.
+          </SplitHeading>
+        </div>
+        <div class="chapter__body-col">
+          <Reveal animation="slight-fade-in-from-bottom" delay={120}>
+            <p class="lead">
+              창이 엉킨 채로 오래 작업하던 날, 화면을 정리하는 일이
+              작업의 일부가 되어 있다는 걸 알았습니다. Monkey Flash는 거기서 나왔습니다.
+              처음 켰을 때 감탄할 만한 것은 없습니다.
+              며칠 쓰다 꺼보면 그제야 불편해집니다.
+            </p>
+            <p class="chapter__quote">
+              존재를 알리는 대신,<br />
+              없을 때 아쉬운 쪽으로.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 07 · 등대지기 한 사람 ═══════════ -->
+  <section
+    id="keeper"
+    class="section chapter"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <Reveal animation="fade-in" class="chapter__head">
+        <p class="eyebrow">
+          <span class="eyebrow__index">{ch('keeper').no}</span><span>{ch('keeper').label}</span>
+        </p>
+      </Reveal>
+
+      <div class="grid chapter__grid">
+        <div class="chapter__title-col">
+          <SplitHeading tag="h2" class="chapter__title">
+            작은 스튜디오라는 사실을<br />감추지 않습니다.
+          </SplitHeading>
+        </div>
+        <div class="chapter__body-col">
+          <Reveal animation="slight-fade-in-from-bottom" delay={120}>
+            <p class="lead">
+              한 사람이 처음부터 마지막까지 만듭니다.
+              규모를 크게 보이게 포장하는 대신, 그 사실을 작업 방식으로 보여줍니다.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+
+      <Reveal animation="fade-in" delay={200} class="chapter__cta">
+        <Cta href="/studio/">스튜디오 이야기</Cta>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 08 · 하지 않는 말 ═══════════════ -->
+  <section
+    id="unsaid"
     class="section chapter chapter--attitude"
     data-color-change-section-bg-color="#000000"
     data-color-change-section-text-color="#ffffff"
@@ -240,7 +398,7 @@ const avoided = [
     <div class="container">
       <Reveal animation="fade-in" class="chapter__head">
         <p class="eyebrow">
-          <span class="eyebrow__index">04</span><span>태도</span>
+          <span class="eyebrow__index">{ch('unsaid').no}</span><span>{ch('unsaid').label}</span>
         </p>
       </Reveal>
 
@@ -254,22 +412,17 @@ const avoided = [
           <Reveal animation="slight-fade-in-from-bottom" delay={120}>
             <p class="lead">
               문제를 정확하게 이해하고, 실제로 작동하는 제품을 끝까지 완성하는 데서 나옵니다.
-              그래서 기억은 아래와 같은 표현을 지향하지 않습니다.
+              그래서 아래와 같은 표현은 쓰지 않습니다.
             </p>
           </Reveal>
         </div>
       </div>
 
-      <ul class="avoided">
-        {
-          avoided.map((a, i) => (
-            <Reveal as="li" animation="fade-in" delay={i * 70} class="avoided__item">
-              <span class="avoided__mark" aria-hidden="true">—</span>
-              <span>{a}</span>
-            </Reveal>
-          ))
-        }
-      </ul>
+      <div class="nectar-fancy-ul avoided" data-animation="true" data-list-icon="dot">
+        <ul>
+          {avoided.map((a) => <li>{a}</li>)}
+        </ul>
+      </div>
 
       <Reveal animation="slight-fade-in-from-bottom" delay={120} class="closing">
         <p>
@@ -278,6 +431,19 @@ const avoided = [
         </p>
       </Reveal>
     </div>
+  </section>
+
+  <!-- ═══════════════════════ 간주 ═══════════════════════ -->
+  <section
+    class="interlude"
+    data-color-change-section-bg-color="#000000"
+    data-color-change-section-text-color="#ffffff"
+    aria-label="그때까지 남아 있으면 좋겠습니다"
+  >
+    <ScrollingText speed="slower" repeat={5} class="interlude__strip">
+      <span>그때까지 남아 있으면 좋겠습니다</span>
+      <span class="interlude__dot" aria-hidden="true">·</span>
+    </ScrollingText>
   </section>
 </Base>
 
@@ -517,24 +683,42 @@ const avoided = [
   }
 
   /* ───────────── Attitude ───────────── */
+  /* Salient nectar-fancy-ul. 항목별 등장 지연은 motion.js 가 붙입니다. */
   .avoided {
+    --fancy-ul-opacity: 0.72;
     margin-top: clamp(4rem, 8vw, 8rem);
-    display: grid;
-    gap: 0.35rem;
     max-width: 46ch;
   }
 
-  .avoided__item {
-    display: flex;
-    gap: 1.25rem;
-    font-size: clamp(1rem, 1.5vw, 1.1875rem);
-    line-height: 2;
-    opacity: 0.72;
+  .avoided :global(ul) {
+    display: grid;
+    gap: 0.35rem;
   }
 
-  .avoided__mark {
-    opacity: 0.4;
-    flex: none;
+  .avoided :global(li) {
+    font-size: clamp(1rem, 1.5vw, 1.1875rem);
+    line-height: 2;
+  }
+
+  /* ───────────── 간주 (Salient scrolling text) ───────────── */
+  /* 앞 섹션(08)이 이미 아래 패딩을 갖고 있어 위쪽은 얇게 둡니다.
+     둘 다 크게 주면 검은 화면만 길어집니다. */
+  .interlude {
+    padding-block: clamp(24px, 3vw, 48px) clamp(72px, 10vw, 140px);
+    overflow: hidden;
+  }
+
+  .interlude__strip :global(span) {
+    font-size: clamp(2rem, 6vw, 5rem);
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 1.2;
+    opacity: 0.32;
+  }
+
+  .interlude__dot :global(span),
+  .interlude :global(.interlude__dot) {
+    opacity: 0.32;
   }
 
   .closing {
