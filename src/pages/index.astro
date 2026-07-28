@@ -80,7 +80,8 @@ const avoided = [
             독립 소프트웨어 스튜디오입니다.
             한 사람이 처음부터 마지막까지 붙어 있습니다.
           </p>
-          <p class="hero__signature">Built to be remembered.</p>
+          {/* 영문 서명(site.tagline)은 히어로에 두지 않는다. 헤드라인과 뜻이 겹쳐
+              같은 말을 두 번 하게 된다. 푸터·연락 페이지 하단과 탭 제목에만 남긴다. */}
         </Reveal>
       </div>
     </div>
@@ -340,14 +341,6 @@ const avoided = [
   .hero__lead .lead {
     max-width: 44ch;
     opacity: 0.7;
-  }
-
-  .hero__signature {
-    margin-top: 1.75rem;
-    font-size: var(--fs-meta);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    opacity: 0.35;
   }
 
   @media (max-width: 900px) {
