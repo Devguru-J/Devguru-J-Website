@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import SplitHeading from '../../components/SplitHeading.astro';
 import Reveal from '../../components/Reveal.astro';
 import WorkList from '../../components/WorkList.astro';
-import { publishedWorks as works } from '../../data/works';
+import { publishedWorks as works, pendingWorks } from '../../data/works';
 ---
 
 <Base
@@ -47,7 +47,7 @@ import { publishedWorks as works } from '../../data/works';
     data-color-change-section-text-color="#000000"
   >
     <div class="container">
-      <WorkList works={works} class="works" />
+      <WorkList works={works} pending={pendingWorks} class="works" />
     </div>
   </section>
 </Base>

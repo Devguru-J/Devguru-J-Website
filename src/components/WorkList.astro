@@ -14,10 +14,16 @@ import type { Work } from '../data/works';
 
 interface Props {
   works: Work[];
+  /**
+   * 아직 채우지 않은 자리. 번호와 '준비 중'만 렌더합니다.
+   * 링크도, 상세 페이지도, 사이트맵 항목도 만들지 않습니다 —
+   * 없는 제품을 지어내지 않으면서 늘어날 예정이라는 것만 보여주는 자리입니다.
+   */
+  pending?: Work[];
   class?: string;
 }
 
-const { works, class: className = '', ...rest } = Astro.props;
+const { works, pending = [], class: className = '', ...rest } = Astro.props;
 ---
 
 <div
@@ -62,6 +68,26 @@ const { works, class: className = '', ...rest } = Astro.props;
               </div>
             </div>
           </a>
+        </div>
+      ))
+    }
+
+    {
+      pending.map((slot, i) => (
+        <div
+          class="nectar-post-grid-item is-pending col has-animation"
+          data-animation="fade-in"
+          data-delay={(works.length + i) * 90}
+        >
+          <div class="inner">
+            <div class="content">
+              <div class="item-main">
+                <div class="post-heading-wrap">
+                  <h3 class="post-heading">준비 중</h3>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       ))
     }
@@ -377,6 +403,25 @@ const { works, class: className = '', ...rest } = Astro.props;
 
   .vert_list_hover_effect_featured_image_follow .nectar-post-grid-item.animated-in .post-heading {
     animation: nectar_reveal_fade_in 0.85s cubic-bezier(0.4, 0, 0.3, 1) forwards;
+  }
+
+  /* ── 아직 채우지 않은 자리 ──────────────────────────────────────────
+     번호는 세로 리스트의 카운터를 그대로 이어받는다. 링크가 없으므로
+     밑줄·메타·커서 추종 이미지도 없다. 제목만 작게, 흐리게 둔다.       */
+
+  .nectar-post-grid-wrap[data-style='vertical_list'] .is-pending .post-heading {
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    opacity: 0.3;
+  }
+
+  .nectar-post-grid-wrap[data-style='vertical_list'] .is-pending .content {
+    padding-block: clamp(20px, 2.2vw, 30px);
+  }
+
+  .nectar-post-grid-wrap[data-style='vertical_list'] .is-pending .item-main:before {
+    opacity: 0.3;
   }
 
   /* Touch / coarse pointer — no cursor to follow. */

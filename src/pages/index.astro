@@ -6,7 +6,7 @@ import Cta from '../components/Cta.astro';
 import WorkList from '../components/WorkList.astro';
 import ChapterIndex from '../components/ChapterIndex.astro';
 import ScrollingText from '../components/ScrollingText.astro';
-import { publishedWorks as works } from '../data/works';
+import { publishedWorks as works, pendingWorks } from '../data/works';
 import { homeChapters, chapterNo } from '../data/chapters';
 
 /** 챕터 번호·라벨은 data/chapters.ts 의 순서에서 나옵니다. 손으로 매기지 않습니다. */
@@ -228,7 +228,7 @@ const avoided = [
         </div>
       </div>
 
-      <WorkList works={works} class="works" />
+      <WorkList works={works} pending={pendingWorks} class="works" />
 
       <Reveal animation="fade-in" class="chapter__cta">
         <Cta href="/work/">작업 전체 보기</Cta>
