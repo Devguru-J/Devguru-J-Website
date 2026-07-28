@@ -66,7 +66,7 @@ const avoided = [
       </Reveal>
 
       <SplitHeading tag="h1" class="hero__title" delay={150}>
-        서른 해 뒤에도<br />열리는 것을<br />만들고 있습니다.
+        적게 만듭니다.<br />오래 책임지려고요.
       </SplitHeading>
 
       <div class="hero__foot">
@@ -76,9 +76,9 @@ const avoided = [
 
         <Reveal animation="slight-fade-in-from-bottom" delay={620} class="hero__lead">
           <p class="lead">
-            기억은 작고 분명한 문제를 골라, 오래 쓸 수 있을 때까지 다듬는
+            기억은 작고 분명한 문제 하나를 골라, 오래 쓸 수 있을 때까지 다듬는
             독립 소프트웨어 스튜디오입니다.
-            한 사람이 처음부터 마지막까지 붙어 있습니다.
+            한 사람이 처음부터 마지막까지 만듭니다.
           </p>
           {/* 영문 서명(site.tagline)은 히어로에 두지 않는다. 헤드라인과 뜻이 겹쳐
               같은 말을 두 번 하게 된다. 푸터·연락 페이지 하단과 탭 제목에만 남긴다. */}
@@ -287,7 +287,10 @@ const avoided = [
     min-height: 100svh;
     display: flex;
     align-items: stretch;
-    padding-block: clamp(100px, 12vh, 150px) clamp(32px, 4vh, 56px);
+    /* 아래 여백은 취향이 아니라 필요다. 히어로 리드는 등장 waypoint(뷰포트 88%)
+       위에 있어야 첫 화면에서 스스로 나타난다. 여백을 줄이면 리드가 그 선 아래로
+       내려가 스크롤하기 전까지 보이지 않는다. */
+    padding-block: clamp(100px, 12vh, 150px) clamp(72px, 9vh, 110px);
   }
 
   .hero__inner {
