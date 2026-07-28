@@ -79,7 +79,7 @@ devguru_website/            ← 저장소 루트 (= 예전 memory_website/site/)
 | 06 곁에 있는 방식 | `beside` | 흰 | Monkey Flash |
 | 07 등대지기 한 사람 | `keeper` | 흰 | 규모를 감추지 않음 |
 | 08 하지 않는 말 | `unsaid` | 검 | 쓰지 않는 표현 |
-| 간주 | — | 검 | 히어로 문장 한 줄로 수미상관 |
+| 간주 | — | 검 | 히어로 문장 한 줄 + `기억` 서명 |
 
 **번호와 라벨은 `src/data/chapters.ts` 배열 순서에서 나온다.** 하드코딩이 아니다.
 섹션을 넣거나 빼면 eyebrow 번호와 상단 목차가 함께 따라온다. `id` 는 목차 앵커라
@@ -196,6 +196,7 @@ border-color: rgba(0,0,0,0.14);
 | **제목 쓸림** | `nectar_reveal_fade_in` | mask `linear-gradient(90deg,#fff 33.3%,rgba(255,255,255,.1) 66.6%)`, `mask-size 300% 100%`, `0.85s cubic-bezier(0.4,0,0.3,1)` |
 | **스크롤 인디케이터** | `nudgeMouse` / `trackBallSlide` | `2.4s` 무한 |
 | **챕터 목차** | `element-page-submenu.css` + `init.js` Bootstrap ScrollSpy 3.2.0 포크(~3955행) | `.stuck` 시 `position:fixed; top:0`, `transition: all 0.3s`, 활성 판정 오프셋 `10` + 바 높이, 바닥에서는 마지막 항목, 첫 섹션 위에서는 활성 없음, 활성 클래스 `.current-menu-item` |
+| **연락 양식** | `css/src/ascend.css` (`.container-wrap input/textarea`) | 배경 `transparent`, 테두리 `1px`, `padding:16px`, `font-size:16px`, 그림자 없음, `:focus` 는 테두리만 진해짐. 검은 배경(`.span_12.light`)에서는 테두리 흰색 60% |
 | **강조 목록** | `element-fancy-unordered-list.css` | 항목 초기값 `opacity:0; left:-20px`, `data-list-icon="dot"` 은 `content:"•"` + `padding-left:15px` |
 
 ### 배경 반전은 "섹션 블록"이 아니다
@@ -467,3 +468,27 @@ App Store Connect 에 등록된 URL이다. **주소도 본문 텍스트도 바�
 지금 공개된 2건(Monkey Flash, KB Inc.)은 소유자가 승인한 범위다.
 KB Inc. 는 공개 허가가 확인된 클라이언트 작업이다.
 `works.ts` 의 03~05 draft 슬롯은 **소유자가 직접 내용을 줄 때만** 채운다.
+
+---
+
+## 13. 연락 양식 (2026-07-28)
+
+`src/components/ContactForm.astro`. 스타일은 Salient Ascend 폼 사양을 그대로 옮겼고
+(§4 표), 색은 고정값 대신 `currentColor` 로 바꿔 배경 반전을 따라가게 했다.
+입력 글자 크기 **16px 는 취향이 아니다** — iOS 는 그보다 작으면 포커스 시 화면을 확대한다.
+
+**받는 곳이 아직 없다.** 지금은 보내기를 누르면 작성한 내용이 채워진 채로 메일 앱이
+열린다. 서버(Cloudflare Function 등)가 생기면 컴포넌트 안의 submit 핸들러에서
+`window.location.href = mailto:…` 한 블록만 `fetch(POST)` 로 바꾸면 된다.
+마크업·스타일·미끼 칸(허니팟)은 그대로 쓴다.
+
+양식이 있는 곳은 **홈 푸터와 `/contact/` 두 곳뿐**이다. 푸터는 모든 페이지에 붙는
+컴포넌트라 `<Base footerForm={true}>` 로 홈에서만 켠다. 작업·스튜디오 하단까지
+양식이 반복되면 조용한 마무리가 아니라 영업 화면이 된다.
+
+### 상단 고정 요소가 둘이다
+
+헤더(`#top`)와 챕터 목차가 모두 화면 위쪽을 원한다. Salient 에도
+`.page-submenu.stuck.header-not-visible` 상태가 따로 있는 이유가 이것이다.
+`motion.js` 가 헤더의 `is-hidden` 여부를 보고 목차의 `top` 을 헤더 높이 또는 0 으로
+바꾼다. 헤더 높이를 상수로 박아두지 마라 — 화면 폭에 따라 달라진다.

@@ -59,7 +59,7 @@ const avoided = [
 ];
 ---
 
-<Base>
+<Base footerForm={true}>
   <!-- ═══════════════════════════ HERO ═══════════════════════════ -->
   <section
     class="hero"
@@ -445,6 +445,12 @@ const avoided = [
       <SplitHeading tag="p" class="interlude__line">
         그때까지<br />남아 있으면 좋겠습니다.
       </SplitHeading>
+
+      {/* 편지 끝의 서명. 사업자명이 이름값을 하는 유일한 자리다. */}
+      <Reveal animation="fade-in" delay={420} class="interlude__sign">
+        <span class="interlude__dash" aria-hidden="true">—</span>
+        <span class="interlude__name">기억</span>
+      </Reveal>
     </div>
   </section>
 </Base>
@@ -715,6 +721,25 @@ const avoided = [
     letter-spacing: -0.05em;
     line-height: 1.35;
     opacity: 0.55;
+  }
+
+  .interlude__sign {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .interlude__dash {
+    opacity: 0.3;
+  }
+
+  .interlude__name {
+    font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    opacity: 0.85;
   }
 
   .closing {

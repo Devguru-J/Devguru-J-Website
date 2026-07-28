@@ -1,8 +1,18 @@
 ---
 import SplitHeading from './SplitHeading.astro';
 import Reveal from './Reveal.astro';
+import ContactForm from './ContactForm.astro';
 import { site } from '../data/site';
 
+interface Props {
+  /**
+   * 연락 양식을 함께 보일지. 홈에서만 켭니다 —
+   * 모든 페이지 하단에 폼이 반복되면 조용한 마무리가 아니라 영업 화면이 됩니다.
+   */
+  form?: boolean;
+}
+
+const { form = false } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -23,7 +33,22 @@ const year = new Date().getFullYear();
       <a class="footer__mail-link" href={`mailto:${site.email}`}>
         <span class="footer__mail-text">{site.email}</span>
       </a>
+      {
+        !form && (
+          <p class="footer__form-link">
+            <a href="/contact/">양식으로 보내기</a>
+          </p>
+        )
+      }
     </Reveal>
+
+    {
+      form && (
+        <Reveal animation="slight-fade-in-from-bottom" delay={200} class="footer__form">
+          <ContactForm />
+        </Reveal>
+      )
+    }
 
     <Reveal animation="fade-in" delay={220} class="footer__meta">
       <hr class="rule" />
@@ -75,8 +100,35 @@ const year = new Date().getFullYear();
     background-size: 0% 1px;
   }
 
+  .footer__form-link {
+    margin-top: 1.75rem;
+    font-size: var(--fs-meta);
+    letter-spacing: 0.02em;
+    opacity: 0.45;
+  }
+
+  .footer__form-link a {
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.45s cubic-bezier(0.25, 1, 0.33, 1);
+  }
+
+  .footer__form-link a:hover,
+  .footer__form-link a:focus-visible {
+    border-bottom-color: currentColor;
+  }
+
+  .footer__form {
+    margin-top: clamp(3rem, 5vw, 4.5rem);
+    max-width: 46rem;
+  }
+
   .footer__meta {
     margin-top: clamp(96px, 14vw, 200px);
+  }
+
+  /* 폼이 있으면 저작권 줄까지의 거리를 줄입니다 — 둘 다 크게 주면 빈 화면이 됩니다. */
+  .footer__form + .footer__meta {
+    margin-top: clamp(64px, 9vw, 128px);
   }
 
   .footer__meta-grid {

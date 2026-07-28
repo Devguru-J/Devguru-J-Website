@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import SplitHeading from '../components/SplitHeading.astro';
 import Reveal from '../components/Reveal.astro';
+import ContactForm from '../components/ContactForm.astro';
 import { site } from '../data/site';
 
 const fits = [
@@ -50,7 +51,12 @@ const fits = [
         </Reveal>
       </div>
 
-      <Reveal animation="fade-in" delay={680} class="contact__foot">
+      <Reveal animation="slight-fade-in-from-bottom" delay={620} class="contact__form-wrap">
+        <p class="contact__label">메시지</p>
+        <ContactForm />
+      </Reveal>
+
+      <Reveal animation="fade-in" delay={760} class="contact__foot">
         <hr class="rule" />
         <div class="contact__foot-grid">
           <p>© {new Date().getFullYear()} {site.nameKo} ({site.nameEn})</p>
@@ -147,6 +153,12 @@ const fits = [
     font-size: 1rem;
     line-height: 1.6;
     opacity: 0.7;
+  }
+
+  .contact__form-wrap {
+    margin-top: clamp(3.5rem, 6vw, 6rem);
+    /* 읽고 쓰는 영역이라 12칼럼 그리드 대신 폭만 제한합니다. */
+    max-width: 46rem;
   }
 
   .contact__foot {

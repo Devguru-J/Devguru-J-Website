@@ -731,8 +731,21 @@ function initChapterIndex() {
     if (wasStuck) bar.classList.add('stuck');
   };
 
+  // Salient has a `.stuck.header-not-visible` state because the fixed header
+  // and the pinned bar both want the top of the screen. The header hides on
+  // scroll down (#top.is-hidden); while it is visible the bar sits under it.
+  const header = document.getElementById('top');
+
   const stick = () => {
-    bar.classList.toggle('stuck', window.scrollY >= stuckAt);
+    const isStuck = window.scrollY >= stuckAt;
+    bar.classList.toggle('stuck', isStuck);
+    if (!isStuck) {
+      bar.style.top = '';
+      return;
+    }
+    const headerVisible = header && !header.classList.contains('is-hidden');
+    bar.classList.toggle('header-not-visible', !headerVisible);
+    bar.style.top = headerVisible ? `${header.getBoundingClientRect().height}px` : '0px';
   };
 
   let ticking = false;

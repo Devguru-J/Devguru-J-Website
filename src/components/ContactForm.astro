@@ -1,0 +1,205 @@
+---
+/**
+ * Salient 폼 스타일 이식 (css/src/ascend.css §.container-wrap input/textarea).
+ *
+ * 원본 사양 그대로:
+ *   background-color: transparent · border: 1px solid #ccc · padding: 16px
+ *   font-size: 16px · box-shadow 없음 · :focus 는 테두리만 진해짐(#999)
+ *   검은 배경(.span_12.light)에서는 테두리 rgba(255,255,255,0.6), 글자 흰색
+ * 고정색 대신 currentColor 로 옮겨서 배경 반전을 따라가게 했습니다.
+ * 16px 는 취향이 아니라 사양입니다 — iOS 는 16px 미만 입력란에서 화면을 확대합니다.
+ *
+ * ┌─────────────────────────────────────────────────────────────────────┐
+ * │ 받는 곳이 아직 없습니다.                                              │
+ * │ 지금은 보내기를 누르면 작성한 내용이 채워진 채로 메일 앱이 열립니다.      │
+ * │ 서버(Cloudflare Function 등)가 생기면 아래 submit 핸들러를            │
+ * │ fetch(POST) 로 바꾸기만 하면 됩니다. 마크업은 그대로 씁니다.            │
+ * └─────────────────────────────────────────────────────────────────────┘
+ */
+import { site } from '../data/site';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<form class:list={['contact-form', className]} novalidate {...rest}>
+  <div class="contact-form__row">
+    <label class="contact-form__field">
+      <span class="contact-form__label">이름</span>
+      <input type="text" name="name" autocomplete="name" required />
+    </label>
+
+    <label class="contact-form__field">
+      <span class="contact-form__label">이메일</span>
+      <input type="email" name="email" autocomplete="email" required />
+    </label>
+  </div>
+
+  <label class="contact-form__field">
+    <span class="contact-form__label">내용</span>
+    <textarea
+      name="message"
+      rows="6"
+      required
+      placeholder="만들려는 것, 지금 겪고 있는 문제, 원하는 일정"></textarea>
+  </label>
+
+  {/* 스팸 봇용 미끼. 사람에게는 보이지 않고, 채워져 있으면 전송하지 않습니다. */}
+  <div class="contact-form__trap" aria-hidden="true">
+    <label>이 칸은 비워두세요<input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <div class="contact-form__foot">
+    <button type="submit" class="contact-form__submit">
+      <span>보내기</span>
+    </button>
+    <p class="contact-form__note" data-form-note aria-live="polite">
+      보내기를 누르면 메일 앱이 열립니다.
+    </p>
+  </div>
+</form>
+
+<script define:vars={{ email: site.email }}>
+  document.querySelectorAll('.contact-form').forEach((form) => {
+    const note = form.querySelector('[data-form-note]');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      // 미끼 칸이 채워졌으면 봇입니다. 조용히 무시합니다.
+      if (form.elements.company.value) return;
+
+      if (!form.checkValidity()) {
+        note.textContent = '이름 · 이메일 · 내용을 모두 채워 주세요.';
+        form.reportValidity();
+        return;
+      }
+
+      const name = form.elements.name.value.trim();
+      const from = form.elements.email.value.trim();
+      const message = form.elements.message.value.trim();
+
+      // 받는 곳이 생기면 이 블록을 fetch(POST) 로 교체하세요.
+      const subject = `[기억] ${name} 님의 문의`;
+      const body = `${message}\n\n---\n보낸 사람: ${name} <${from}>`;
+      window.location.href =
+        `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      note.textContent = '메일 앱을 열었습니다. 열리지 않으면 위 주소로 바로 보내 주세요.';
+    });
+  });
+</script>
+
+<style>
+  .contact-form {
+    display: grid;
+    gap: clamp(1.25rem, 2vw, 1.75rem);
+  }
+
+  .contact-form__row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2vw, 1.75rem);
+  }
+
+  .contact-form__field {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .contact-form__label {
+    font-size: var(--fs-meta);
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    opacity: 0.4;
+  }
+
+  /* Salient Ascend: transparent bg · 1px border · 16px padding · 16px type */
+  .contact-form input,
+  .contact-form textarea {
+    background-color: transparent;
+    border: 1px solid;
+    border-color: color-mix(in srgb, currentColor 25%, transparent);
+    border-radius: 0;
+    box-shadow: none;
+    padding: 16px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: inherit;
+    width: 100%;
+    transition: border-color 0.45s cubic-bezier(0.25, 1, 0.33, 1);
+  }
+
+  .contact-form textarea {
+    resize: vertical;
+    min-height: 9rem;
+  }
+
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder {
+    color: inherit;
+    opacity: 0.3;
+  }
+
+  /* 원본은 #ccc → #999. 여기서는 같은 방향으로 진해지게만 합니다. */
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    outline: none;
+    border-color: color-mix(in srgb, currentColor 65%, transparent);
+  }
+
+  .contact-form__trap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .contact-form__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Salient Ascend submit: padding 16px, 테두리 있는 납작한 버튼.
+     밑줄 스윕은 사이트의 .nectar-underline 과 같은 이징을 씁니다. */
+  .contact-form__submit {
+    padding: 16px 40px;
+    background: transparent;
+    border: 1px solid;
+    border-color: color-mix(in srgb, currentColor 45%, transparent);
+    border-radius: 0;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: border-color 0.45s cubic-bezier(0.25, 1, 0.33, 1),
+      background-color 0.45s cubic-bezier(0.25, 1, 0.33, 1),
+      color 0.45s cubic-bezier(0.25, 1, 0.33, 1);
+  }
+
+  .contact-form__submit:hover,
+  .contact-form__submit:focus-visible {
+    border-color: currentColor;
+    background-color: var(--nectar-page-text-color, #000);
+    color: var(--nectar-page-background-color, #fff);
+  }
+
+  .contact-form__note {
+    font-size: var(--fs-meta);
+    opacity: 0.4;
+    margin: 0;
+  }
+
+  @media (max-width: 720px) {
+    .contact-form__row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
