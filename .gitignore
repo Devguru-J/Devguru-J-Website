@@ -6,6 +6,9 @@ dist/
 .env
 .env.production
 
+# 구매한 Salient 테마 원본. 모션 사양 대조용이며 배포·커밋 대상이 아니다.
+reference/
+
 # 로컬 도구 상태
 .superpowers/
 .playwright-mcp/
