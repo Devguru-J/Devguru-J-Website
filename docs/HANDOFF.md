@@ -54,7 +54,7 @@ devguru_website/            ← 저장소 루트 (= 예전 memory_website/site/)
 
 | 경로 | 파일 | 내용 |
 | --- | --- | --- |
-| `/` | `src/pages/index.astro` | 히어로 → 선언 → 01~08 챕터 → 간주 → 푸터 (아래 §2-1) |
+| `/` | `src/pages/index.astro` | 히어로 → 선언 → 01~08 챕터 → 간주 한 줄 → 푸터 (아래 §2-1) |
 | `/work/` | `src/pages/work/index.astro` | 작업 목록 |
 | `/work/{slug}/` | `src/pages/work/[slug].astro` | 작업 상세 (`works` 배열에서 자동 생성) |
 | `/studio/` | `src/pages/studio.astro` | 만든 사람 · 작업 방식 · 규모 |
@@ -79,7 +79,7 @@ devguru_website/            ← 저장소 루트 (= 예전 memory_website/site/)
 | 06 곁에 있는 방식 | `beside` | 흰 | Monkey Flash |
 | 07 등대지기 한 사람 | `keeper` | 흰 | 규모를 감추지 않음 |
 | 08 하지 않는 말 | `unsaid` | 검 | 쓰지 않는 표현 |
-| 간주 | — | 검 | 히어로 문장이 흐르며 수미상관 |
+| 간주 | — | 검 | 히어로 문장 한 줄로 수미상관 |
 
 **번호와 라벨은 `src/data/chapters.ts` 배열 순서에서 나온다.** 하드코딩이 아니다.
 섹션을 넣거나 빼면 eyebrow 번호와 상단 목차가 함께 따라온다. `id` 는 목차 앵커라
@@ -99,6 +99,12 @@ devguru_website/            ← 저장소 루트 (= 예전 memory_website/site/)
 Monkey Flash 가 화면을 덮고 지금 창만 밝게 남기는 앱이라 이 은유에서 유일하게
 사실 그대로지만, **"Monkey Flash는 등대입니다"라고 설명하지 않는다.**
 알아채는 편이 낫고, 설명하는 순간 촌스러워진다.
+
+**간주는 반복하지 않는다.** 처음에는 Salient `scrolling-text` 로 히어로 문장을
+가로로 흘렸는데, 1인칭 소망이 다섯 번 되풀이되니 다짐이 아니라 주문처럼 읽혔다
+("공포영화 같다"). 지금은 움직임 없는 한 줄이고, 사이트에서 **유일하게 가운데 정렬**이라
+그 자체로 서명 역할을 한다. 흐르는 문장 포팅은 쓰지 않게 되어 삭제했다 —
+안 쓰는 요소를 남겨두지 않는다. 필요해지면 커밋 `e6a0362` 에서 되살릴 수 있다.
 
 ---
 
@@ -189,7 +195,6 @@ border-color: rgba(0,0,0,0.14);
 | **커서 추종 이미지** | `featured_image_follow` + `NectarIconMouseFollow('post-grid-images')` | 20vw / 4:3 `position:fixed`, lerp **0.1**, `mappedX = 0.5*winW + (clientX/winW)*(winW/2)`, `clip-path inset(20%)→0%` `0.6s cubic-bezier(.1,.75,.5,1)` |
 | **제목 쓸림** | `nectar_reveal_fade_in` | mask `linear-gradient(90deg,#fff 33.3%,rgba(255,255,255,.1) 66.6%)`, `mask-size 300% 100%`, `0.85s cubic-bezier(0.4,0,0.3,1)` |
 | **스크롤 인디케이터** | `nudgeMouse` / `trackBallSlide` | `2.4s` 무한 |
-| **흐르는 문장** | `css/src/elements/element-scrolling-text.css` | `translateX(-20%)→(-120%)`, `linear infinite`, 프리셋 slower `45s` · slowest `30s` · 기본 `15s` · slow `14s` · medium `7s` · fast `4s`, `data-spacing` 시 `padding-left:0.45em` |
 | **챕터 목차** | `element-page-submenu.css` + `init.js` Bootstrap ScrollSpy 3.2.0 포크(~3955행) | `.stuck` 시 `position:fixed; top:0`, `transition: all 0.3s`, 활성 판정 오프셋 `10` + 바 높이, 바닥에서는 마지막 항목, 첫 섹션 위에서는 활성 없음, 활성 클래스 `.current-menu-item` |
 | **강조 목록** | `element-fancy-unordered-list.css` | 항목 초기값 `opacity:0; left:-20px`, `data-list-icon="dot"` 은 `content:"•"` + `padding-left:15px` |
 

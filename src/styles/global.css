@@ -778,71 +778,6 @@ html:not(.js) #ajax-content-wrap {
   opacity: 1;
 }
 
-/* ---- 5.8b Scrolling text ---------------------------------------------
-   Salient css/src/elements/element-scrolling-text.css, values verbatim.   */
-
-.nectar-scrolling-text {
-  overflow: hidden;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-.nectar-scrolling-text .nectar-scrolling-text-inner {
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.nectar-scrolling-text .nectar-scrolling-text-inner__text-chunk {
-  display: flex;
-  flex-direction: row;
-}
-
-.nectar-scrolling-text .nectar-scrolling-text-inner > * {
-  color: inherit;
-  margin-bottom: 0;
-  transform: translateX(-20%) translateZ(0);
-  animation: nectar-scrolling-text-animation linear infinite 15s;
-}
-
-.nectar-scrolling-text[data-spacing='true'] .nectar-scrolling-text-inner > .nectar-scrolling-text-inner__text-chunk {
-  padding-left: 0.45em;
-}
-
-.nectar-scrolling-text[data-s-speed='slower'] .nectar-scrolling-text-inner > * {
-  animation-duration: 45s;
-}
-.nectar-scrolling-text[data-s-speed='slowest'] .nectar-scrolling-text-inner > * {
-  animation-duration: 30s;
-}
-.nectar-scrolling-text[data-s-speed='slow'] .nectar-scrolling-text-inner > * {
-  animation-duration: 14s;
-}
-.nectar-scrolling-text[data-s-speed='medium'] .nectar-scrolling-text-inner > * {
-  animation-duration: 7s;
-}
-.nectar-scrolling-text[data-s-speed='fast'] .nectar-scrolling-text-inner > * {
-  animation-duration: 4s;
-}
-
-.nectar-scrolling-text.prevent-animation .nectar-scrolling-text-inner > * {
-  animation: none;
-}
-
-@keyframes nectar-scrolling-text-animation {
-  from {
-    transform: translateX(-20%) translateZ(0);
-  }
-  to {
-    transform: translateX(-120%) translateZ(0);
-  }
-}
-
 /* ---- 5.8c Fancy unordered list ---------------------------------------
    Salient element-fancy-unordered-list.css. The theme's resting state is
    `opacity: 0; left: -20px` on each item; the reveal restores both.       */
@@ -901,12 +836,6 @@ html:not(.js) #ajax-content-wrap {
   .nectar-split-heading span .inner {
     transform: none !important;
     opacity: 1 !important;
-  }
-
-  /* Salient's own opt-out class for the scrolling strip. */
-  .nectar-scrolling-text .nectar-scrolling-text-inner > * {
-    animation: none !important;
-    transform: none !important;
   }
 
   .nectar-fancy-ul[data-animation='true'] ul li {

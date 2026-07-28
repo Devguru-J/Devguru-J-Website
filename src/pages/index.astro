@@ -5,7 +5,6 @@ import Reveal from '../components/Reveal.astro';
 import Cta from '../components/Cta.astro';
 import WorkList from '../components/WorkList.astro';
 import ChapterIndex from '../components/ChapterIndex.astro';
-import ScrollingText from '../components/ScrollingText.astro';
 import { publishedWorks as works, pendingWorks } from '../data/works';
 import { homeChapters, chapterNo } from '../data/chapters';
 
@@ -434,16 +433,19 @@ const avoided = [
   </section>
 
   <!-- ═══════════════════════ 간주 ═══════════════════════ -->
+  {/* 히어로의 문장이 한 번 더 지나가며 페이지가 수미상관으로 닫힙니다.
+      반복하거나 흘리지 않습니다 — 소망은 한 번 말하면 다짐이지만
+      되풀이하면 주문처럼 들립니다. 사이트에서 유일하게 가운데 정렬입니다. */}
   <section
     class="interlude"
     data-color-change-section-bg-color="#000000"
     data-color-change-section-text-color="#ffffff"
-    aria-label="그때까지 남아 있으면 좋겠습니다"
   >
-    <ScrollingText speed="slower" repeat={5} class="interlude__strip">
-      <span>그때까지 남아 있으면 좋겠습니다</span>
-      <span class="interlude__dot" aria-hidden="true">·</span>
-    </ScrollingText>
+    <div class="container">
+      <SplitHeading tag="p" class="interlude__line">
+        그때까지<br />남아 있으면 좋겠습니다.
+      </SplitHeading>
+    </div>
   </section>
 </Base>
 
@@ -700,25 +702,19 @@ const avoided = [
     line-height: 2;
   }
 
-  /* ───────────── 간주 (Salient scrolling text) ───────────── */
-  /* 앞 섹션(08)이 이미 아래 패딩을 갖고 있어 위쪽은 얇게 둡니다.
-     둘 다 크게 주면 검은 화면만 길어집니다. */
+  /* ───────────── 간주 ───────────── */
+  /* 앞 섹션(08)이 이미 아래 패딩을 갖고 있어 위쪽은 얇게 둡니다. */
   .interlude {
-    padding-block: clamp(24px, 3vw, 48px) clamp(72px, 10vw, 140px);
-    overflow: hidden;
+    padding-block: clamp(48px, 6vw, 96px) clamp(96px, 13vw, 180px);
   }
 
-  .interlude__strip :global(span) {
-    font-size: clamp(2rem, 6vw, 5rem);
+  .interlude__line {
+    text-align: center;
+    font-size: clamp(1.5rem, 3.4vw, 3rem);
     font-weight: 500;
     letter-spacing: -0.05em;
-    line-height: 1.2;
-    opacity: 0.32;
-  }
-
-  .interlude__dot :global(span),
-  .interlude :global(.interlude__dot) {
-    opacity: 0.32;
+    line-height: 1.35;
+    opacity: 0.55;
   }
 
   .closing {
