@@ -1,0 +1,223 @@
+---
+import { site } from '../data/site';
+
+const { pathname } = Astro.url;
+const isActive = (href: string) =>
+  href === '/' ? pathname === '/' : pathname.startsWith(href);
+
+const links = [
+  { href: '/work/', label: '작업' },
+  { href: '/studio/', label: '스튜디오' },
+  { href: '/contact/', label: '연락' },
+];
+---
+
+<header id="top">
+  <div class="header__inner container">
+    <a class="wordmark" href="/" aria-label="기억 — 홈">
+      <span class="wordmark__ko">기억</span>
+      <span class="wordmark__en">Memory</span>
+    </a>
+
+    <nav class="nav nectar-link-underline" aria-label="주요 메뉴">
+      {
+        links.map((l) => (
+          <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>
+            <span>{l.label}</span>
+          </a>
+        ))
+      }
+    </nav>
+
+    <button
+      class="nav-toggle"
+      data-nav-toggle
+      type="button"
+      aria-expanded="false"
+      aria-controls="nav-panel"
+    >
+      <span class="nav-toggle__label">메뉴</span>
+      <span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+</header>
+
+<div class="nav-panel" id="nav-panel">
+  <nav class="nav-panel__inner container" aria-label="모바일 메뉴">
+    {links.map((l, i) => (
+      <a href={l.href} style={`--i:${i}`}>{l.label}</a>
+    ))}
+    <a class="nav-panel__mail" href={`mailto:${site.email}`} style="--i:3">{site.email}</a>
+  </nav>
+</div>
+
+<style>
+  #top {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 9000;
+    color: var(--nectar-page-text-color, #000);
+    transition: transform 0.55s var(--nectar-cubic-bezier-out),
+      color var(--page-color-change-section-transition-time);
+    will-change: transform;
+  }
+
+  #top.is-hidden {
+    transform: translateY(-100%);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-block: clamp(20px, 2.4vw, 34px);
+  }
+
+  /* Wordmark */
+  .wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6em;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .wordmark__ko {
+    font-size: clamp(1.0625rem, 1.25vw, 1.25rem);
+    font-weight: 600;
+  }
+
+  .wordmark__en {
+    font-size: var(--fs-meta);
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    transition: opacity 0.4s var(--nectar-cubic-bezier-out);
+  }
+
+  .wordmark:hover .wordmark__en {
+    opacity: 1;
+  }
+
+  /* Desktop nav */
+  .nav {
+    display: flex;
+    gap: clamp(1.75rem, 3vw, 3.25rem);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .nav a {
+    position: relative;
+    padding-block: 2px;
+  }
+
+  /* Mobile toggle */
+  .nav-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    background: none;
+    border: 0;
+    padding: 6px 0;
+    cursor: pointer;
+    font-size: var(--fs-meta);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .nav-toggle__bars {
+    display: block;
+    width: 22px;
+  }
+
+  .nav-toggle__bars i {
+    display: block;
+    height: 1px;
+    background: currentColor;
+    transition: transform 0.45s var(--nectar-cubic-bezier-in-out),
+      opacity 0.3s ease;
+  }
+
+  .nav-toggle__bars i:first-child {
+    margin-bottom: 6px;
+  }
+
+  :global(body.nav-open) .nav-toggle__bars i:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+
+  :global(body.nav-open) .nav-toggle__bars i:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+
+  /* Mobile panel */
+  .nav-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 8900;
+    background: var(--nectar-page-background-color, #fff);
+    color: var(--nectar-page-text-color, #000);
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s var(--nectar-cubic-bezier-out), visibility 0.5s;
+  }
+
+  :global(body.nav-open) .nav-panel {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav-panel__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35em;
+  }
+
+  .nav-panel__inner a {
+    font-size: clamp(2.25rem, 11vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    line-height: 1.15;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s var(--ease-out-cubic), transform 0.6s var(--ease-out-cubic);
+    transition-delay: calc(var(--i) * 60ms);
+  }
+
+  :global(body.nav-open) .nav-panel__inner a {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(120ms + var(--i) * 60ms);
+  }
+
+  .nav-panel__mail {
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+    letter-spacing: -0.01em !important;
+    opacity: 0.5;
+    margin-top: 2.5rem;
+  }
+
+  @media (max-width: 860px) {
+    .nav {
+      display: none;
+    }
+
+    .nav-toggle {
+      display: inline-flex;
+    }
+  }
+
+  @media (min-width: 861px) {
+    .nav-panel {
+      display: none;
+    }
+  }
+</style>

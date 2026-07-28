@@ -1,0 +1,408 @@
+# HANDOFF — 기억 (Memory) 브랜드 사이트
+
+다른 세션에서 이 폴더를 이어받아 작업하기 위한 인수인계 문서.
+**작업을 시작하기 전에 이 문서를 끝까지 읽으세요.** 특히 §6(함정)은 다시 밟으면
+시간을 크게 낭비하는 항목들입니다.
+
+최초 작성: 2026-07-28
+
+> **2026-07-28 이 저장소에 설치 완료.** 이 문서는 디자인을 만든 세션에서 넘어온
+> 원문이고, 저장소 사정에 맞춰 §1 폴더 구조 · §8 · §10 만 갱신했습니다.
+> 저장소 고유의 제약(주소·MonkeyFlash 법적 페이지 등)은 §12 에 정리했습니다.
+
+---
+
+## 1. 이 프로젝트가 무엇인가
+
+독립 소프트웨어 스튜디오 **기억(Memory)** 의 브랜드 사이트.
+
+- **정적 사이트** — Astro 5, SSR 없음, 아일랜드 없음, 프레임워크 통합 없음
+- **배포** — Cloudflare Pages. 기존에 있던 다른 디자인을 **교체**하는 건이다
+- **톤앤매너** — Black & White 2색만. 중간 톤은 전부 `currentColor` 투명도로 만든다
+- **폰트** — Pretendard Variable (jsDelivr dynamic subset CDN)
+- **디자인 출처** — 구매한 WordPress 테마 **Salient**(`reference/salient-new/`)의
+  디자인 언어와 모션을 이식. 마크업을 베낀 것이 아니라 **모션 사양(duration /
+  easing / transform)을 원본 수치 그대로** 가져와 의존성 없는 vanilla JS로 재구현했다
+
+### 폴더 구조 (저장소 최상위)
+
+디자인 폴더의 `site/` 내용이 곧 **저장소 루트**다. `site/` `export/` 구분은 없다.
+
+```
+devguru_website/            ← 저장소 루트 (= 예전 memory_website/site/)
+├─ src/  public/  docs/     ← docs/HANDOFF.md 가 이 문서
+├─ astro.config.mjs  package.json  tsconfig.json
+└─ dist/                    ← 빌드 산출물 (gitignore)
+```
+
+원본 export 폴더(`memory_design/`)와 `reference/concept.md` · `salient-new/` 는
+저장소 밖 `~/Devguru/devguru_website_ARCHIVE_20260728/` 에 보관돼 있다.
+카피를 새로 쓸 일이 있으면 그때만 `working-material/reference/` 에서 concept.md 를
+꺼내 본다. 평소에는 열지 않는다 — 이전 디자인이 섞이는 것을 막으려고 격리한 폴더다.
+
+---
+
+## 2. 사이트 구조
+
+| 경로 | 파일 | 내용 |
+| --- | --- | --- |
+| `/` | `src/pages/index.astro` | 히어로 → 선언 → 01 이름 → 02 작업 → 03 만드는 방식 → 04 태도 |
+| `/work/` | `src/pages/work/index.astro` | 작업 목록 |
+| `/work/{slug}/` | `src/pages/work/[slug].astro` | 작업 상세 (`works` 배열에서 자동 생성) |
+| `/studio/` | `src/pages/studio.astro` | 만든 사람 · 작업 방식 · 규모 |
+| `/contact/` | `src/pages/contact.astro` | 연락 (푸터 없음 — `hideFooter`) |
+| `/404` | `src/pages/404.astro` | (푸터 없음) |
+
+홈의 섹션 번호(01~04)는 **하드코딩**이다. 섹션을 추가·삭제하면
+`eyebrow__index` 숫자를 직접 다시 매겨야 한다.
+
+---
+
+## 3. 디자인 시스템
+
+전부 `src/styles/global.css` 상단 `:root` 에 있다. 값을 흩뿌리지 말고 여기서 관리한다.
+
+### 색
+
+```
+--ink   #000    --paper #fff
+--nectar-page-background-color / --nectar-page-text-color
+```
+
+뒤의 두 변수는 **스크롤에 따라 JS가 실시간으로 바꾼다**(§4 배경 반전).
+`body` 의 배경·글자색이 이 변수를 참조하므로, 새로 만드는 요소는
+**절대 색을 고정하지 말고** `currentColor` 와 `color-mix()` 를 써야 한다.
+
+```css
+/* 좋음 — 흑배경/백배경 양쪽에서 자동으로 맞는다 */
+border-color: color-mix(in srgb, currentColor 14%, transparent);
+opacity: 0.55;
+
+/* 나쁨 — 배경이 검정으로 바뀌면 보이지 않는다 */
+color: #666;
+border-color: rgba(0,0,0,0.14);
+```
+
+경계선 투명도는 사이트 전체에서 **14%** 로 통일돼 있다. 이 값을 지켜라.
+
+### 타입 스케일
+
+```
+--fs-display  clamp(2.5rem, 6vw, 6.5rem)     히어로 전용
+--fs-h1       clamp(2.5rem, 6.2vw, 6rem)     페이지 상단 제목
+--fs-h2       clamp(2rem, 4.4vw, 4.25rem)    섹션 제목
+--fs-h3 / h4 / lead / body / meta(0.8125rem)
+```
+
+- 제목 자간은 `-0.04em ~ -0.055em`. 크면 클수록 더 조인다
+- 본문 `line-height: 1.75`, 제목 `1.18`, split-heading 내부는 **반드시 `1.2`**
+  (Salient 사양. 이걸 바꾸면 단어 마스킹이 어긋나 글자가 잘린다)
+- 한글 줄바꿈은 `word-break: keep-all` + `text-wrap: pretty` 가 전역 적용돼 있다
+
+### 여백
+
+```
+--gutter      clamp(24px, 5.2vw, 96px)
+--page-max    1560px
+--section-y   clamp(120px, 15vw, 260px)
+```
+
+섹션이 연달아 오면 위아래 패딩이 **합산되어 과해진다**. 이미 발생했던 문제라
+`.statement` 는 아래 패딩을 `0` 으로 두고 다음 섹션 패딩에 맡긴다.
+새 섹션을 붙일 때 같은 상황을 확인할 것.
+
+### 그리드
+
+12칼럼 (`.grid`). 사이트 전체가 쓰는 배치 규칙:
+
+- 섹션 제목 `1 / span 6`, 본문 `8 / span 4` — 7번 칼럼은 **비운다**(숨 쉬는 간격)
+- 작업 목록은 12칼럼 그리드를 쓰지 않는다 — `WorkList` 가 자체 flex 행을 갖는다
+- 900px 이하에서 전부 `1 / -1` 로 떨어진다
+
+---
+
+## 4. 모션 계약 (가장 중요)
+
+**요구사항이 "Salient에서 구동되는 요소·모션·트랜지션이 100% 동일하게 작동"이었다.**
+따라서 아래 수치는 취향이 아니라 **사양**이다. 임의로 바꾸지 마라.
+바꿔야 한다면 `reference/salient-new/` 원본을 먼저 확인할 것.
+
+구현은 두 파일에 나뉜다:
+- `src/styles/global.css` §5 — 정적 사양 (초기 transform, transition, keyframes)
+- `src/scripts/motion.js` — 트리거 로직 (waypoint, split 마크업 생성, 색 반전)
+
+| 동작 | Salient 원본 위치 | 사양 |
+| --- | --- | --- |
+| **문장 라인 리빌** | `includes/class-nectar-element-styles.php` (split_line_heading) + `js/src/init.js splitLineHeadings()` | 단어별 `overflow:hidden` 래핑, inner `translateY(1.3em)→0`, `1.2s cubic-bezier(0.25,1,0.5,1)`, stagger `clamp(500/단어수, 15, 50)ms` |
+| **스크롤 연동 문장** | `init.js NectarSplitHeadingTimeline` | 단어 opacity `0.2→1`, duration 450ms, wordDelay 150ms(느릴 때 250ms), `speed`/`topCushion` 계산식까지 동일 |
+| **컬럼·요소 등장** | `init.js colAndImgAnimations()` | `650ms`, easeOutCubic(`cubic-bezier(0.215,0.61,0.355,1)`), waypoint **88%**, `translateY(75px)` |
+| **미디어 등장** | `css/src/style.css zoom-out-reveal` | frame `scale(0.7)→1` + inner `scale(1.75)→1`, `1.3s cubic-bezier(0.12,0.75,0.4,1)`, opacity `0.4s ease-out`, waypoint 70% |
+| **배경 반전** | `js/build/elements/nectar-color-change-bg.js` | IntersectionObserver + rAF 재스캔, 가시성 임계 `0.4`, 자손 임계 `0.05`, 전환 `0.8s` |
+| **화살표 CTA** | `nectar_cta[data-style="arrow-animation"]` | 키프레임 6종, `0.45s cubic-bezier(0.23,0.46,0.4,1)`, polyline은 hover에서 0.25s 지연 후 그려짐 |
+| **링크 밑줄** | `.nectar-underline` | `background-size 0% 1px → 100% 1px`, `0.55s cubic-bezier(.2,.75,.5,1)` |
+| **작업 목록** | `nectar_post_grid[data-style="vertical_list"]` | 헤어라인 `scaleX(0)→1` `1s ease`, 번호 원 40px, ≥1000px 에서 행 flex |
+| **커서 추종 이미지** | `featured_image_follow` + `NectarIconMouseFollow('post-grid-images')` | 20vw / 4:3 `position:fixed`, lerp **0.1**, `mappedX = 0.5*winW + (clientX/winW)*(winW/2)`, `clip-path inset(20%)→0%` `0.6s cubic-bezier(.1,.75,.5,1)` |
+| **제목 쓸림** | `nectar_reveal_fade_in` | mask `linear-gradient(90deg,#fff 33.3%,rgba(255,255,255,.1) 66.6%)`, `mask-size 300% 100%`, `0.85s cubic-bezier(0.4,0,0.3,1)` |
+| **스크롤 인디케이터** | `nudgeMouse` / `trackBallSlide` | `2.4s` 무한 |
+
+### 배경 반전은 "섹션 블록"이 아니다
+
+이걸 오해하면 안 된다. 검정 섹션은 **검정 배경의 블록이 아니라**,
+그 섹션이 화면에 들어오면 **페이지 전체(`body`)가 검정으로 크로스페이드**되는 것이다.
+Salient의 원래 동작이 그렇고, 스크롤할 때 훨씬 고급스럽다.
+
+그래서 **모든 `<section>` 에 아래 두 속성이 반드시 있어야 한다:**
+
+```html
+<section data-color-change-section-bg-color="#ffffff"
+         data-color-change-section-text-color="#000000">
+```
+
+빠뜨리면 그 섹션은 이전 섹션 색을 그대로 유지한다 → 흰 배경에 흰 글자가 되는
+사고가 난다. **새 섹션을 만들 때 가장 먼저 챙길 것.**
+
+부작용 하나: 전체 페이지 스크린샷(fullPage)을 찍으면 배경색이 한 가지로만 나오고
+등장 애니메이션도 트리거되지 않는다. 확인할 때는 §7처럼 **구간별로 스크롤하며** 찍어야 한다.
+
+---
+
+## 5. 컴포넌트 사용법
+
+```astro
+<!-- 라인 리빌 제목. <br> 로 줄바꿈 위치를 직접 지정한다 -->
+<SplitHeading tag="h2" class="chapter__title">
+  기억은 저장에 대한<br />이야기가 아닙니다.
+</SplitHeading>
+
+<!-- 스크롤 연동 문장 (긴 선언문에 사용) -->
+<SplitHeading tag="p" effect="scroll-opacity-reveal" class="statement__text">
+  좋은 소프트웨어는 사용자의 관심을 계속 요구하지 않습니다.
+</SplitHeading>
+
+<!-- 등장 래퍼. as 로 태그 교체 (리스트 항목이면 as="li") -->
+<Reveal animation="slight-fade-in-from-bottom" delay={120} class="…">…</Reveal>
+<Reveal as="li" animation="fade-in" delay={i * 70} class="…">…</Reveal>
+
+<!-- CTA -->
+<Cta href="/work/">작업 전체 보기</Cta>
+<Cta href="https://…" external style="underline">사이트 보기</Cta>
+
+<!-- 작업 목록 (홈 · /work/ 공통). 3~5개 기준 레이아웃 -->
+<WorkList works={works} class="works" />
+```
+
+`animation` 값: `fade-in` · `fade-in-from-bottom` · `slight-fade-in-from-bottom` ·
+`fade-in-from-left` · `fade-in-from-right` · `grow-in`
+
+리스트를 순차 등장시킬 때 `delay={i * 70}` ~ `{i * 80}` 이 사이트 전체 관례다.
+
+---
+
+## 6. 함정 — 다시 밟지 말 것
+
+### ① Astro 스코프 스타일이 자식 컴포넌트 루트에 닿지 않는다
+
+`index.astro` 의 `<style>` 에서 `.hero__title` 을 써도, 그게
+`<SplitHeading class="hero__title">` 의 루트라면 **적용되지 않는다.**
+Astro는 자기 파일에서 렌더한 요소에만 `data-astro-cid-*` 를 붙이기 때문이다.
+
+**해결 방식(이미 적용됨):** Astro가 부모의 cid를 **props로 전달**해 준다는 점을 이용해,
+컴포넌트에서 나머지 props를 루트에 스프레드한다.
+
+```astro
+const { animation, delay, class: className, ...rest } = Astro.props;
+<Tag class:list={[...]} {...rest}>
+```
+
+`Reveal` · `SplitHeading` · `Cta` · `WorkList` 네 개에 모두 들어가 있다.
+**새 컴포넌트를 만들면 반드시 같은 처리를 하라.** 안 하면 스타일이 조용히 사라진다.
+
+### ② `h1` 의 브라우저 기본 `font-size: 2em`
+
+`global.css` 리셋에 `h1~h6 { font-size: inherit }` 이 들어 있다. **지우지 마라.**
+
+`SplitHeading` 은 래퍼 `<div>` 에 `font-size` 를 주고 안의 `<h1>` 이 상속받는 구조인데,
+`inherit` 이 없으면 UA 스타일시트의 `2em` 이 곱해져 **글자가 정확히 2배로 커진다.**
+실제로 첫 빌드에서 140px 의도가 254px로 렌더됐다.
+
+즉 **제목의 크기는 항상 래퍼(또는 클래스)에서 지정**하고, 태그에 기대지 않는다.
+
+### ③ `<br>` 파싱
+
+`motion.js` 의 `buildSplitMarkup()` 은 `innerHTML` 을 `<br>` 로 쪼갠다.
+Astro가 `<br data-astro-cid-xxx="">` 로 렌더하므로 정규식이
+`/<br\b[^>]*>/gi` 여야 한다. `/<br\s*\/?>/` 로 쓰면 속성 때문에 매칭에 실패해
+**`data-astro-cid-…=""` 문자열이 화면에 그대로 출력된다.**
+
+### ④ 로컬 포트 충돌
+
+이 맥에서 **4321~4332 대역은 다른 프로젝트가 이미 점유**하고 있다.
+`astro preview` 는 조용히 다음 빈 포트로 넘어가므로, 로그를 확인하지 않고
+예상 포트에 접속하면 **엉뚱한 사이트를 보며 디버깅하게 된다.** (실제로 겪음)
+
+```bash
+npx astro preview --port 4350 > /tmp/preview.log 2>&1 &
+sleep 3 && tail -2 /tmp/preview.log   # ← 실제 포트를 반드시 확인
+```
+
+### ⑤ 검정 섹션 위의 하드코딩 색
+
+§3에서 말한 것과 같다. `rgba(0,0,0,…)` 이나 `#666` 을 쓰면 반전 시 사라진다.
+
+---
+
+## 7. 확인 절차
+
+빌드가 통과했다고 끝난 게 아니다. **브라우저로 실제 확인**해야 한다.
+이번 작업의 버그 3개는 전부 빌드는 통과하고 화면만 깨진 종류였다.
+
+```bash
+npm run build
+npx astro preview --port 4350 > /tmp/preview.log 2>&1 &
+sleep 3 && tail -2 /tmp/preview.log
+```
+
+Chrome DevTools MCP 로 1512×950 및 390×844 에서:
+
+1. 각 섹션을 **스크롤로 진입**시킨 뒤 스크린샷 (fullPage는 애니메이션이 안 뜬다)
+2. 진입 후 `getComputedStyle(document.body).backgroundColor` 로 배경 반전 확인
+3. 콘솔 에러 확인
+4. 모바일 폭에서 히어로가 한 화면에 들어오는지, 메뉴 패널이 열리는지
+
+전환 대기는 넉넉히 잡는다 — 색 반전 0.8s + 리빌 1.2s 라 `setTimeout` 1600~2200ms.
+
+---
+
+## 8. 배포 (구 "export 폴더 동기화")
+
+export 사본은 더 이상 없다. 저장소 루트가 원본이고, 배포는 GitHub main push →
+Cloudflare Pages 자동 빌드다.
+
+```bash
+npm run build          # 먼저 로컬에서 통과하는지 확인
+git add -A && git commit && git push    # push 하는 순간 배포된다
+```
+
+Pages 설정: Build command `npm run build` · Output `dist` · `NODE_VERSION=20`.
+
+---
+
+## 9. 카피라이팅 규칙
+
+`reference/concept.md` 가 **유일한 출처**다. 브랜드 문장·리스트 항목은 대부분 원문을
+그대로 쓰거나 최소한으로 다듬은 것이다. 새 카피가 필요하면 원문 어조에 맞춘다.
+
+- 절제된 평서형. 감탄·과장·최상급 금지
+- concept.md 「브랜드의 태도」에 **쓰면 안 되는 표현**이 명시돼 있다
+  (세상을 바꾸는 / 혁신 / 최고의 경험 / 기술 자체를 앞세운 설명)
+- 영문은 `Built to be remembered.` 하나만 쓴다. 영문 카피를 늘리지 않는다
+- **없는 사실을 만들지 않는다.** 고객사·수상·지표·인원수를 지어내면 안 된다.
+  작업물이 2개뿐인 것도 같은 이유다(§10)
+
+---
+
+## 10. 지금 남아 있는 것
+
+### 작업물이 2개 공개 + 3개 draft
+
+`concept.md` 에 실제로 기술된 것은 **Monkey Flash** 와 **KB Inc. 웹사이트** 2건뿐이라
+나머지는 지어내지 않았다. 대신 `src/data/works.ts` 에
+**03 · 04 · 05 슬롯을 `draft: true` 로 채워 두었다.**
+
+- `draft: true` 인 항목은 홈 · 목록 · 상세 어디에도 나오지 않는다
+- 페이지는 전부 `publishedWorks`(= `works.filter(w => !w.draft)`)를 import 한다
+- 사용자가 내용을 채우고 `draft: true,` 줄만 지우면 그때 공개된다
+
+**이 구조를 깨지 마라.** 페이지에서 `works` 를 직접 import 하면
+자리표시자("세 번째 작업" 등)가 그대로 배포된다.
+
+레이아웃은 2개·5개 양쪽에서 확인했다(§7 방식으로 draft를 임시 해제해 검증).
+
+### 자리표시자 — 2026-07-28 전부 실제 값으로 교체됨
+
+| 파일 | 항목 | 값 |
+| --- | --- | --- |
+| `src/data/site.ts` | `email` | `devguru.j610@gmail.com` (App Store Connect 등록 주소) |
+| `src/data/site.ts` | `url` | `https://bymemory.dev` |
+| `src/data/site.ts` | `location` | **삭제됨** — 소재지는 공개하지 않는다 |
+| `astro.config.mjs` | `site` | `https://bymemory.dev` |
+| `public/robots.txt` | sitemap | `https://bymemory.dev/sitemap-index.xml` |
+
+`location` 을 다시 넣지 마라. 히어로 라벨 행(`index.astro`)과 푸터·연락 페이지에서
+해당 칸을 비웠고, 그 자리에는 MonkeyFlash 법적 링크가 들어가 있다.
+`astro.config.mjs` 의 `site` 는 canonical · `og:image` 절대경로 · sitemap 의 기준이다.
+
+### 커버 이미지 없음
+
+작업 목록의 커서 추종 이미지와 상세 커버는 현재 영문 이름이 들어간 플레이트로
+대체돼 있다(의도된 폴백이며 디자인상 어색하지 않다).
+실제 이미지는 `public/work/` 에 넣고 `works.ts` 의 `cover: '/work/파일명.jpg'` 로 연결한다.
+**권장 4:3, 가로 1600px 이상** — 커서 추종 이미지가 `aspect-ratio: 4/3` 로 잘린다.
+
+### 손대지 않은 것
+
+- 폰트 서브셋 자체 호스팅 (지금은 jsDelivr CDN dynamic subset)
+- 다국어(영문 페이지)
+- 블로그/저널
+- 애널리틱스
+
+---
+
+## 11. 명령 요약
+
+```bash
+cd /Users/tuesdaymorning/Devguru/devguru_website
+
+npm install
+npm run dev        # 개발 (포트 로그 확인!)
+npm run build      # dist/ 생성
+npm run preview    # 빌드 결과 확인
+
+# 배포: Cloudflare Pages
+#   Build command  : npm run build
+#   Output dir     : dist
+#   Env            : NODE_VERSION = 20
+```
+
+---
+
+## 12. 이 저장소에서만 적용되는 제약 (2026-07-28 추가)
+
+디자인 폴더를 저장소에 설치하면서 생긴, 디자인 문서에는 없던 규칙들.
+
+### MonkeyFlash 법적 페이지 — 건드리면 앱 심사에 걸린다
+
+| 주소 | 파일 |
+| --- | --- |
+| `/MonkeyFlash/privacy/` | `src/pages/MonkeyFlash/privacy.astro` |
+| `/MonkeyFlash/support/` | `src/pages/MonkeyFlash/support.astro` |
+
+App Store Connect 에 등록된 URL이다. **주소도 본문 텍스트도 바꾸지 않는다.**
+두 파일은 이전 디자인에서 **한 글자도 손대지 않고** 그대로 옮겨온 것이고,
+각자 자기 `<style is:global>` 블록을 들고 있다. 갈아끼운 것은
+`src/components/LegalShell.astro` 껍데기 하나뿐이다.
+
+- 본문 블록이 쓰는 `--color-ink` / `--color-ink-2` / `--color-amber` /
+  `--color-container-low` / `--font-mono` 는 LegalShell 이 `currentColor` 기반으로
+  별칭 처리한다. 본문을 고치는 대신 별칭을 고쳐라.
+- 이 두 페이지는 **색 반전 대상이 아니다.** `data-color-change-*` 를 붙이지 마라.
+  읽는 문서라 흰 배경에 고정한다.
+- 하나의 URL 안에 EN/KO 가 함께 있고 토글이 보이는 섹션과 `html[lang]` 만 바꾼다.
+  `?lang=ko` 파라미터가 저장된 선택보다 우선한다(App Store 로케일별 링크용).
+- 푸터와 연락 페이지 하단에서 두 페이지로 가는 링크를 유지한다.
+
+### 주소 규칙
+
+- **한국어 전용 사이트다.** 예전의 `/en/` 영문 페이지와 지오 분기
+  Pages Function(`functions/index.js`)은 2026-07-28 에 제거했다.
+  다시 만들려면 `_redirects` 의 `/en/*` 301 부터 걷어내야 한다.
+- `public/_redirects` 가 예전 주소를 받아준다:
+  `/privacy` `/support` (App Store 짧은 주소), `/portfolio/*` → `/work/*`,
+  `/en/*` `/ko/*` → `/`. **첫 두 줄은 절대 지우지 마라.**
+- KB Inc. 의 slug 가 예전 `kbinc` 에서 `kb-inc` 로 바뀌었다. 301 로 이어져 있다.
+
+### 공개 작업물
+
+지금 공개된 2건(Monkey Flash, KB Inc.)은 소유자가 승인한 범위다.
+KB Inc. 는 공개 허가가 확인된 클라이언트 작업이다.
+`works.ts` 의 03~05 draft 슬롯은 **소유자가 직접 내용을 줄 때만** 채운다.

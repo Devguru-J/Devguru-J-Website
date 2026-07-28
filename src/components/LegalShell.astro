@@ -1,199 +1,150 @@
 ---
 /**
- * Shell for the Monkey Flash legal pages.
+ * Monkey Flash 법적 페이지의 껍데기.
  *
- * Only this shell is restyled. `privacy.astro` and `support.astro` — their body
- * copy, their effective dates and their own <style is:global> blocks — stay
- * byte-for-byte untouched. Those blocks reference three custom properties
- * (--color-ink, --color-ink-2, --color-amber) and --font-mono, which are
- * aliased onto the new token system below so the documents keep rendering
- * without a single edit to their content.
+ * `privacy.astro` 와 `support.astro` 의 본문·시행일·자체 <style is:global> 블록은
+ * App Store 심사에 걸려 있는 문서이므로 한 글자도 바꾸지 않는다. 그 블록들이
+ * 참조하는 --color-ink / --color-ink-2 / --color-amber / --color-container-low /
+ * --font-mono 는 아래에서 현재 디자인 토큰으로 별칭 처리한다.
  *
- * These are bilingual single routes: the URL never changes, the visible section
- * and html[lang] do (03 §8).
+ * 두 페이지는 하나의 URL에 EN/KO가 함께 있는 단일 라우트다. 토글은 보이는
+ * 섹션과 html[lang] 만 바꾸고 주소는 바꾸지 않는다.
+ *
+ * 이 페이지들은 색 반전 대상이 아니다 — 읽는 문서이므로 흰 배경에 고정한다.
+ * (data-color-change-* 속성을 붙이지 않는 이유)
  */
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { CONTACT } from '../content/brand';
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
 
 interface Props {
   title: string;
   description: string;
-  path: string;
-  /** Mono overline above the content, e.g. "MONKEY FLASH — PRIVACY POLICY". */
+  /** 문서 상단 표기, 예: "MONKEY FLASH — PRIVACY POLICY". */
   overline: string;
 }
 
-const { title, description, path, overline } = Astro.props;
+const { title, description, overline } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
-<BaseLayout
-  locale="en"
-  path={path}
-  title={title}
-  description={description}
-  chrome={false}
-  singleRoute
->
-  <div class="legal-shell scene" data-surface="paper">
-    <nav class="legal-nav">
-      <div class="frame legal-nav__inner">
-        <a class="legal-brand" href="/">Memory</a>
-        <div class="legal-nav__end">
-          <div class="legal-lang" role="group" aria-label="Language">
-            <button type="button" class="meta" data-lang="en">EN</button>
-            <span class="legal-lang__sep" aria-hidden="true">/</span>
-            <button type="button" class="meta" data-lang="ko">KO</button>
-          </div>
-          <a class="meta legal-home" href="/">← Home</a>
+<Base title={title} description={description} hideFooter={true}>
+  <article class="legal-shell">
+    <div class="container legal-shell__inner">
+      <div class="legal-head">
+        <p class="legal-overline">{overline}</p>
+        <div class="legal-lang" role="group" aria-label="Language">
+          <button type="button" data-lang="en">EN</button>
+          <span class="legal-lang__sep" aria-hidden="true">/</span>
+          <button type="button" data-lang="ko">KO</button>
         </div>
       </div>
-    </nav>
 
-    <div class="frame legal-main">
-      <p class="meta meta--muted legal-overline">{overline}</p>
       <slot />
-    </div>
 
-    <footer class="legal-foot">
-      <div class="frame legal-foot__inner">
-        <span class="meta meta--muted">© {year} Memory / Monkey Flash</span>
-        <div class="legal-foot__links">
-          <a class="meta" href="/MonkeyFlash/privacy/">Privacy</a>
-          <a class="meta" href="/MonkeyFlash/support/">Support</a>
-          <a class="meta" href={`mailto:${CONTACT.email}`}>Email</a>
+      <footer class="legal-foot">
+        <hr class="rule" />
+        <div class="legal-foot__grid">
+          <p>© {year} {site.nameKo} / Monkey Flash</p>
+          <p class="legal-foot__links">
+            <a href="/MonkeyFlash/privacy/">Privacy</a>
+            <a href="/MonkeyFlash/support/">Support</a>
+            <a href={`mailto:${site.email}`}>Email</a>
+          </p>
         </div>
-      </div>
-    </footer>
-  </div>
-</BaseLayout>
+      </footer>
+    </div>
+  </article>
+</Base>
 
 <style is:global>
-  /* Compatibility aliases for the untouched legal page style blocks. */
-  :root {
-    --color-ink: var(--ink-950);
-    --color-ink-2: var(--graphite-600);
-    --color-amber: var(--ink-950);
-    /* The legal bodies set their effective date in --font-mono. Salient has no
-       monospace face, so the alias resolves to the label stack. */
-    --font-mono: var(--font-meta);
-  }
-
+  /* 손대지 않은 본문 스타일 블록이 참조하는 이름들. 검정 글자 위에서만
+     쓰이므로 전부 currentColor 기반으로 맞춘다. */
   .legal-shell {
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
+    --color-ink: currentColor;
+    --color-ink-2: color-mix(in srgb, currentColor 62%, transparent);
+    --color-amber: currentColor;
+    --color-container-low: color-mix(in srgb, currentColor 5%, transparent);
+    --font-mono: inherit;
+  }
+</style>
+
+<style>
+  .legal-shell {
+    padding-block: clamp(140px, 16vh, 200px) clamp(48px, 6vw, 80px);
   }
 
-  .legal-nav {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: color-mix(in srgb, var(--paper-100) 92%, transparent);
-    backdrop-filter: saturate(140%) blur(10px);
-    border-bottom: 1px solid var(--hairline);
+  .legal-shell__inner {
+    max-width: 76ch;
+    margin-inline: auto;
   }
 
-  .legal-nav__inner {
+  .legal-head {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
-    gap: 24px;
-    height: var(--header-h);
+    gap: 2rem;
+    padding-bottom: 1rem;
+    margin-bottom: clamp(36px, 5vw, 64px);
+    border-bottom: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
   }
 
-  .legal-brand {
-    font-family: var(--font-serif);
-    font-size: 25px;
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-
-  .legal-nav__end {
-    display: flex;
-    align-items: center;
-    gap: 24px;
+  .legal-overline {
+    font-size: var(--fs-meta);
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    opacity: 0.4;
   }
 
   .legal-lang {
     display: flex;
     align-items: center;
     gap: 7px;
+    font-size: var(--fs-meta);
+    letter-spacing: 0.1em;
   }
 
   .legal-lang button {
-    min-height: 44px;
-    opacity: 0.5;
-    transition: opacity var(--ui-fast) var(--ui-ease);
+    background: none;
+    border: 0;
+    padding: 4px 2px;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.4s var(--nectar-cubic-bezier-out);
   }
 
   .legal-lang button:hover,
-  .legal-lang button:focus-visible {
-    opacity: 1;
-  }
-
+  .legal-lang button:focus-visible,
   .legal-lang button.active {
     opacity: 1;
   }
 
   .legal-lang__sep {
-    opacity: 0.3;
-    font-family: var(--font-meta);
-    font-size: var(--t-meta);
-  }
-
-  .legal-home {
-    display: none;
-    align-items: center;
-    min-height: 44px;
-    border-bottom: 1px solid transparent;
-    transition: border-color var(--ui-fast) var(--ui-ease);
-  }
-
-  .legal-home:hover,
-  .legal-home:focus-visible {
-    border-bottom-color: currentColor;
-  }
-
-  .legal-main {
-    flex: 1;
-    /* Reading width, not the full content frame. */
-    max-width: 76ch;
-    margin-inline: auto;
-    padding-top: clamp(56px, 8vw, 104px);
-    padding-bottom: clamp(96px, 12vw, 160px);
-  }
-
-  .legal-overline {
-    margin-bottom: clamp(36px, 5vw, 64px);
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--hairline);
+    opacity: 0.25;
   }
 
   .legal-foot {
-    border-top: 1px solid var(--hairline);
+    margin-top: clamp(72px, 10vw, 120px);
   }
 
-  .legal-foot__inner {
+  .legal-foot__grid {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     justify-content: space-between;
-    gap: 20px;
-    padding-block: 32px;
+    gap: 0.5rem 2rem;
+    padding-top: 1.75rem;
+    font-size: var(--fs-meta);
+    opacity: 0.5;
   }
 
   .legal-foot__links {
     display: flex;
-    gap: 28px;
+    gap: 1.5rem;
   }
 
   .legal-foot__links a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 40px;
     border-bottom: 1px solid transparent;
-    transition: border-color var(--ui-fast) var(--ui-ease);
+    transition: border-color 0.4s var(--nectar-cubic-bezier-out);
   }
 
   .legal-foot__links a:hover,
@@ -201,9 +152,14 @@ const year = new Date().getFullYear();
     border-bottom-color: currentColor;
   }
 
-  @media (min-width: 640px) {
-    .legal-home {
-      display: inline-flex;
+  @media (max-width: 640px) {
+    .legal-head {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .legal-foot__grid {
+      flex-direction: column;
     }
   }
 </style>
@@ -216,11 +172,10 @@ const year = new Date().getFullYear();
     sections.forEach((s) => (s.hidden = s.dataset.section !== lang));
     document.documentElement.lang = lang;
     localStorage.setItem('devguru-lang', lang);
-    document.cookie = `lang=${lang}; path=/; max-age=31536000; samesite=lax`;
   };
   buttons.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang!)));
-  // Priority: explicit ?lang= param (used for per-locale App Store URLs) >
-  // saved choice > English, matching the documents' own source order.
+  // 우선순위: 명시적 ?lang= (App Store 로케일별 URL에서 사용) > 저장된 선택 > 영문.
+  // 문서 자체의 소스 순서(EN 먼저)와 같다.
   const param = new URLSearchParams(location.search).get('lang');
   const initial =
     param === 'ko' || param === 'en'

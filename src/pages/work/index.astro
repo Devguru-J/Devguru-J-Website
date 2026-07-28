@@ -1,5 +1,120 @@
 ---
-import WorkIndex from '../../components/WorkIndex.astro';
+import Base from '../../layouts/Base.astro';
+import SplitHeading from '../../components/SplitHeading.astro';
+import Reveal from '../../components/Reveal.astro';
+import WorkList from '../../components/WorkList.astro';
+import { publishedWorks as works } from '../../data/works';
 ---
 
-<WorkIndex locale="ko" />
+<Base
+  title="작업"
+  description="기억이 만든 제품과 웹 작업. 왜 필요했고, 무엇을 판단했고, 어떻게 만들었는지."
+>
+  <section
+    class="page-head"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <Reveal animation="fade-in">
+        <p class="eyebrow"><span class="eyebrow__index">—</span><span>작업</span></p>
+      </Reveal>
+
+      <SplitHeading tag="h1" class="page-head__title" delay={100}>
+        필요한 이유를<br />설명할 수 있는 것만<br />만듭니다.
+      </SplitHeading>
+
+      <div class="page-head__foot">
+        <Reveal animation="slight-fade-in-from-bottom" delay={500} class="page-head__lead">
+          <p class="lead">
+            기억은 특정 플랫폼에 한정된 스튜디오가 아닙니다.
+            데스크톱, 웹, 그리고 필요한 환경을 선택합니다.
+            중요한 것은 어디에서 동작하는지가 아니라,
+            실제 생활과 업무 속에서 계속 사용할 수 있는가입니다.
+          </p>
+        </Reveal>
+        <Reveal animation="fade-in" delay={620} class="page-head__count">
+          <span>{String(works.length).padStart(2, '0')}</span>
+          <span class="muted">선택된 작업</span>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="section"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <WorkList works={works} class="works" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(160px, 22vh, 280px) clamp(60px, 8vw, 120px);
+  }
+
+  .page-head__title {
+    margin-top: clamp(2.5rem, 5vw, 4.5rem);
+    font-size: var(--fs-h1);
+    letter-spacing: -0.055em;
+  }
+
+  .page-head__foot {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(16px, 2vw, 40px);
+    row-gap: 2rem;
+    align-items: end;
+    margin-top: clamp(4rem, 8vw, 7rem);
+    padding-top: clamp(2rem, 3vw, 3rem);
+    border-top: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .page-head__lead {
+    grid-column: 1 / span 5;
+  }
+
+  .page-head__lead .lead {
+    opacity: 0.62;
+  }
+
+  .page-head__count {
+    grid-column: 11 / span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.35rem;
+    text-align: right;
+    font-size: var(--fs-meta);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .page-head__count span:first-child {
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    text-transform: none;
+  }
+
+  .works {
+    padding-top: 0;
+  }
+
+  @media (max-width: 900px) {
+    .page-head__lead,
+    .page-head__count {
+      grid-column: 1 / -1;
+    }
+
+    .page-head__count {
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+</style>

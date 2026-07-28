@@ -1,0 +1,285 @@
+---
+import Base from '../layouts/Base.astro';
+import SplitHeading from '../components/SplitHeading.astro';
+import Reveal from '../components/Reveal.astro';
+
+const traits = [
+  '문제를 작고 분명하게 정의합니다.',
+  '필요하지 않은 기능은 쉽게 추가하지 않습니다.',
+  '보이지 않는 동작과 예외 상황까지 신경 씁니다.',
+  '출시를 끝이 아니라 실제 사용의 시작으로 봅니다.',
+  '말로 설명하기 전에 제품이 먼저 증명하도록 만듭니다.',
+];
+
+const questions = [
+  '이 제품은 왜 필요한가?',
+  '누구의 어떤 불편을 해결하는가?',
+  '기존 방식보다 무엇이 분명하게 나아지는가?',
+  '실제 생활과 업무 속에서 계속 사용할 수 있는가?',
+];
+---
+
+<Base
+  title="스튜디오"
+  description="기억은 작지만 반복되는 문제를 발견하고, 필요한 만큼 만들고, 오래 사용할 수 있도록 끝까지 다듬는 소프트웨어 스튜디오입니다."
+>
+  <!-- ── Head ── -->
+  <section
+    class="page-head"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <Reveal animation="fade-in">
+        <p class="eyebrow"><span class="eyebrow__index">—</span><span>스튜디오</span></p>
+      </Reveal>
+
+      <SplitHeading tag="h1" class="page-head__title" delay={100}>
+        마케팅 언어보다<br />완성된 결과물로<br />자신을 설명합니다.
+      </SplitHeading>
+    </div>
+  </section>
+
+  <!-- ── Statement ── -->
+  <section
+    class="section statement"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <SplitHeading tag="p" effect="scroll-opacity-reveal" class="statement__text">
+        그는 다른 사람이 쉽게 지나치는 작은 불편을 오래 들여다보는 편입니다.
+        이미 익숙하게 쓰고 있다는 이유만으로 불편한 상태를 당연하게 받아들이지 않습니다.
+      </SplitHeading>
+    </div>
+  </section>
+
+  <!-- ── Traits ── -->
+  <section
+    class="section chapter"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <Reveal animation="fade-in" class="chapter__head">
+        <p class="eyebrow"><span class="eyebrow__index">01</span><span>작업 방식</span></p>
+      </Reveal>
+
+      <div class="grid chapter__grid">
+        <div class="chapter__title-col">
+          <SplitHeading tag="h2" class="chapter__title">
+            새로운 기술인지보다<br />필요한 기술인지를<br />먼저 봅니다.
+          </SplitHeading>
+        </div>
+        <div class="chapter__body-col">
+          <Reveal animation="slight-fade-in-from-bottom" delay={120}>
+            <p class="lead">
+              데스크톱, 웹, 클라우드 같은 플랫폼은 정체성이 아니라
+              문제를 해결하기 위한 선택지입니다.
+              불편을 발견하면 아이디어에서 멈추기보다
+              실제로 작동하는 제품으로 만드는 데 관심을 둡니다.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+
+      <ul class="traits">
+        {
+          traits.map((t, i) => (
+            <Reveal as="li" animation="slight-fade-in-from-bottom" delay={i * 70} class="traits__item">
+              <span class="traits__mark" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <span>{t}</span>
+            </Reveal>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Scale ── -->
+  <section
+    class="section chapter"
+    data-color-change-section-bg-color="#000000"
+    data-color-change-section-text-color="#ffffff"
+  >
+    <div class="container">
+      <Reveal animation="fade-in" class="chapter__head">
+        <p class="eyebrow"><span class="eyebrow__index">02</span><span>규모</span></p>
+      </Reveal>
+
+      <div class="grid chapter__grid">
+        <div class="chapter__title-col">
+          <SplitHeading tag="h2" class="chapter__title">
+            작은 스튜디오라는 사실을<br />감추지 않습니다.
+          </SplitHeading>
+        </div>
+        <div class="chapter__body-col">
+          <Reveal animation="slight-fade-in-from-bottom" delay={120}>
+            <p class="lead">
+              규모를 크게 보이게 포장하는 대신,
+              한 사람이 제품의 처음부터 마지막까지 깊게 관여할 수 있다는 점을
+              작업 방식으로 보여줍니다.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+
+      <div class="questions">
+        <Reveal animation="fade-in" class="questions__label">
+          <p class="eyebrow"><span>답할 수 있어야 하는 것</span></p>
+        </Reveal>
+        <ul>
+          {
+            questions.map((q, i) => (
+              <Reveal as="li" animation="slight-fade-in-from-bottom" delay={i * 80} class="questions__item">
+                {q}
+              </Reveal>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Closing ── -->
+  <section
+    class="section closing-sec"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <SplitHeading tag="p" class="closing-sec__text">
+        기억은 작지만 반복되는 문제를 발견하고,<br />필요한 만큼 만들고,<br />오래 사용할 수 있도록 끝까지 다듬습니다.
+      </SplitHeading>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(160px, 22vh, 280px) clamp(60px, 8vw, 100px);
+  }
+
+  .page-head__title {
+    margin-top: clamp(2.5rem, 5vw, 4.5rem);
+    font-size: var(--fs-h1);
+    letter-spacing: -0.055em;
+  }
+
+  .statement {
+    padding-block: clamp(120px, 16vw, 240px) 0;
+  }
+
+  .statement__text :global(p) {
+    font-size: clamp(1.5rem, 3.4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: -0.045em;
+    max-width: 24ch;
+  }
+
+  .chapter__head {
+    padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    border-bottom: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .chapter__grid {
+    padding-top: clamp(3rem, 6vw, 6rem);
+    row-gap: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .chapter__title-col {
+    grid-column: 1 / span 6;
+  }
+
+  .chapter__body-col {
+    grid-column: 8 / span 4;
+  }
+
+  .chapter__title {
+    font-size: var(--fs-h2);
+    letter-spacing: -0.05em;
+  }
+
+  .chapter__body-col .lead {
+    opacity: 0.62;
+  }
+
+  @media (max-width: 900px) {
+    .chapter__title-col,
+    .chapter__body-col {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .traits {
+    margin-top: clamp(5rem, 9vw, 9rem);
+    border-top: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .traits__item {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1.5rem, 5vw, 5rem);
+    padding-block: clamp(1.25rem, 2.2vw, 2rem);
+    border-bottom: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+    font-size: clamp(1.0625rem, 1.7vw, 1.4375rem);
+    letter-spacing: -0.03em;
+    line-height: 1.5;
+  }
+
+  .traits__mark {
+    font-size: var(--fs-meta);
+    font-variant-numeric: tabular-nums;
+    opacity: 0.35;
+    letter-spacing: 0.1em;
+    flex: none;
+  }
+
+  .questions {
+    margin-top: clamp(5rem, 9vw, 9rem);
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(16px, 2vw, 40px);
+    row-gap: 2rem;
+  }
+
+  .questions__label {
+    grid-column: 1 / span 3;
+  }
+
+  .questions ul {
+    grid-column: 5 / span 7;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .questions__item {
+    font-size: clamp(1.25rem, 2.4vw, 2rem);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 1.45;
+    opacity: 0.85;
+  }
+
+  @media (max-width: 900px) {
+    .questions__label,
+    .questions ul {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .closing-sec {
+    padding-block: clamp(140px, 20vw, 280px);
+  }
+
+  .closing-sec__text :global(p) {
+    font-size: clamp(1.5rem, 3.4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: -0.045em;
+  }
+</style>

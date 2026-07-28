@@ -1,22 +1,12 @@
-# build output
+node_modules/
 dist/
 .astro/
-
-# dependencies
-node_modules/
-
-# system
 .DS_Store
+*.log
+.env
+.env.production
 
-# internal working material (not part of the published site)
-reference/
-stitch-prompt.md
-memory_site_export/
-salient_dirty_rat_complete_edition/
+# 로컬 도구 상태
 .superpowers/
-
-# playwright artifacts
 .playwright-mcp/
-
-# wrangler local state
 .wrangler/

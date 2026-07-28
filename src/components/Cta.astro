@@ -1,0 +1,65 @@
+---
+/**
+ * Salient `nectar_cta` element — arrow-animation & underline styles.
+ * Markup is identical to core/salient-core/includes/vc_templates/nectar_cta.php
+ */
+interface Props {
+  href: string;
+  style?: 'arrow-animation' | 'underline';
+  external?: boolean;
+  class?: string;
+  ariaLabel?: string;
+}
+
+const {
+  href,
+  style = 'arrow-animation',
+  external = false,
+  class: className = '',
+  ariaLabel,
+  ...rest
+} = Astro.props;
+
+const rel = external ? 'noopener noreferrer' : undefined;
+const target = external ? '_blank' : undefined;
+---
+
+<div class:list={['nectar-cta', className]} data-style={style} data-display="inline" {...rest}>
+  <div>
+    <span class="link_wrap">
+      <a
+        class="link_text"
+        href={href}
+        role="button"
+        target={target}
+        rel={rel}
+        aria-label={ariaLabel}
+      >
+        <span class="text"><slot /></span>
+        {
+          style === 'arrow-animation' && (
+            <>
+              <svg
+                class="next-arrow"
+                aria-hidden="true"
+                width="20px"
+                height="25px"
+                viewBox="0 0 50 80"
+                xml:space="preserve"
+              >
+                <polyline
+                  stroke-width="9"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  points="0, 0 45, 40 0, 80"
+                />
+              </svg>
+              <span aria-hidden="true" class="line" />
+            </>
+          )
+        }
+      </a>
+    </span>
+  </div>
+</div>

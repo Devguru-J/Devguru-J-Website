@@ -1,0 +1,119 @@
+---
+import SplitHeading from './SplitHeading.astro';
+import Reveal from './Reveal.astro';
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer
+  id="footer"
+  class="section"
+  data-color-change-section-bg-color="#000000"
+  data-color-change-section-text-color="#ffffff"
+>
+  <div class="container">
+    <p class="eyebrow"><span class="eyebrow__index">—</span><span>연락</span></p>
+
+    <SplitHeading tag="h2" class="footer__title">
+      만들 이유가 분명한 일이라면,<br />이야기를 듣고 싶습니다.
+    </SplitHeading>
+
+    <Reveal animation="fade-in-from-bottom" delay={120} class="footer__mail">
+      <a class="footer__mail-link" href={`mailto:${site.email}`}>
+        <span class="footer__mail-text">{site.email}</span>
+      </a>
+    </Reveal>
+
+    <Reveal animation="fade-in" delay={220} class="footer__meta">
+      <hr class="rule" />
+      <div class="footer__meta-grid">
+        <p>© {year} {site.nameKo} ({site.nameEn})</p>
+        <p class="footer__tagline">{site.tagline}</p>
+        <p class="footer__legal">
+          <a href="/MonkeyFlash/privacy/">Monkey Flash 개인정보처리방침</a>
+          <a href="/MonkeyFlash/support/">지원</a>
+        </p>
+      </div>
+    </Reveal>
+  </div>
+</footer>
+
+<style>
+  #footer {
+    padding-block: clamp(120px, 14vw, 220px) clamp(40px, 4vw, 64px);
+  }
+
+  .footer__title {
+    margin-top: clamp(32px, 4vw, 56px);
+    font-size: var(--fs-h2);
+    max-width: 18ch;
+  }
+
+  .footer__mail {
+    margin-top: clamp(48px, 6vw, 88px);
+  }
+
+  .footer__mail-link {
+    display: inline-block;
+    font-size: clamp(1.5rem, 4.4vw, 3.25rem);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1.1;
+  }
+
+  .footer__mail-text {
+    background-repeat: no-repeat;
+    background-image: linear-gradient(to right, currentColor 0%, currentColor 100%);
+    background-size: 100% 1px;
+    background-position: left 92%;
+    transition: background-size 0.55s var(--ease-underline);
+  }
+
+  .footer__mail-link:hover .footer__mail-text {
+    background-position: right 92%;
+    background-size: 0% 1px;
+  }
+
+  .footer__meta {
+    margin-top: clamp(96px, 14vw, 200px);
+  }
+
+  .footer__meta-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    padding-top: 1.75rem;
+    font-size: var(--fs-meta);
+    letter-spacing: 0.01em;
+    opacity: 0.5;
+  }
+
+  .footer__tagline {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* App Store 에 등록된 법적 페이지 — 항상 도달 가능해야 한다. */
+  .footer__legal {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer__legal a {
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.4s var(--nectar-cubic-bezier-out);
+  }
+
+  .footer__legal a:hover,
+  .footer__legal a:focus-visible {
+    border-bottom-color: currentColor;
+  }
+
+  @media (max-width: 720px) {
+    .footer__meta-grid {
+      flex-direction: column;
+    }
+  }
+</style>

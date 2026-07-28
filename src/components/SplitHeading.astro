@@ -1,0 +1,40 @@
+---
+/**
+ * Salient `split_line_heading` element.
+ * Words are wrapped client-side into overflow:hidden spans and revealed with
+ * a staggered translateY(1.3em) → 0 over 1.2s cubic-bezier(0.25, 1, 0.5, 1).
+ *
+ * Use `<br>` inside the slot to force a line break — the port preserves them.
+ */
+interface Props {
+  tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'div';
+  effect?: 'line-reveal' | 'scroll-opacity-reveal';
+  delay?: number;
+  stagger?: boolean;
+  class?: string;
+}
+
+const {
+  tag = 'h2',
+  effect = 'line-reveal',
+  delay = 0,
+  stagger = true,
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const Tag = tag;
+---
+
+<!-- `rest` carries the parent's data-astro-cid-* so the caller's scoped
+     styles reach this root element. -->
+<div
+  class:list={['nectar-split-heading', className]}
+  data-animation-type="line-reveal-by-space"
+  data-text-effect={effect === 'scroll-opacity-reveal' ? 'scroll-opacity-reveal' : 'none'}
+  data-animation-delay={delay}
+  data-stagger={String(stagger)}
+  {...rest}
+>
+  <Tag><slot /></Tag>
+</div>

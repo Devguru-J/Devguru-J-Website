@@ -1,0 +1,196 @@
+---
+import Base from '../layouts/Base.astro';
+import SplitHeading from '../components/SplitHeading.astro';
+import Reveal from '../components/Reveal.astro';
+import { site } from '../data/site';
+
+const fits = [
+  '해결하려는 불편이 구체적으로 설명되는 일',
+  '기능의 수보다 완성도가 중요한 일',
+  '만든 뒤에도 다듬을 시간을 남겨두는 일',
+];
+---
+
+<Base
+  title="연락"
+  description="만들 이유가 분명한 일이라면 이야기를 듣고 싶습니다. 기억에 연락하세요."
+  hideFooter={true}
+>
+  <section
+    class="contact"
+    data-color-change-section-bg-color="#000000"
+    data-color-change-section-text-color="#ffffff"
+  >
+    <div class="container">
+      <Reveal animation="fade-in">
+        <p class="eyebrow"><span class="eyebrow__index">—</span><span>연락</span></p>
+      </Reveal>
+
+      <SplitHeading tag="h1" class="contact__title" delay={100}>
+        무엇을 만들지보다<br />왜 만드는지를<br />먼저 이야기해 주세요.
+      </SplitHeading>
+
+      <div class="contact__grid">
+        <Reveal animation="slight-fade-in-from-bottom" delay={420} class="contact__mail-col">
+          <p class="contact__label">메일</p>
+          <a class="contact__mail" href={`mailto:${site.email}`}>
+            <span class="contact__mail-text">{site.email}</span>
+          </a>
+          <p class="contact__note">
+            제품이나 프로젝트에 대한 설명, 지금 겪고 있는 문제,
+            그리고 원하는 일정이 함께 있으면 이야기가 빨라집니다.
+          </p>
+        </Reveal>
+
+        <Reveal animation="slight-fade-in-from-bottom" delay={540} class="contact__fit-col">
+          <p class="contact__label">잘 맞는 일</p>
+          <ul class="contact__fits">
+            {fits.map((f) => <li>{f}</li>)}
+          </ul>
+        </Reveal>
+      </div>
+
+      <Reveal animation="fade-in" delay={680} class="contact__foot">
+        <hr class="rule" />
+        <div class="contact__foot-grid">
+          <p>© {new Date().getFullYear()} {site.nameKo} ({site.nameEn})</p>
+          <p class="contact__tagline">{site.tagline}</p>
+          <p class="contact__legal">
+            <a href="/MonkeyFlash/privacy/">Monkey Flash 개인정보처리방침</a>
+            <a href="/MonkeyFlash/support/">지원</a>
+          </p>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding-block: clamp(140px, 17vh, 200px) clamp(36px, 4.5vw, 56px);
+  }
+
+  .contact .container {
+    width: 100%;
+  }
+
+  .contact__title {
+    margin-top: clamp(2rem, 4vw, 3.5rem);
+    font-size: var(--fs-h2);
+    letter-spacing: -0.055em;
+  }
+
+  .contact__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(16px, 2vw, 40px);
+    row-gap: clamp(3rem, 5vw, 4rem);
+    margin-top: clamp(3.5rem, 6vw, 6rem);
+  }
+
+  .contact__mail-col {
+    grid-column: 1 / span 6;
+  }
+
+  .contact__fit-col {
+    grid-column: 8 / span 4;
+  }
+
+  .contact__label {
+    font-size: var(--fs-meta);
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    opacity: 0.4;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact__mail {
+    display: inline-block;
+    font-size: clamp(1.375rem, 3.4vw, 2.5rem);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1.15;
+  }
+
+  .contact__mail-text {
+    background-repeat: no-repeat;
+    background-image: linear-gradient(to right, currentColor 0%, currentColor 100%);
+    background-size: 100% 1px;
+    background-position: left 92%;
+    transition: background-size 0.55s var(--ease-underline);
+  }
+
+  .contact__mail:hover .contact__mail-text {
+    background-position: right 92%;
+    background-size: 0% 1px;
+  }
+
+  .contact__note {
+    margin-top: 2rem;
+    max-width: 36ch;
+    opacity: 0.55;
+    line-height: 1.85;
+  }
+
+  .contact__fits {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .contact__fits li {
+    padding-block: 0.85rem;
+    border-top: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.7;
+  }
+
+  .contact__foot {
+    margin-top: clamp(4rem, 8vw, 7rem);
+  }
+
+  .contact__foot-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    padding-top: 1.75rem;
+    font-size: var(--fs-meta);
+    opacity: 0.45;
+  }
+
+  .contact__tagline {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .contact__legal {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .contact__legal a {
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.4s var(--nectar-cubic-bezier-out);
+  }
+
+  .contact__legal a:hover,
+  .contact__legal a:focus-visible {
+    border-bottom-color: currentColor;
+  }
+
+  @media (max-width: 900px) {
+    .contact__mail-col,
+    .contact__fit-col {
+      grid-column: 1 / -1;
+    }
+
+    .contact__foot-grid {
+      flex-direction: column;
+    }
+  }
+</style>

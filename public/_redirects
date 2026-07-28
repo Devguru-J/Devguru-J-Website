@@ -1,4 +1,15 @@
-/privacy /MonkeyFlash/privacy/ 301
-/support /MonkeyFlash/support/ 301
-/ko / 301
-/ko/ / 301
+# App Store Connect 에 등록된 짧은 주소. 절대 지우지 마세요.
+/privacy                  /MonkeyFlash/privacy/   301
+/support                  /MonkeyFlash/support/   301
+
+# 이전 디자인(v1~v4)의 주소 → 현재 구조
+/portfolio/monkey-flash/* /work/monkey-flash/     301
+/portfolio/kbinc/*        /work/kb-inc/           301
+/portfolio/next-product/* /work/                  301
+/portfolio/*              /work/                  301
+
+# 사이트는 한국어 전용입니다. 예전 영문·언어 경로는 홈으로.
+/en/*                     /                       301
+/en                       /                       301
+/ko/*                     /                       301
+/ko                       /                       301

@@ -1,5 +1,558 @@
 ---
-import HomePage from '../components/HomePage.astro';
+import Base from '../layouts/Base.astro';
+import SplitHeading from '../components/SplitHeading.astro';
+import Reveal from '../components/Reveal.astro';
+import Cta from '../components/Cta.astro';
+import WorkList from '../components/WorkList.astro';
+import { publishedWorks as works } from '../data/works';
+import { site } from '../data/site';
+
+const principles = [
+  '한 번 쓰고 사라지는 대신 계속 찾게 되는 제품',
+  '기능보다 쓰임이 먼저 이해되는 소프트웨어',
+  '작은 불편을 분명하게 해결하는 도구',
+  '사용자의 일상에 조용히 자리 잡는 경험',
+  '시간이 지나도 다시 사용할 이유가 남는 제품',
+];
+
+const process = [
+  {
+    no: '01',
+    title: '무엇이 불편한지 살핍니다',
+    body: '제품은 기술이나 유행에서 시작하지 않습니다. 반복적으로 흐름을 끊는 일, 기존 도구가 당연하게 남겨둔 불편에서 출발합니다.',
+  },
+  {
+    no: '02',
+    title: '필요한 이유를 분명히 합니다',
+    body: '모든 아이디어가 제품이 되어야 하는 것은 아닙니다. 누가 어떤 상황에서 쓰고, 기존 방식보다 무엇이 나아지는지 말할 수 있을 때 시작합니다.',
+  },
+  {
+    no: '03',
+    title: '필요한 만큼 만듭니다',
+    body: '기능의 수로 가치를 증명하지 않습니다. 핵심 문제를 제대로 해결하는 데 필요한 것에 집중하고, 목적을 흐리는 요소는 덜어냅니다.',
+  },
+  {
+    no: '04',
+    title: '실제 사용에 맞게 다듬습니다',
+    body: '기능이 작동하는 것과 제품이 완성되는 것은 다릅니다. 속도, 안정성, 예외 상황, 문장처럼 매일 체감하는 부분을 반복해서 손봅니다.',
+  },
+  {
+    no: '05',
+    title: '오래 쓸 수 있는 상태로 남깁니다',
+    body: '처음 보았을 때의 인상보다, 시간이 지난 뒤에도 계속 사용할 이유가 있는지를 중요하게 생각합니다.',
+  },
+];
+
+const avoided = [
+  '세상을 바꾸겠다는 과장',
+  '근거 없는 혁신과 최고의 경험',
+  '규모를 실제보다 크게 보이게 하는 언어',
+  '기술 자체를 목적으로 내세우는 설명',
+  '사용자의 감탄을 먼저 요구하는 문장',
+];
 ---
 
-<HomePage locale="ko" />
+<Base>
+  <!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+  <section
+    class="hero"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container hero__inner">
+      <!-- 소재지는 공개하지 않는다. 라벨 행은 왼쪽 하나로 둔다. -->
+      <Reveal animation="fade-in" delay={80} class="hero__labels">
+        <span>독립 소프트웨어 스튜디오</span>
+      </Reveal>
+
+      <SplitHeading tag="h1" class="hero__title" delay={150}>
+        오래 기억될 것이라고<br />말하기보다, 계속 사용할<br />이유를 남깁니다.
+      </SplitHeading>
+
+      <div class="hero__foot">
+        <Reveal animation="fade-in" delay={900} class="hero__scroll">
+          <span class="nectar-scroll-icon" aria-hidden="true"></span>
+        </Reveal>
+
+        <Reveal animation="slight-fade-in-from-bottom" delay={620} class="hero__lead">
+          <p class="lead">
+            기억은 필요한 이유가 분명한 소프트웨어와 디지털 경험을 만듭니다.
+            기능을 더하기 전에 무엇이 정말 필요한지 판단하고, 만든 뒤에는
+            오래 쓸 수 있을 때까지 다듬습니다.
+          </p>
+          <p class="hero__signature">Built to be remembered.</p>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ STATEMENT ═══════════════════════ -->
+  <section
+    class="section statement"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <SplitHeading tag="p" effect="scroll-opacity-reveal" class="statement__text">
+        좋은 소프트웨어는 사용자의 관심을 계속 요구하지 않습니다.
+        필요할 때 정확히 작동하고, 일상의 흐름을 방해하지 않으며,
+        어느 순간 자연스럽게 익숙한 도구가 됩니다.
+      </SplitHeading>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 01 · 이름 ═══════════════════════ -->
+  <section
+    class="section chapter chapter--name"
+    data-color-change-section-bg-color="#000000"
+    data-color-change-section-text-color="#ffffff"
+  >
+    <div class="container">
+      <Reveal animation="fade-in" class="chapter__head">
+        <p class="eyebrow">
+          <span class="eyebrow__index">01</span><span>이름</span>
+        </p>
+      </Reveal>
+
+      <div class="grid chapter__grid">
+        <div class="chapter__title-col">
+          <SplitHeading tag="h2" class="chapter__title">
+            기억은 저장에 대한<br />이야기가 아닙니다.
+          </SplitHeading>
+        </div>
+
+        <div class="chapter__body-col">
+          <Reveal animation="slight-fade-in-from-bottom" delay={120}>
+            <p class="lead">
+              여기서 말하는 <em>Memory</em>는 정보의 저장이 아니라,
+              사람들이 계속 찾게 되는 제품이 자연스럽게 남기는 흔적을 뜻합니다.
+            </p>
+            <p class="chapter__quote">
+              기억에 남기기 위해 과장하는 것이 아니라,<br />
+              계속 쓸 만하기 때문에 기억되는 제품.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+
+      <ul class="principles">
+        {
+          principles.map((p, i) => (
+            <Reveal as="li" animation="slight-fade-in-from-bottom" delay={i * 80} class="principles__item">
+              <span class="principles__mark" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <span class="principles__text">{p}</span>
+            </Reveal>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 02 · 작업 ═══════════════════════ -->
+  <section
+    id="work"
+    class="section chapter"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <Reveal animation="fade-in" class="chapter__head">
+        <p class="eyebrow">
+          <span class="eyebrow__index">02</span><span>작업</span>
+        </p>
+      </Reveal>
+
+      <div class="grid chapter__grid">
+        <div class="chapter__title-col">
+          <SplitHeading tag="h2" class="chapter__title">
+            설명보다<br />결과물이 앞서도록.
+          </SplitHeading>
+        </div>
+        <div class="chapter__body-col">
+          <Reveal animation="slight-fade-in-from-bottom" delay={120}>
+            <p class="lead">
+              형태는 다르지만 모든 작업은 같은 질문에서 출발합니다.
+              이 제품은 왜 필요한가, 누구의 어떤 불편을 해결하는가,
+              기존 방식보다 무엇이 분명하게 나아지는가.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+
+      <WorkList works={works} class="works" />
+
+      <Reveal animation="fade-in" class="chapter__cta">
+        <Cta href="/work/">작업 전체 보기</Cta>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 03 · 만드는 방식 ═══════════════════ -->
+  <section
+    class="section chapter"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <Reveal animation="fade-in" class="chapter__head">
+        <p class="eyebrow">
+          <span class="eyebrow__index">03</span><span>만드는 방식</span>
+        </p>
+      </Reveal>
+
+      <div class="grid chapter__grid">
+        <div class="chapter__title-col">
+          <SplitHeading tag="h2" class="chapter__title">
+            다섯 번의<br />판단을 거칩니다.
+          </SplitHeading>
+        </div>
+        <div class="chapter__body-col">
+          <Reveal animation="slight-fade-in-from-bottom" delay={120}>
+            <p class="lead">
+              한 사람이 처음부터 마지막까지 관여합니다.
+              규모를 크게 보이게 포장하는 대신, 그 사실을 작업 방식으로 보여줍니다.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+
+      <ol class="process">
+        {
+          process.map((step) => (
+            <Reveal as="li" animation="slight-fade-in-from-bottom" class="process__item">
+              <span class="process__no">{step.no}</span>
+              <h3 class="process__title">{step.title}</h3>
+              <p class="process__body">{step.body}</p>
+            </Reveal>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 04 · 태도 ═══════════════════════ -->
+  <section
+    class="section chapter chapter--attitude"
+    data-color-change-section-bg-color="#000000"
+    data-color-change-section-text-color="#ffffff"
+  >
+    <div class="container">
+      <Reveal animation="fade-in" class="chapter__head">
+        <p class="eyebrow">
+          <span class="eyebrow__index">04</span><span>태도</span>
+        </p>
+      </Reveal>
+
+      <div class="grid chapter__grid">
+        <div class="chapter__title-col">
+          <SplitHeading tag="h2" class="chapter__title">
+            자신감은 큰 목소리에서<br />나오지 않습니다.
+          </SplitHeading>
+        </div>
+        <div class="chapter__body-col">
+          <Reveal animation="slight-fade-in-from-bottom" delay={120}>
+            <p class="lead">
+              문제를 정확하게 이해하고, 실제로 작동하는 제품을 끝까지 완성하는 데서 나옵니다.
+              그래서 기억은 아래와 같은 표현을 지향하지 않습니다.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+
+      <ul class="avoided">
+        {
+          avoided.map((a, i) => (
+            <Reveal as="li" animation="fade-in" delay={i * 70} class="avoided__item">
+              <span class="avoided__mark" aria-hidden="true">—</span>
+              <span>{a}</span>
+            </Reveal>
+          ))
+        }
+      </ul>
+
+      <Reveal animation="slight-fade-in-from-bottom" delay={120} class="closing">
+        <p>
+          보여주기 위한 복잡함보다 이해하기 쉬운 구조를,
+          순간적인 인상보다 반복해서 사용할 수 있는 완성도를 선택합니다.
+        </p>
+      </Reveal>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ───────────── Hero ───────────── */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    align-items: stretch;
+    padding-block: clamp(100px, 12vh, 150px) clamp(32px, 4vh, 56px);
+  }
+
+  .hero__inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero__labels {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    font-size: var(--fs-meta);
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    border-bottom: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .hero__title {
+    margin-top: auto;
+    padding-top: clamp(2rem, 5vw, 4rem);
+    font-size: var(--fs-display);
+    font-weight: 600;
+    letter-spacing: -0.055em;
+  }
+
+  .hero__title :global(h1) {
+    line-height: 1.16;
+  }
+
+  .hero__foot {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(16px, 2vw, 40px);
+    align-items: end;
+    margin-top: auto;
+    padding-top: clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .hero__scroll {
+    grid-column: 1 / span 2;
+  }
+
+  .hero__lead {
+    grid-column: 7 / span 5;
+  }
+
+  .hero__lead .lead {
+    max-width: 44ch;
+    opacity: 0.7;
+  }
+
+  .hero__signature {
+    margin-top: 1.75rem;
+    font-size: var(--fs-meta);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.35;
+  }
+
+  @media (max-width: 900px) {
+    .hero__foot {
+      display: block;
+    }
+
+    .hero__scroll {
+      display: none;
+    }
+  }
+
+  /* ───────────── Statement ───────────── */
+  .statement {
+    /* bottom padding is supplied by the next section */
+    padding-block: clamp(140px, 18vw, 260px) 0;
+  }
+
+  .statement__text :global(p) {
+    font-size: clamp(1.75rem, 4vw, 3.5rem);
+    font-weight: 500;
+    line-height: 1.42;
+    letter-spacing: -0.045em;
+    max-width: 22ch;
+  }
+
+  /* ───────────── Chapter shell ───────────── */
+  .chapter__head {
+    padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    border-bottom: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .chapter__grid {
+    padding-top: clamp(3rem, 6vw, 6rem);
+    row-gap: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .chapter__title-col {
+    grid-column: 1 / span 6;
+  }
+
+  .chapter__body-col {
+    grid-column: 8 / span 4;
+  }
+
+  .chapter__title {
+    font-size: var(--fs-h2);
+    letter-spacing: -0.05em;
+  }
+
+  .chapter__body-col .lead {
+    opacity: 0.62;
+  }
+
+  .chapter__body-col em {
+    font-style: normal;
+    opacity: 1;
+    font-weight: 500;
+  }
+
+  .chapter__quote {
+    margin-top: 2rem;
+    padding-left: 1.5rem;
+    border-left: 1px solid;
+    border-color: color-mix(in srgb, currentColor 25%, transparent);
+    font-size: 1rem;
+    line-height: 1.8;
+    opacity: 0.85;
+  }
+
+  .chapter__cta {
+    margin-top: clamp(5rem, 8vw, 8rem);
+    font-size: 1.0625rem;
+    font-weight: 500;
+  }
+
+  @media (max-width: 900px) {
+    .chapter__title-col,
+    .chapter__body-col {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* ───────────── Principles list ───────────── */
+  .principles {
+    margin-top: clamp(5rem, 9vw, 9rem);
+    border-top: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .principles__item {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1.5rem, 5vw, 5rem);
+    padding-block: clamp(1.5rem, 2.4vw, 2.25rem);
+    border-bottom: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .principles__mark {
+    font-size: var(--fs-meta);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.1em;
+    opacity: 0.35;
+    flex: none;
+  }
+
+  .principles__text {
+    font-size: clamp(1.0625rem, 1.8vw, 1.5rem);
+    letter-spacing: -0.03em;
+    line-height: 1.5;
+  }
+
+  /* ───────────── Works ───────────── */
+  .works {
+    margin-top: clamp(5rem, 10vw, 10rem);
+  }
+
+  /* ───────────── Process ───────────── */
+  .process {
+    margin-top: clamp(5rem, 9vw, 9rem);
+    border-top: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+    counter-reset: none;
+  }
+
+  .process__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr) minmax(0, 5fr);
+    column-gap: clamp(16px, 3vw, 56px);
+    row-gap: 0.75rem;
+    padding-block: clamp(2rem, 3.6vw, 3.5rem);
+    border-bottom: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .process__no {
+    font-size: var(--fs-meta);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.12em;
+    opacity: 0.35;
+    padding-top: 0.6em;
+  }
+
+  .process__title {
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    letter-spacing: -0.04em;
+    line-height: 1.35;
+  }
+
+  .process__body {
+    font-size: 1rem;
+    line-height: 1.8;
+    opacity: 0.6;
+    max-width: 48ch;
+  }
+
+  @media (max-width: 860px) {
+    .process__item {
+      grid-template-columns: 1fr;
+    }
+
+    .process__no {
+      padding-top: 0;
+    }
+
+    .process__body {
+      max-width: none;
+    }
+  }
+
+  /* ───────────── Attitude ───────────── */
+  .avoided {
+    margin-top: clamp(4rem, 8vw, 8rem);
+    display: grid;
+    gap: 0.35rem;
+    max-width: 46ch;
+  }
+
+  .avoided__item {
+    display: flex;
+    gap: 1.25rem;
+    font-size: clamp(1rem, 1.5vw, 1.1875rem);
+    line-height: 2;
+    opacity: 0.72;
+  }
+
+  .avoided__mark {
+    opacity: 0.4;
+    flex: none;
+  }
+
+  .closing {
+    margin-top: clamp(5rem, 9vw, 9rem);
+    padding-top: clamp(2.5rem, 4vw, 4rem);
+    border-top: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .closing p {
+    font-size: clamp(1.25rem, 2.4vw, 2rem);
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.035em;
+    max-width: 28ch;
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+/**
+ * Salient column animation wrapper.
+ * `.col.has-animation[data-animation]` → 650ms easeOutCubic on a waypoint at 88%.
+ */
+interface Props {
+  animation?:
+    | 'fade-in'
+    | 'fade-in-from-bottom'
+    | 'slight-fade-in-from-bottom'
+    | 'fade-in-from-left'
+    | 'fade-in-from-right'
+    | 'grow-in';
+  delay?: number;
+  as?: string;
+  class?: string;
+}
+
+const {
+  animation = 'fade-in-from-bottom',
+  delay = 0,
+  as = 'div',
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const Tag = as as any;
+---
+
+<!-- `rest` carries the parent's data-astro-cid-* so the caller's scoped
+     styles reach this root element. -->
+<Tag
+  class:list={['col', 'has-animation', className]}
+  data-animation={animation}
+  data-delay={delay}
+  {...rest}
+>
+  <slot />
+</Tag>

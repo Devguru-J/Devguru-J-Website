@@ -1,0 +1,336 @@
+---
+import Base from '../../layouts/Base.astro';
+import SplitHeading from '../../components/SplitHeading.astro';
+import Reveal from '../../components/Reveal.astro';
+import Cta from '../../components/Cta.astro';
+import { publishedWorks as works } from '../../data/works';
+
+export function getStaticPaths() {
+  return works.map((work, i) => ({
+    params: { slug: work.slug },
+    props: { work, next: works[(i + 1) % works.length] },
+  }));
+}
+
+const { work, next } = Astro.props;
+const hasNext = works.length > 1 && next.slug !== work.slug;
+---
+
+<Base title={work.title} description={work.summary}>
+  <!-- ── Head ── -->
+  <section
+    class="page-head"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <Reveal animation="fade-in">
+        <p class="eyebrow">
+          <span class="eyebrow__index">{work.no}</span><span>{work.category}</span>
+        </p>
+      </Reveal>
+
+      <SplitHeading tag="h1" class="page-head__title" delay={100}>
+        {work.title}
+      </SplitHeading>
+
+      <Reveal animation="slight-fade-in-from-bottom" delay={340} class="page-head__lead">
+        <p class="lead">{work.lead}</p>
+      </Reveal>
+
+      <Reveal animation="fade-in" delay={460} class="page-head__meta">
+        <dl>
+          <div><dt>분류</dt><dd>{work.category}</dd></div>
+          <div><dt>플랫폼</dt><dd>{work.platform}</dd></div>
+          <div><dt>역할</dt><dd>{work.role}</dd></div>
+          <div><dt>연도</dt><dd>{work.year}</dd></div>
+        </dl>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- ── Cover ── -->
+  <section
+    class="cover-sec"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      <div class="cover nectar-media" data-bg-animation="zoom-out-reveal">
+        <div class="inner-wrap">
+          {
+            work.cover ? (
+              <img src={work.cover} alt={`${work.title} 화면`} width="1600" height="1000" />
+            ) : (
+              <span class="cover__plate" aria-hidden="true">
+                <span>{work.titleEn}</span>
+              </span>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Body ── -->
+  <section
+    class="section body-sec"
+    data-color-change-section-bg-color="#ffffff"
+    data-color-change-section-text-color="#000000"
+  >
+    <div class="container">
+      {
+        work.sections.map((s, i) => (
+          <div class="chapter-block">
+            <Reveal animation="fade-in" class="chapter-block__label">
+              <p class="eyebrow">
+                <span class="eyebrow__index">{String(i + 1).padStart(2, '0')}</span>
+                <span>{s.heading}</span>
+              </p>
+            </Reveal>
+            <Reveal animation="slight-fade-in-from-bottom" delay={100} class="chapter-block__body">
+              {s.body.map((p) => <p>{p}</p>)}
+            </Reveal>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ── Notes ── -->
+  <section
+    class="section notes-sec"
+    data-color-change-section-bg-color="#000000"
+    data-color-change-section-text-color="#ffffff"
+  >
+    <div class="container">
+      <Reveal animation="fade-in">
+        <p class="eyebrow"><span class="eyebrow__index">—</span><span>정리</span></p>
+      </Reveal>
+
+      <ul class="notes">
+        {
+          work.notes.map((n, i) => (
+            <Reveal as="li" animation="slight-fade-in-from-bottom" delay={i * 70} class="notes__item">
+              <span class="notes__mark" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <span>{n}</span>
+            </Reveal>
+          ))
+        }
+      </ul>
+
+      {
+        work.link && (
+          <Reveal animation="fade-in" class="notes__cta">
+            <Cta href={work.link.href} external>
+              {work.link.label}
+            </Cta>
+          </Reveal>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- ── Next ── -->
+  {
+    hasNext && (
+      <section
+        class="next-sec"
+        data-color-change-section-bg-color="#ffffff"
+        data-color-change-section-text-color="#000000"
+      >
+        <div class="container">
+          <a class="next nectar-underline" href={`/work/${next.slug}/`}>
+            <span class="eyebrow">
+              <span class="eyebrow__index">{next.no}</span>
+              <span>다음 작업</span>
+            </span>
+            <h2 class="next__title post-heading">{next.title}</h2>
+            <p class="next__summary">{next.summary}</p>
+          </a>
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(160px, 22vh, 280px) clamp(48px, 6vw, 88px);
+  }
+
+  .page-head__title {
+    margin-top: clamp(2rem, 4vw, 3.5rem);
+    font-size: var(--fs-h1);
+    letter-spacing: -0.055em;
+  }
+
+  .page-head__lead {
+    margin-top: clamp(2rem, 3.5vw, 3rem);
+  }
+
+  .page-head__lead .lead {
+    max-width: 32ch;
+    opacity: 0.62;
+  }
+
+  .page-head__meta {
+    margin-top: clamp(3.5rem, 6vw, 6rem);
+    padding-top: clamp(1.5rem, 2.5vw, 2.25rem);
+    border-top: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .page-head__meta dl {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem;
+    font-size: var(--fs-meta);
+  }
+
+  .page-head__meta dt {
+    opacity: 0.4;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5em;
+  }
+
+  .page-head__meta dd {
+    font-size: 0.9375rem;
+    letter-spacing: -0.015em;
+  }
+
+  @media (max-width: 720px) {
+    .page-head__meta dl {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  /* Cover */
+  .cover {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: rgba(128, 128, 128, 0.08);
+  }
+
+  .cover .inner-wrap {
+    height: 100%;
+    width: 100%;
+  }
+
+  .cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cover__plate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: color-mix(in srgb, currentColor 5%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 10%, transparent);
+  }
+
+  .cover__plate span {
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    font-weight: 300;
+    letter-spacing: -0.055em;
+    opacity: 0.28;
+  }
+
+  /* Body */
+  .chapter-block {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(16px, 2vw, 40px);
+    row-gap: 1.5rem;
+    padding-block: clamp(3rem, 5vw, 5rem);
+    border-top: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .chapter-block:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .chapter-block__label {
+    grid-column: 1 / span 3;
+  }
+
+  .chapter-block__body {
+    grid-column: 5 / span 7;
+    display: grid;
+    gap: 1.5em;
+  }
+
+  .chapter-block__body p {
+    font-size: clamp(1.0625rem, 1.35vw, 1.25rem);
+    line-height: 1.85;
+    letter-spacing: -0.02em;
+    opacity: 0.78;
+  }
+
+  @media (max-width: 900px) {
+    .chapter-block__label,
+    .chapter-block__body {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* Notes */
+  .notes {
+    margin-top: clamp(3rem, 5vw, 5rem);
+    border-top: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .notes__item {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1.5rem, 5vw, 5rem);
+    padding-block: clamp(1.25rem, 2vw, 1.875rem);
+    border-bottom: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+    font-size: clamp(1rem, 1.6vw, 1.375rem);
+    letter-spacing: -0.03em;
+    line-height: 1.5;
+  }
+
+  .notes__mark {
+    font-size: var(--fs-meta);
+    font-variant-numeric: tabular-nums;
+    opacity: 0.35;
+    letter-spacing: 0.1em;
+    flex: none;
+  }
+
+  .notes__cta {
+    margin-top: clamp(3rem, 5vw, 4.5rem);
+    font-size: 1.0625rem;
+    font-weight: 500;
+  }
+
+  /* Next */
+  .next-sec {
+    padding-block: clamp(100px, 14vw, 200px);
+  }
+
+  .next {
+    display: block;
+  }
+
+  .next__title {
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    font-size: var(--fs-h2);
+    letter-spacing: -0.05em;
+  }
+
+  .next__summary {
+    margin-top: 1.25rem;
+    max-width: 40ch;
+    opacity: 0.55;
+  }
+</style>
