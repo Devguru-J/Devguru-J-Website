@@ -709,9 +709,22 @@ const avoided = [
   }
 
   /* ───────────── 간주 ───────────── */
-  /* 앞 섹션(08)이 이미 아래 패딩을 갖고 있어 위쪽은 얇게 둡니다. */
+  /* 화면을 통째로 비워 한 문장만 남깁니다. 눈이 한 번 쉬는 자리라 높이를
+     화면에 맞춥니다.
+     패딩은 위아래를 같게 둡니다 — 예전에는 앞 섹션(08)의 아래 패딩을 믿고
+     위쪽을 얇게 뒀지만, 이제는 이 섹션이 자기 화면을 통째로 쓰므로
+     비대칭이면 문장이 중앙에서 밀려납니다. 남겨 두는 이유는 내용이 화면보다
+     길어지는 경우(짧은 가로 화면 등) 잘리지 않고 늘어나게 하기 위해서입니다. */
   .interlude {
-    padding-block: clamp(48px, 6vw, 96px) clamp(96px, 13vw, 180px);
+    min-height: 100vh;
+    min-height: 100dvh; /* 모바일 주소창 접힘으로 높이가 튀는 것 방지 */
+    display: flex;
+    align-items: center;
+    padding-block: clamp(48px, 6vw, 96px);
+  }
+
+  .interlude > .container {
+    width: 100%;
   }
 
   .interlude__line {
