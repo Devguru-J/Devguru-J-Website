@@ -66,6 +66,23 @@ const links = [
     transform: translateY(-100%);
   }
 
+  /* Frosted-glass backdrop — only once content can slide underneath */
+  #top::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    opacity: 0;
+    transition: opacity 0.4s var(--nectar-cubic-bezier-out);
+  }
+
+  #top.is-scrolled::before {
+    opacity: 1;
+  }
+
   .header__inner {
     display: flex;
     align-items: center;
