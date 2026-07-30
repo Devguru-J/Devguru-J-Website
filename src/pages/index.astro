@@ -77,10 +77,6 @@ const avoided = [
       </SplitHeading>
 
       <div class="hero__foot">
-        <Reveal animation="fade-in" delay={900} class="hero__scroll">
-          <span class="nectar-scroll-icon" aria-hidden="true"></span>
-        </Reveal>
-
         <Reveal animation="slight-fade-in-from-bottom" delay={620} class="hero__lead">
           <p class="lead">
             2054년, 제가 환갑이 되는 해입니다.
@@ -507,10 +503,6 @@ const avoided = [
     padding-top: clamp(2.5rem, 5vw, 4.5rem);
   }
 
-  .hero__scroll {
-    grid-column: 1 / span 2;
-  }
-
   .hero__lead {
     grid-column: 7 / span 5;
   }
@@ -523,10 +515,6 @@ const avoided = [
   @media (max-width: 900px) {
     .hero__foot {
       display: block;
-    }
-
-    .hero__scroll {
-      display: none;
     }
   }
 
