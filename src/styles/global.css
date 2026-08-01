@@ -103,15 +103,21 @@ a {
   --section-y: clamp(120px, 15vw, 260px);
   --section-y-tight: clamp(88px, 10vw, 168px);
 
-  /* Type scale — tight, editorial */
-  --fs-display: clamp(2.5rem, 6vw, 6.5rem);
-  --fs-h1: clamp(2.5rem, 6.2vw, 6rem);
-  --fs-h2: clamp(2rem, 4.4vw, 4.25rem);
-  --fs-h3: clamp(1.5rem, 2.4vw, 2.25rem);
-  --fs-h4: clamp(1.125rem, 1.35vw, 1.375rem);
-  --fs-lead: clamp(1.125rem, 1.55vw, 1.5rem);
-  --fs-body: clamp(1rem, 1.05vw, 1.0625rem);
-  --fs-meta: 0.8125rem;
+  /* Type scale — tight, editorial.
+     모든 단계가 clamp(최소rem, rem + vw, 최대rem) 꼴이다. rem 항이 눈금 전체를
+     루트 글자 크기에 묶어 두고(브라우저 확대·사용자 글자 크기 설정이 그대로 먹는다),
+     vw 는 기울기만 담당한다.
+     이전 값은 기울기가 vw 하나뿐이라 제목만 화면 폭을 따라가고 본문은 16px 에
+     묶여 있었다 — 1440px 에서 h1:본문이 5.4:1, 1728px 에서 6.1:1 까지 벌어져
+     맥북 화면에서 헤드라인만 혼자 커 보였다. 지금은 1440px 에서 4.2:1 이다. */
+  --fs-display: clamp(2.5rem, 1.5rem + 3.35vw, 5rem);
+  --fs-h1: clamp(2.5rem, 1.55rem + 3.05vw, 4.75rem);
+  --fs-h2: clamp(2rem, 1.55rem + 1.9vw, 3.5rem);
+  --fs-h3: clamp(1.5rem, 1.3rem + 0.75vw, 2.25rem);
+  --fs-h4: clamp(1.125rem, 1.06rem + 0.22vw, 1.375rem);
+  --fs-lead: clamp(1.125rem, 1.03rem + 0.42vw, 1.5rem);
+  --fs-body: clamp(1rem, 0.965rem + 0.12vw, 1.0625rem);
+  --fs-meta: clamp(0.8125rem, 0.79rem + 0.08vw, 0.875rem);
 
   color-scheme: light;
 }

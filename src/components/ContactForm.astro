@@ -14,6 +14,8 @@
  *   검은 배경(.span_12.light)에서는 테두리 rgba(255,255,255,0.6), 글자 흰색
  * 고정색 대신 currentColor 로 옮겨 배경 반전을 따라가게 했습니다.
  * 16px 는 취향이 아니라 사양입니다 — iOS 는 그보다 작으면 포커스 시 화면을 확대합니다.
+ * 그래서 1rem 으로 적습니다. 기본 루트에서 정확히 16px 이고, 사용자가 글자를
+ * 키우면 따라 커지기만 하므로 확대 유발선 아래로는 절대 내려가지 않습니다.
  *
  * ┌─────────────────────────────────────────────────────────────────────┐
  * │ 받는 곳이 아직 없습니다.                                              │
@@ -176,8 +178,8 @@ const { class: className, ...rest } = Astro.props;
     border-color: color-mix(in srgb, currentColor 25%, transparent);
     border-radius: 0;
     box-shadow: none;
-    padding: 16px;
-    font-size: 16px;
+    padding: 1rem;
+    font-size: 1rem;
     line-height: 1.6;
     color: inherit;
     width: 100%;
