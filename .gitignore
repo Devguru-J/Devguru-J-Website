@@ -13,3 +13,7 @@ reference/
 .superpowers/
 .playwright-mcp/
 .wrangler/
+
+# 스냅샷 작업본 — baseline 만 커밋한다 (docs/snapshots/README.md)
+docs/snapshots/current/
+docs/snapshots/control/
