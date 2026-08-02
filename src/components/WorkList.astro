@@ -101,8 +101,8 @@ const { works, pending = [], class: className = '', ...rest } = Astro.props;
      ───────────────────────────────────────────────────────────────── */
 
   .nectar-post-grid-wrap[data-style='vertical_list'] {
-    --hover-easing: cubic-bezier(0.1, 0.75, 0.5, 1);
-    --vert-list-border: color-mix(in srgb, currentColor 15%, transparent);
+    --memory-hover-easing: cubic-bezier(0.1, 0.75, 0.5, 1);
+    --memory-vert-list-border: color-mix(in srgb, currentColor 15%, transparent);
   }
 
   .nectar-post-grid-wrap[data-style='vertical_list'] .nectar-post-grid-item {
@@ -133,7 +133,7 @@ const { works, pending = [], class: className = '', ...rest } = Astro.props;
     display: block;
     transition: transform 1s ease;
     transform-origin: left;
-    background-color: var(--vert-list-border);
+    background-color: var(--memory-vert-list-border);
   }
 
   .nectar-post-grid-wrap[data-style='vertical_list'] .nectar-post-grid > div:first-child:before {
@@ -194,7 +194,7 @@ const { works, pending = [], class: className = '', ...rest } = Astro.props;
     flex-direction: column;
     gap: 0.4em;
     margin-top: 0;
-    font-size: var(--fs-meta);
+    font-size: var(--memory-fs-meta);
     letter-spacing: 0.02em;
   }
 
@@ -218,7 +218,7 @@ const { works, pending = [], class: className = '', ...rest } = Astro.props;
     background-image: linear-gradient(to right, currentColor 0%, currentColor 100%);
     background-size: 0% 1px;
     background-position: left bottom;
-    transition: background-size 0.55s var(--ease-underline);
+    transition: background-size 0.55s var(--memory-ease-underline);
     padding: 2px 0;
   }
 
@@ -233,7 +233,7 @@ const { works, pending = [], class: className = '', ...rest } = Astro.props;
   .nectar-post-grid.vert_list_counter .item-main:before {
     content: counter(step-counter, decimal-leading-zero);
     margin-right: 25px;
-    border: 1px solid var(--vert-list-border);
+    border: 1px solid var(--memory-vert-list-border);
     display: block;
     position: relative;
     z-index: 10;
@@ -248,7 +248,7 @@ const { works, pending = [], class: className = '', ...rest } = Astro.props;
     flex: none;
     transition: color 0.45s cubic-bezier(0.15, 0.75, 0.5, 1) 0s,
       border-color 0.45s cubic-bezier(0.15, 0.75, 0.5, 1) 0s,
-      transform 0.6s var(--hover-easing);
+      transform 0.6s var(--memory-hover-easing);
   }
 
   .nectar-post-grid.vert_list_counter .nectar-post-grid-item:hover .item-main:before {
@@ -359,7 +359,7 @@ const { works, pending = [], class: className = '', ...rest } = Astro.props;
     .nectar-post-grid-item
     .nectar-post-grid-item-bg__media {
     animation: nectar_vert_list_hover_effect_featured_image_follow_scale 0.6s
-      var(--hover-easing) forwards;
+      var(--memory-hover-easing) forwards;
     will-change: transform, clip-path, opacity;
   }
 

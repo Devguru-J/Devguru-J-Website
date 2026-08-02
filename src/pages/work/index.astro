@@ -58,15 +58,15 @@ import { publishedWorks as works, pendingWorks } from '../../data/works';
   }
 
   .page-head__title {
-    margin-top: clamp(2.5rem, 5vw, 4.5rem);
-    font-size: var(--fs-h1);
+    margin-top: var(--memory-space-lg);
+    font-size: var(--memory-fs-h1);
     letter-spacing: -0.055em;
   }
 
   .page-head__foot {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: clamp(16px, 2vw, 40px);
+    column-gap: var(--memory-grid-gap);
     row-gap: 2rem;
     align-items: end;
     margin-top: clamp(4rem, 8vw, 7rem);
@@ -90,7 +90,7 @@ import { publishedWorks as works, pendingWorks } from '../../data/works';
     align-items: flex-end;
     gap: 0.35rem;
     text-align: right;
-    font-size: var(--fs-meta);
+    font-size: var(--memory-fs-meta);
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }

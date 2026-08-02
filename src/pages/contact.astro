@@ -84,17 +84,17 @@ const fits = [
   }
 
   .contact__title {
-    margin-top: clamp(2rem, 4vw, 3.5rem);
-    font-size: var(--fs-h2);
+    margin-top: var(--memory-space-md);
+    font-size: var(--memory-fs-h2);
     letter-spacing: -0.055em;
   }
 
   .contact__grid {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: clamp(16px, 2vw, 40px);
+    column-gap: var(--memory-grid-gap);
     row-gap: clamp(3rem, 5vw, 4rem);
-    margin-top: clamp(3.5rem, 6vw, 6rem);
+    margin-top: var(--memory-space-xl);
   }
 
   .contact__mail-col {
@@ -106,7 +106,7 @@ const fits = [
   }
 
   .contact__label {
-    font-size: var(--fs-meta);
+    font-size: var(--memory-fs-meta);
     letter-spacing: 0.13em;
     text-transform: uppercase;
     opacity: 0.4;
@@ -126,7 +126,7 @@ const fits = [
     background-image: linear-gradient(to right, currentColor 0%, currentColor 100%);
     background-size: 100% 1px;
     background-position: left 92%;
-    transition: background-size 0.55s var(--ease-underline);
+    transition: background-size 0.55s var(--memory-ease-underline);
   }
 
   .contact__mail:hover .contact__mail-text {
@@ -156,7 +156,7 @@ const fits = [
   }
 
   .contact__form-wrap {
-    margin-top: clamp(3.5rem, 6vw, 6rem);
+    margin-top: var(--memory-space-xl);
     /* 읽고 쓰는 영역이라 12칼럼 그리드 대신 폭만 제한합니다. */
     max-width: 46rem;
   }
@@ -171,7 +171,7 @@ const fits = [
     justify-content: space-between;
     gap: 0.5rem 2rem;
     padding-top: 1.75rem;
-    font-size: var(--fs-meta);
+    font-size: var(--memory-fs-meta);
     opacity: 0.45;
   }
 

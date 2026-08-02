@@ -160,8 +160,8 @@ const hasNext = works.length > 1 && next.slug !== work.slug;
   }
 
   .page-head__title {
-    margin-top: clamp(2rem, 4vw, 3.5rem);
-    font-size: var(--fs-h1);
+    margin-top: var(--memory-space-md);
+    font-size: var(--memory-fs-h1);
     letter-spacing: -0.055em;
   }
 
@@ -175,7 +175,7 @@ const hasNext = works.length > 1 && next.slug !== work.slug;
   }
 
   .page-head__meta {
-    margin-top: clamp(3.5rem, 6vw, 6rem);
+    margin-top: var(--memory-space-xl);
     padding-top: clamp(1.5rem, 2.5vw, 2.25rem);
     border-top: 1px solid;
     border-color: color-mix(in srgb, currentColor 14%, transparent);
@@ -185,7 +185,7 @@ const hasNext = works.length > 1 && next.slug !== work.slug;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 2rem;
-    font-size: var(--fs-meta);
+    font-size: var(--memory-fs-meta);
   }
 
   .page-head__meta dt {
@@ -244,7 +244,7 @@ const hasNext = works.length > 1 && next.slug !== work.slug;
   .chapter-block {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: clamp(16px, 2vw, 40px);
+    column-gap: var(--memory-grid-gap);
     row-gap: 1.5rem;
     padding-block: clamp(3rem, 5vw, 5rem);
     border-top: 1px solid;
@@ -290,7 +290,7 @@ const hasNext = works.length > 1 && next.slug !== work.slug;
   .notes__item {
     display: flex;
     align-items: baseline;
-    gap: clamp(1.5rem, 5vw, 5rem);
+    gap: var(--memory-gap-wide);
     padding-block: clamp(1.25rem, 2vw, 1.875rem);
     border-bottom: 1px solid;
     border-color: color-mix(in srgb, currentColor 14%, transparent);
@@ -300,7 +300,7 @@ const hasNext = works.length > 1 && next.slug !== work.slug;
   }
 
   .notes__mark {
-    font-size: var(--fs-meta);
+    font-size: var(--memory-fs-meta);
     font-variant-numeric: tabular-nums;
     opacity: 0.35;
     letter-spacing: 0.1em;
@@ -323,8 +323,8 @@ const hasNext = works.length > 1 && next.slug !== work.slug;
   }
 
   .next__title {
-    margin-top: clamp(1.5rem, 3vw, 2.5rem);
-    font-size: var(--fs-h2);
+    margin-top: var(--memory-space-sm);
+    font-size: var(--memory-fs-h2);
     letter-spacing: -0.05em;
   }
 

@@ -190,8 +190,8 @@ const questions = [
   }
 
   .page-head__title {
-    margin-top: clamp(2.5rem, 5vw, 4.5rem);
-    font-size: var(--fs-h1);
+    margin-top: var(--memory-space-lg);
+    font-size: var(--memory-fs-h1);
     letter-spacing: -0.055em;
   }
 
@@ -200,7 +200,7 @@ const questions = [
   }
 
   .statement__text :global(p) {
-    font-size: clamp(1.5rem, 0.97rem + 1.77vw, 2.75rem);
+    font-size: var(--memory-fs-subhead);
     font-weight: 500;
     line-height: 1.45;
     letter-spacing: -0.045em;
@@ -225,13 +225,13 @@ const questions = [
   }
 
   .story__p {
-    font-size: var(--fs-lead);
+    font-size: var(--memory-fs-lead);
     line-height: 1.9;
     opacity: 0.75;
   }
 
   .story__last {
-    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: var(--memory-space-sm);
     padding-top: clamp(1.75rem, 3vw, 2.5rem);
     border-top: 1px solid;
     border-color: color-mix(in srgb, currentColor 14%, transparent);
@@ -242,14 +242,14 @@ const questions = [
   }
 
   .chapter__head {
-    padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    padding-bottom: var(--memory-space-lg);
     border-bottom: 1px solid;
     border-color: color-mix(in srgb, currentColor 14%, transparent);
   }
 
   .chapter__grid {
     padding-top: clamp(3rem, 6vw, 6rem);
-    row-gap: clamp(2rem, 4vw, 3.5rem);
+    row-gap: var(--memory-space-md);
   }
 
   .chapter__title-col {
@@ -261,7 +261,7 @@ const questions = [
   }
 
   .chapter__title {
-    font-size: var(--fs-h2);
+    font-size: var(--memory-fs-h2);
     letter-spacing: -0.05em;
   }
 
@@ -277,7 +277,7 @@ const questions = [
   }
 
   .traits {
-    margin-top: clamp(5rem, 9vw, 9rem);
+    margin-top: var(--memory-space-2xl);
     border-top: 1px solid;
     border-color: color-mix(in srgb, currentColor 14%, transparent);
   }
@@ -285,7 +285,7 @@ const questions = [
   .traits__item {
     display: flex;
     align-items: baseline;
-    gap: clamp(1.5rem, 5vw, 5rem);
+    gap: var(--memory-gap-wide);
     padding-block: clamp(1.25rem, 2.2vw, 2rem);
     border-bottom: 1px solid;
     border-color: color-mix(in srgb, currentColor 14%, transparent);
@@ -295,7 +295,7 @@ const questions = [
   }
 
   .traits__mark {
-    font-size: var(--fs-meta);
+    font-size: var(--memory-fs-meta);
     font-variant-numeric: tabular-nums;
     opacity: 0.35;
     letter-spacing: 0.1em;
@@ -303,10 +303,10 @@ const questions = [
   }
 
   .questions {
-    margin-top: clamp(5rem, 9vw, 9rem);
+    margin-top: var(--memory-space-2xl);
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: clamp(16px, 2vw, 40px);
+    column-gap: var(--memory-grid-gap);
     row-gap: 2rem;
   }
 
@@ -340,7 +340,7 @@ const questions = [
   }
 
   .closing-sec__text :global(p) {
-    font-size: clamp(1.5rem, 0.97rem + 1.77vw, 2.75rem);
+    font-size: var(--memory-fs-subhead);
     font-weight: 500;
     line-height: 1.45;
     letter-spacing: -0.045em;

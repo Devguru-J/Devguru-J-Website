@@ -74,34 +74,45 @@ a {
   --nectar-header-hover-timing: 0.65s;
 
   /* jQuery easeOutCubic — Salient's default column/image animation easing */
-  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --memory-ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
   /* Salient split-heading reveal easing */
-  --ease-reveal: cubic-bezier(0.25, 1, 0.5, 1);
+  --memory-ease-reveal: cubic-bezier(0.25, 1, 0.5, 1);
   /* Salient zoom-out-reveal easing */
-  --ease-zoom: cubic-bezier(0.12, 0.75, 0.4, 1);
+  --memory-ease-zoom: cubic-bezier(0.12, 0.75, 0.4, 1);
   /* Salient underline sweep easing */
-  --ease-underline: cubic-bezier(0.2, 0.75, 0.5, 1);
+  --memory-ease-underline: cubic-bezier(0.2, 0.75, 0.5, 1);
   /* Salient CTA arrow easing */
-  --ease-arrow: cubic-bezier(0.23, 0.46, 0.4, 1);
+  --memory-ease-arrow: cubic-bezier(0.23, 0.46, 0.4, 1);
 
-  /* Black & white */
-  --ink: #000000;
-  --paper: #ffffff;
+  /* 이 사이트가 직접 정한 UI 이징. 위 다섯 개와 달리 Salient 원본에 없는 값이라
+     자유롭게 바꿔도 parity 가 깨지지 않는다. 폼 필드·테두리·불투명도 전환용. */
+  --memory-ease-ui: cubic-bezier(0.25, 1, 0.33, 1);
+
+  /* 색 — 이 사이트에는 컬러 토큰이 없다.
+     본문 색은 전부 currentColor 이고, 페이지 전체 흑↔백 반전은 Salient 의
+     colour-change section 이 아래 두 변수를 런타임에 갈아끼워서 만든다.
+     (섹션 마크업의 data-color-change-section-* 속성 → motion.js)
+     그래서 --ink / --paper 같은 고정 컬러 토큰을 만들면 반전 섹션에서 어긋난다.
+     실제로 그런 토큰 7개가 아무 데서도 안 쓰인 채 남아 있어서 걷어냈다. */
   --nectar-page-background-color: #ffffff;
   --nectar-page-text-color: #000000;
 
-  /* Derived greys — all neutral, no hue */
-  --ink-70: rgba(0, 0, 0, 0.7);
-  --ink-55: rgba(0, 0, 0, 0.55);
-  --ink-40: rgba(0, 0, 0, 0.4);
-  --ink-14: rgba(0, 0, 0, 0.14);
-  --ink-08: rgba(0, 0, 0, 0.08);
-
   /* Rhythm */
-  --gutter: clamp(24px, 5.2vw, 96px);
-  --page-max: 1560px;
-  --section-y: clamp(120px, 15vw, 260px);
-  --section-y-tight: clamp(88px, 10vw, 168px);
+  --memory-gutter: clamp(24px, 5.2vw, 96px);
+  --memory-page-max: 1560px;
+  --memory-section-y: clamp(120px, 15vw, 260px);
+  --memory-section-y-tight: clamp(88px, 10vw, 168px);
+  --memory-grid-gap: clamp(16px, 2vw, 40px);
+
+  /* 페이지에 흩어져 있던 간격 clamp 를 이름으로 흡수했다. 값은 그대로다.
+     margin-top / padding / gap 어디에나 쓰이는 순수 리듬 눈금이다. */
+  --memory-space-sm: clamp(1.5rem, 3vw, 2.5rem);   /* 24 → 40px */
+  --memory-space-md: clamp(2rem, 4vw, 3.5rem);     /* 32 → 56px */
+  --memory-space-lg: clamp(2.5rem, 5vw, 4.5rem);   /* 40 → 72px */
+  --memory-space-xl: clamp(3.5rem, 6vw, 6rem);     /* 56 → 96px */
+  --memory-space-2xl: clamp(5rem, 9vw, 9rem);      /* 80 → 144px */
+  /* 넓은 2열 레이아웃의 column gap 전용 — 위 눈금보다 기울기가 가파르다 */
+  --memory-gap-wide: clamp(1.5rem, 5vw, 5rem);     /* 24 → 80px */
 
   /* Type scale — tight, editorial.
      모든 단계가 clamp(최소rem, rem + vw, 최대rem) 꼴이다. rem 항이 눈금 전체를
@@ -110,14 +121,16 @@ a {
      이전 값은 기울기가 vw 하나뿐이라 제목만 화면 폭을 따라가고 본문은 16px 에
      묶여 있었다 — 1440px 에서 h1:본문이 5.4:1, 1728px 에서 6.1:1 까지 벌어져
      맥북 화면에서 헤드라인만 혼자 커 보였다. 지금은 1440px 에서 4.2:1 이다. */
-  --fs-display: clamp(2.5rem, 1.5rem + 3.35vw, 5rem);
-  --fs-h1: clamp(2.5rem, 1.55rem + 3.05vw, 4.75rem);
-  --fs-h2: clamp(2rem, 1.55rem + 1.9vw, 3.5rem);
-  --fs-h3: clamp(1.5rem, 1.3rem + 0.75vw, 2.25rem);
-  --fs-h4: clamp(1.125rem, 1.06rem + 0.22vw, 1.375rem);
-  --fs-lead: clamp(1.125rem, 1.03rem + 0.42vw, 1.5rem);
-  --fs-body: clamp(1rem, 0.965rem + 0.12vw, 1.0625rem);
-  --fs-meta: clamp(0.8125rem, 0.79rem + 0.08vw, 0.875rem);
+  --memory-fs-display: clamp(2.5rem, 1.5rem + 3.35vw, 5rem);
+  --memory-fs-h1: clamp(2.5rem, 1.55rem + 3.05vw, 4.75rem);
+  --memory-fs-h2: clamp(2rem, 1.55rem + 1.9vw, 3.5rem);
+  --memory-fs-h3: clamp(1.5rem, 1.3rem + 0.75vw, 2.25rem);
+  --memory-fs-h4: clamp(1.125rem, 1.06rem + 0.22vw, 1.375rem);
+  --memory-fs-lead: clamp(1.125rem, 1.03rem + 0.42vw, 1.5rem);
+  --memory-fs-body: clamp(1rem, 0.965rem + 0.12vw, 1.0625rem);
+  --memory-fs-meta: clamp(0.8125rem, 0.79rem + 0.08vw, 0.875rem);
+  /* h3 와 h2 사이 한 단 — index / studio 의 소제목에서 세 번 반복되던 값 */
+  --memory-fs-subhead: clamp(1.5rem, 0.97rem + 1.77vw, 2.75rem); /* 24 → 44px */
 
   color-scheme: light;
 }
@@ -130,7 +143,7 @@ body {
   font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
     system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo',
     'Noto Sans KR', 'Malgun Gothic', sans-serif;
-  font-size: var(--fs-body);
+  font-size: var(--memory-fs-body);
   font-weight: 400;
   line-height: 1.75;
   letter-spacing: -0.015em;
@@ -150,7 +163,7 @@ body.has-color-change-section-bg-color h5,
 body.has-color-change-section-bg-color h6,
 body.has-color-change-section-bg-color p {
   transition: color var(--page-color-change-section-transition-time),
-    background-size 0.55s var(--ease-underline);
+    background-size 0.55s var(--memory-ease-underline);
 }
 
 h1,
@@ -189,24 +202,24 @@ p {
 
 .container {
   width: 100%;
-  max-width: var(--page-max);
+  max-width: var(--memory-page-max);
   margin-inline: auto;
-  padding-inline: var(--gutter);
+  padding-inline: var(--memory-gutter);
 }
 
 .section {
-  padding-block: var(--section-y);
+  padding-block: var(--memory-section-y);
   position: relative;
 }
 
 .section--tight {
-  padding-block: var(--section-y-tight);
+  padding-block: var(--memory-section-y-tight);
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: clamp(16px, 2vw, 40px);
+  column-gap: var(--memory-grid-gap);
 }
 
 .rule {
@@ -222,7 +235,7 @@ p {
   display: flex;
   align-items: baseline;
   gap: 1.25em;
-  font-size: var(--fs-meta);
+  font-size: var(--memory-fs-meta);
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -236,7 +249,7 @@ p {
 }
 
 .lead {
-  font-size: var(--fs-lead);
+  font-size: var(--memory-fs-lead);
   line-height: 1.72;
   letter-spacing: -0.025em;
   font-weight: 400;
@@ -306,8 +319,8 @@ html:not(.js) .img-with-aniamtion-wrap .hover-wrap {
 .img-with-aniamtion-wrap.animated-in .hover-wrap {
   opacity: 1;
   transform: none;
-  transition: transform 650ms var(--ease-out-cubic),
-    opacity 650ms var(--ease-out-cubic);
+  transition: transform 650ms var(--memory-ease-out-cubic),
+    opacity 650ms var(--memory-ease-out-cubic);
 }
 
 /* ---- 5.2 Split-line heading ------------------------------------------
@@ -342,8 +355,8 @@ html:not(.js) .img-with-aniamtion-wrap .hover-wrap {
   position: relative;
   display: inline-block;
   transform: translateY(1.3em);
-  transition: transform 1.2s var(--ease-reveal), opacity 1.2s var(--ease-reveal),
-    filter 1.2s var(--ease-reveal);
+  transition: transform 1.2s var(--memory-ease-reveal), opacity 1.2s var(--memory-ease-reveal),
+    filter 1.2s var(--memory-ease-reveal);
 }
 
 .nectar-split-heading span .inner.animated {
@@ -379,7 +392,7 @@ html:not(.js) .img-with-aniamtion-wrap .hover-wrap {
   background-size: 0% 1px;
   background-image: linear-gradient(to right, currentColor 0%, currentColor 100%);
   background-position: left bottom;
-  transition: background-size 0.55s var(--ease-underline);
+  transition: background-size 0.55s var(--memory-ease-underline);
   display: inline;
 }
 
@@ -399,7 +412,7 @@ html:not(.js) .img-with-aniamtion-wrap .hover-wrap {
   background-image: linear-gradient(to right, currentColor 0%, currentColor 100%);
   background-size: 100% 1px;
   background-position: left 96%;
-  transition: background-size 0.55s var(--ease-underline);
+  transition: background-size 0.55s var(--memory-ease-underline);
 }
 
 @keyframes nectar_ltr_line_animation {
@@ -502,31 +515,31 @@ html:not(.js) .img-with-aniamtion-wrap .hover-wrap {
 }
 
 .nectar-cta[data-style='arrow-animation'] svg polyline {
-  animation: ctaArrowEnd 0.45s var(--ease-arrow) forwards;
+  animation: ctaArrowEnd 0.45s var(--memory-ease-arrow) forwards;
 }
 
 .nectar-cta[data-style='arrow-animation'] .link_wrap .link_text > .text {
-  animation: ctaArrowTextStart 0.45s var(--ease-arrow) forwards;
+  animation: ctaArrowTextStart 0.45s var(--memory-ease-arrow) forwards;
 }
 
 .nectar-cta[data-style='arrow-animation'] .line {
-  animation: ctaArrowLineStart 0.45s var(--ease-arrow) forwards;
+  animation: ctaArrowLineStart 0.45s var(--memory-ease-arrow) forwards;
 }
 
 .nectar-cta[data-style='arrow-animation'] svg {
-  animation: ctaArrowSVGStart 0.45s var(--ease-arrow) forwards;
+  animation: ctaArrowSVGStart 0.45s var(--memory-ease-arrow) forwards;
 }
 
 .nectar-cta[data-style='arrow-animation'] .link_wrap:hover svg {
-  animation: ctaArrowSVGEnd 0.45s var(--ease-arrow) forwards;
+  animation: ctaArrowSVGEnd 0.45s var(--memory-ease-arrow) forwards;
 }
 
 .nectar-cta[data-style='arrow-animation'] .link_wrap:hover .link_text .line {
-  animation: ctaArrowLineEnd 0.45s var(--ease-arrow) forwards;
+  animation: ctaArrowLineEnd 0.45s var(--memory-ease-arrow) forwards;
 }
 
 .nectar-cta[data-style='arrow-animation'] .link_wrap:hover .link_text > .text {
-  animation: ctaArrowTextEnd 0.45s var(--ease-arrow) forwards;
+  animation: ctaArrowTextEnd 0.45s var(--memory-ease-arrow) forwards;
 }
 
 .nectar-cta[data-style='arrow-animation'] .link_wrap:hover polyline {
@@ -641,7 +654,7 @@ html:not(.js) .img-with-aniamtion-wrap .hover-wrap {
   left: 0;
   bottom: -2px;
   border-bottom: 1px solid currentColor;
-  transition: transform 0.4s var(--ease-arrow);
+  transition: transform 0.4s var(--memory-ease-arrow);
   transform-origin: left;
   pointer-events: none;
 }
@@ -662,12 +675,12 @@ body:not(.mobile) .nectar-cta[data-style='underline'] .link_wrap:hover .link_tex
   transform: scale(0.7);
   overflow: hidden;
   opacity: 0;
-  transition: transform 1.3s var(--ease-zoom), opacity 0.4s ease-out;
+  transition: transform 1.3s var(--memory-ease-zoom), opacity 0.4s ease-out;
 }
 
 .nectar-media[data-bg-animation='zoom-out-reveal'] .inner-wrap {
   transform: scale(1.75);
-  transition: transform 1.3s var(--ease-zoom);
+  transition: transform 1.3s var(--memory-ease-zoom);
   height: 100%;
   width: 100%;
 }
@@ -689,7 +702,7 @@ body:not(.mobile) .nectar-cta[data-style='underline'] .link_wrap:hover .link_tex
 
 /* Hover zoom on media — Salient zoom-out-high timing */
 .nectar-media__zoom {
-  transition: transform 1.3s var(--ease-zoom);
+  transition: transform 1.3s var(--memory-ease-zoom);
   will-change: transform;
 }
 
@@ -730,12 +743,12 @@ html:not(.js) #ajax-content-wrap {
 .nectar-fancy-ul[data-animation='true'] ul li {
   opacity: 0;
   left: -20px;
-  transition: opacity 0.65s var(--ease-out-cubic), left 0.65s var(--ease-out-cubic);
+  transition: opacity 0.65s var(--memory-ease-out-cubic), left 0.65s var(--memory-ease-out-cubic);
 }
 
 .nectar-fancy-ul[data-animation='true'].animated-in ul li {
   /* Salient settles at 1; the var lets a section keep its own muted tone. */
-  opacity: var(--fancy-ul-opacity, 1);
+  opacity: var(--memory-fancy-ul-opacity, 1);
   left: 0;
 }
 

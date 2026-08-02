@@ -158,7 +158,7 @@ const { class: className, ...rest } = Astro.props;
   }
 
   .contact-form__label {
-    font-size: var(--fs-meta);
+    font-size: var(--memory-fs-meta);
     letter-spacing: 0.13em;
     text-transform: uppercase;
     opacity: 0.7;
@@ -183,7 +183,7 @@ const { class: className, ...rest } = Astro.props;
     line-height: 1.6;
     color: inherit;
     width: 100%;
-    transition: border-color 0.45s cubic-bezier(0.25, 1, 0.33, 1);
+    transition: border-color 0.45s var(--memory-ease-ui);
   }
 
   .contact-form textarea {
@@ -261,8 +261,8 @@ const { class: className, ...rest } = Astro.props;
     border-color: color-mix(in srgb, currentColor 45%, transparent);
     border-radius: 0;
     cursor: pointer;
-    transition: background-color 0.35s cubic-bezier(0.25, 1, 0.33, 1),
-      border-color 0.35s cubic-bezier(0.25, 1, 0.33, 1);
+    transition: background-color 0.35s var(--memory-ease-ui),
+      border-color 0.35s var(--memory-ease-ui);
   }
 
   .contact-form__consent input:checked {
@@ -302,9 +302,9 @@ const { class: className, ...rest } = Astro.props;
     font-weight: 500;
     letter-spacing: 0.02em;
     cursor: pointer;
-    transition: border-color 0.45s cubic-bezier(0.25, 1, 0.33, 1),
-      background-color 0.45s cubic-bezier(0.25, 1, 0.33, 1),
-      color 0.45s cubic-bezier(0.25, 1, 0.33, 1);
+    transition: border-color 0.45s var(--memory-ease-ui),
+      background-color 0.45s var(--memory-ease-ui),
+      color 0.45s var(--memory-ease-ui);
   }
 
   .contact-form__submit:hover,
@@ -315,7 +315,7 @@ const { class: className, ...rest } = Astro.props;
   }
 
   .contact-form__note {
-    font-size: var(--fs-meta);
+    font-size: var(--memory-fs-meta);
     opacity: 0.4;
     margin: 0;
   }
