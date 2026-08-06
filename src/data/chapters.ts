@@ -5,7 +5,9 @@
      섹션을 넣거나 빼면 번호와 오른쪽 목차가 함께 따라옵니다.
    · id 는 <section id> 이자 목차 앵커입니다. 바꾸면 링크가 끊깁니다.
    · label 은 섹션 위 작은 라벨(eyebrow)이자 목차에 뜨는 이름입니다.
-     등대 어휘는 여기와 섹션 제목에만 씁니다. 본문은 담백하게 둡니다.
+     라벨·제목 모두 담백한 일상어가 기본입니다. 등대 어휘는 한 번에
+     읽히는 경우에만 남깁니다(예: 유리를 닦는 일). 수수께끼처럼
+     해석이 필요한 표현은 쓰지 않습니다.
    ========================================================================= */
 
 export interface Chapter {
@@ -16,11 +18,11 @@ export interface Chapter {
 export const homeChapters: Chapter[] = [
   { id: 'lost', label: '사라진 것들' },
   { id: 'standard', label: '정한 기준' },
-  { id: 'works', label: '켜 둔 것들' },
-  { id: 'order', label: '등을 세우는 순서' },
+  { id: 'works', label: '만든 것들' },
+  { id: 'order', label: '만드는 순서' },
   { id: 'glass', label: '유리를 닦는 일' },
   { id: 'beside', label: '곁에 있는 방식' },
-  { id: 'keeper', label: '등대지기 한 사람' },
+  { id: 'keeper', label: '한 사람의 스튜디오' },
   { id: 'unsaid', label: '하지 않는 말' },
 ];
 
