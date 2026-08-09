@@ -212,26 +212,27 @@ const questions = [
     padding-block: clamp(56px, 8vw, 104px) clamp(120px, 15vw, 240px);
   }
 
+  /* 페이지의 다른 섹션과 같은 12칼럼 리듬을 따른다.
+     본문을 오른쪽 5칼럼에 두어 왼쪽 절반을 통째로 비운다.
+     위 .statement(왼쪽 큰 글씨)에서 여기로 시선이 대각선으로 넘어간다. */
   .story__inner {
     display: grid;
-    gap: clamp(1.5rem, 2.4vw, 2.25rem);
-  }
-
-  /* 읽는 글이라 12칼럼 그리드 대신 한 단으로 두되, 페이지 왼쪽 정렬은 지킨다.
-     한 줄이 너무 길어지지 않도록 폭만 제한한다. */
-  .story__p,
-  .story__last {
-    max-width: 46rem;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--memory-grid-gap);
+    row-gap: clamp(2.5rem, 4vw, 4rem);
   }
 
   .story__p {
+    grid-column: 7 / span 5;
     font-size: var(--memory-fs-lead);
-    line-height: 1.9;
+    line-height: 1.85;
     opacity: 0.75;
   }
 
+  /* 맺음말은 다시 전폭으로 돌아와 섹션을 닫는다. */
   .story__last {
-    margin-top: var(--memory-space-sm);
+    grid-column: 1 / -1;
+    margin-top: var(--memory-space-md);
     padding-top: clamp(1.75rem, 3vw, 2.5rem);
     border-top: 1px solid;
     border-color: color-mix(in srgb, currentColor 14%, transparent);
@@ -239,6 +240,16 @@ const questions = [
     font-weight: 500;
     line-height: 1.5;
     letter-spacing: -0.04em;
+  }
+
+  @media (max-width: 900px) {
+    .story__p {
+      grid-column: 1 / -1;
+    }
+
+    .story__inner {
+      row-gap: clamp(1.75rem, 4vw, 2.5rem);
+    }
   }
 
   .chapter__head {
