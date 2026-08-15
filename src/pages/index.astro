@@ -79,8 +79,8 @@ const avoided = [
       <div class="hero__foot">
         <Reveal animation="slight-fade-in-from-bottom" delay={620} class="hero__lead">
           <p class="lead">
-            2054년, 제가 환갑이 되는 해입니다.
-            그 해에도 누군가 이 주소를 눌러 사이트가 열리고,
+            2054년, 제가 환갑이 되는 해입니다.<br />
+            그 해에도 누군가 이 주소를 눌러 사이트가 열리고,<br />
             앱 하나가 예전처럼 실행되기를 바라며 만듭니다.
           </p>
           {/* 영문 서명(site.tagline)은 히어로에 두지 않는다. 헤드라인과 뜻이 겹쳐
@@ -100,8 +100,7 @@ const avoided = [
   >
     <div class="container">
       <SplitHeading tag="p" effect="scroll-opacity-reveal" class="statement__text">
-        등대는 배를 부르지 않습니다.
-        그저 같은 자리에서 켜져 있습니다.
+        등대는 배를 부르지 않습니다.<br />그저 같은 자리에서 켜져 있습니다.
       </SplitHeading>
     </div>
   </section>
@@ -515,6 +514,14 @@ const avoided = [
   @media (max-width: 900px) {
     .hero__foot {
       display: block;
+    }
+  }
+
+  /* 리드의 줄바꿈은 세 줄로 읽히라고 넣은 것이다. 폭이 그만큼 안 나오면
+     강제 줄바꿈이 오히려 어긋난 줄을 만든다 — 그때는 자연스럽게 흐르게 둔다. */
+  @media (max-width: 700px) {
+    .hero__lead .lead br {
+      display: none;
     }
   }
 
