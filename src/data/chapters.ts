@@ -16,9 +16,9 @@ export interface Chapter {
 }
 
 export const homeChapters: Chapter[] = [
-  { id: 'lost', label: '사라진 것들' },
+  { id: 'lost', label: '사라진 것들' },
   { id: 'standard', label: '정한 기준' },
-  { id: 'works', label: '만든 것들' },
+  { id: 'works', label: '만든 것들' },
   { id: 'order', label: '만드는 순서' },
   { id: 'glass', label: '유리를 닦는 일' },
   { id: 'beside', label: '곁에 있는 방식' },
