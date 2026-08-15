@@ -331,9 +331,10 @@ const avoided = [
         <div class="chapter__body-col">
           <Reveal animation="slight-fade-in-from-bottom" delay={120}>
             <p class="lead">
-              창이 엉킨 채로 오래 작업하던 날, 화면을 정리하는 일이
-              작업의 일부가 되어 있다는 걸 알았습니다. Monkey Flash는 거기서 나왔습니다.
-              처음 켰을 때 감탄할 만한 것은 없습니다.
+              창이 엉킨 채로 오래 작업하던 날, 화면을 정리하는<br />
+              일이 작업의 일부가 되어 있다는 걸 알았습니다.<br />
+              Monkey Flash는 거기서 나왔습니다.<br />
+              처음 켰을 때 감탄할 만한 것은 없습니다.<br />
               며칠 쓰다 꺼보면 그제야 불편해집니다.
             </p>
             <p class="chapter__quote">
@@ -517,10 +518,12 @@ const avoided = [
     }
   }
 
-  /* 리드의 줄바꿈은 세 줄로 읽히라고 넣은 것이다. 폭이 그만큼 안 나오면
-     강제 줄바꿈이 오히려 어긋난 줄을 만든다 — 그때는 자연스럽게 흐르게 둔다. */
+  /* 리드의 줄바꿈은 정해진 줄로 읽히라고 넣은 것이다. 폭이 그만큼 안 나오면
+     강제 줄바꿈이 오히려 어긋난 줄을 만든다 — 그때는 자연스럽게 흐르게 둔다.
+     인용(.chapter__quote)의 줄바꿈은 두 줄이 짧아 좁은 화면에서도 유지한다. */
   @media (max-width: 700px) {
-    .hero__lead .lead br {
+    .hero__lead .lead br,
+    .chapter__body-col .lead br {
       display: none;
     }
   }
