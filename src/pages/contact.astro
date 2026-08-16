@@ -33,10 +33,8 @@ const fits = [
 
       <div class="contact__grid">
         <Reveal animation="slight-fade-in-from-bottom" delay={420} class="contact__mail-col">
-          <p class="contact__label">메일</p>
-          <a class="contact__mail" href={`mailto:${site.email}`}>
-            <span class="contact__mail-text">{site.email}</span>
-          </a>
+          {/* 메일 주소는 싣지 않습니다. 홈과 같이 폼 하나로 받습니다. */}
+          <p class="contact__label">보내기 전에</p>
           <p class="contact__note">
             제품이나 프로젝트에 대한 설명, 지금 겪고 있는 문제,
             그리고 원하는 일정이 함께 있으면 이야기가 빨라집니다.
@@ -113,29 +111,8 @@ const fits = [
     margin-bottom: 1.5rem;
   }
 
-  .contact__mail {
-    display: inline-block;
-    font-size: clamp(1.375rem, 1rem + 1.25vw, 2.25rem);
-    font-weight: 500;
-    letter-spacing: -0.045em;
-    line-height: 1.15;
-  }
-
-  .contact__mail-text {
-    background-repeat: no-repeat;
-    background-image: linear-gradient(to right, currentColor 0%, currentColor 100%);
-    background-size: 100% 1px;
-    background-position: left 92%;
-    transition: background-size 0.55s var(--memory-ease-underline);
-  }
-
-  .contact__mail:hover .contact__mail-text {
-    background-position: right 92%;
-    background-size: 0% 1px;
-  }
-
   .contact__note {
-    margin-top: 2rem;
+    margin-top: 0;
     max-width: 36ch;
     opacity: 0.55;
     line-height: 1.85;
