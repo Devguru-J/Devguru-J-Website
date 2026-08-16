@@ -18,10 +18,10 @@
  * 키우면 따라 커지기만 하므로 확대 유발선 아래로는 절대 내려가지 않습니다.
  *
  * ┌─────────────────────────────────────────────────────────────────────┐
- * │ 받는 곳이 아직 없습니다.                                              │
- * │ 지금은 보내기를 누르면 적은 내용이 전부 채워진 채로 메일 앱이 열립니다.   │
- * │ 서버(Cloudflare Function 등)가 생기면 아래 handleSubmit 안의          │
- * │ mailto 블록만 fetch(POST) 로 바꾸면 됩니다. 나머지는 그대로 씁니다.     │
+ * │ 보내기를 누르면 /api/inquiry 로 갑니다 (functions/api/inquiry.ts).     │
+ * │ 그쪽에서 Resend 로 메일 한 통이 나가고 jeff@bymemory.dev 로 도착합니다. │
+ * │ 전송이 실패하면 적은 내용이 채워진 메일 앱 링크를 대신 내놓습니다 —      │
+ * │ 서버가 죽어도 문의가 사라지지는 않게 합니다.                           │
  * └─────────────────────────────────────────────────────────────────────┘
  */
 import { site } from '../data/site';
@@ -101,7 +101,7 @@ const { class: className, ...rest } = Astro.props;
       <span>보내기</span>
     </button>
     <p class="contact-form__note" data-form-note aria-live="polite">
-      보내기를 누르면 메일 앱이 열립니다.
+      적어주신 연락 수단으로 답장드립니다.
     </p>
   </div>
 </form>
@@ -109,20 +109,12 @@ const { class: className, ...rest } = Astro.props;
 <script define:vars={{ email: site.email }}>
   document.querySelectorAll('.contact-form').forEach((form) => {
     const note = form.querySelector('[data-form-note]');
+    const submit = form.querySelector('.contact-form__submit');
+    const label = submit.querySelector('span');
     const value = (name) => (form.elements[name]?.value ?? '').trim();
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      // 미끼 칸이 채워졌으면 봇입니다. 조용히 무시합니다.
-      if (form.elements.company.value) return;
-
-      if (!form.checkValidity()) {
-        note.textContent = '별표 표시된 칸과 동의를 확인해 주세요.';
-        form.reportValidity();
-        return;
-      }
-
+    /** 전송이 실패했을 때 내놓는 마지막 통로. 적은 내용이 그대로 채워집니다. */
+    const mailtoFallback = () => {
       const lines = [
         ['이름', value('name')],
         ['회사 또는 팀', value('org')],
@@ -134,13 +126,72 @@ const { class: className, ...rest } = Astro.props;
         .filter(([, v]) => v)
         .map(([k, v]) => `${k}: ${v}`);
 
-      // 받는 곳이 생기면 이 블록을 fetch(POST) 로 교체하세요.
       const subject = `[기억] ${value('name')} 님의 문의`;
       const body = `${value('message')}\n\n---\n${lines.join('\n')}`;
-      window.location.href =
-        `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
 
-      note.textContent = '메일 앱을 열었습니다. 열리지 않으면 위 주소로 바로 보내 주세요.';
+    const fail = () => {
+      note.innerHTML = '';
+      note.append('보내지 못했습니다. ');
+      const link = document.createElement('a');
+      link.href = mailtoFallback();
+      link.textContent = '메일 앱으로 보내기';
+      note.append(link);
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      // 미끼 칸이 채워졌으면 봇입니다. 조용히 무시합니다.
+      if (form.elements.company.value) return;
+
+      if (!form.checkValidity()) {
+        note.textContent = '별표 표시된 칸과 동의를 확인해 주세요.';
+        form.reportValidity();
+        return;
+      }
+
+      submit.disabled = true;
+      label.textContent = '보내는 중';
+      note.textContent = '보내는 중입니다.';
+
+      try {
+        const response = await fetch('/api/inquiry', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            name: value('name'),
+            org: value('org'),
+            contact: value('contact'),
+            timeline: value('timeline'),
+            type: value('type'),
+            budget: value('budget'),
+            message: value('message'),
+            consent: form.elements.consent.checked,
+            company: form.elements.company.value,
+          }),
+        });
+
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.ok) {
+          fail();
+          return;
+        }
+
+        form.reset();
+        note.textContent = '문의가 도착했습니다. 읽고 답장드리겠습니다.';
+        label.textContent = '보냈습니다';
+      } catch {
+        fail();
+      } finally {
+        // 성공했을 때 다시 누를 이유는 없습니다. 실패했을 때만 되돌립니다.
+        if (label.textContent === '보내는 중') {
+          submit.disabled = false;
+          label.textContent = '보내기';
+        }
+      }
     });
   });
 </script>
@@ -314,9 +365,26 @@ const { class: className, ...rest } = Astro.props;
     color: var(--nectar-page-background-color, #fff);
   }
 
+  .contact-form__submit:disabled {
+    cursor: default;
+    opacity: 0.45;
+  }
+
+  .contact-form__submit:disabled:hover {
+    background-color: transparent;
+    color: inherit;
+    border-color: color-mix(in srgb, currentColor 45%, transparent);
+  }
+
   .contact-form__note {
     font-size: var(--memory-fs-meta);
     opacity: 0.4;
     margin: 0;
+  }
+
+  .contact-form__note :global(a) {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
   }
 </style>
