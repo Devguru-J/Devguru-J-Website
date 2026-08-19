@@ -21,9 +21,28 @@ interface Props {
   description: string;
   /** 문서 상단 표기, 예: "MONKEY FLASH — PRIVACY POLICY". */
   overline: string;
+  /** 푸터 저작권 줄에 붙는 앱 이름. */
+  appName?: string;
+  /** 푸터 링크. 앱마다 페이지 구성이 달라 목록으로 받는다. */
+  links?: { href: string; label: string }[];
+  /**
+   * EN/KO 토글. 단일 언어 문서는 끈다 — 끄면 아래 스크립트가 버튼을 못 찾고
+   * 아무것도 하지 않으므로 html[lang] 도 건드리지 않는다.
+   */
+  langToggle?: boolean;
 }
 
-const { title, description, overline } = Astro.props;
+const {
+  title,
+  description,
+  overline,
+  appName = 'Monkey Flash',
+  links = [
+    { href: '/MonkeyFlash/privacy/', label: 'Privacy' },
+    { href: '/MonkeyFlash/support/', label: 'Support' },
+  ],
+  langToggle = true,
+} = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -32,11 +51,15 @@ const year = new Date().getFullYear();
     <div class="container legal-shell__inner">
       <div class="legal-head">
         <p class="legal-overline">{overline}</p>
-        <div class="legal-lang" role="group" aria-label="Language">
-          <button type="button" data-lang="en">EN</button>
-          <span class="legal-lang__sep" aria-hidden="true">/</span>
-          <button type="button" data-lang="ko">KO</button>
-        </div>
+        {
+          langToggle && (
+            <div class="legal-lang" role="group" aria-label="Language">
+              <button type="button" data-lang="en">EN</button>
+              <span class="legal-lang__sep" aria-hidden="true">/</span>
+              <button type="button" data-lang="ko">KO</button>
+            </div>
+          )
+        }
       </div>
 
       <slot />
@@ -44,10 +67,9 @@ const year = new Date().getFullYear();
       <footer class="legal-foot">
         <hr class="rule" />
         <div class="legal-foot__grid">
-          <p>© {year} {site.nameKo} / Monkey Flash</p>
+          <p>© {year} {site.nameKo} / {appName}</p>
           <p class="legal-foot__links">
-            <a href="/MonkeyFlash/privacy/">Privacy</a>
-            <a href="/MonkeyFlash/support/">Support</a>
+            {links.map((link) => <a href={link.href}>{link.label}</a>)}
             <a href={`mailto:${site.email}`}>Email</a>
           </p>
         </div>
@@ -173,13 +195,17 @@ const year = new Date().getFullYear();
     document.documentElement.lang = lang;
     localStorage.setItem('devguru-lang', lang);
   };
-  buttons.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang!)));
-  // 우선순위: 명시적 ?lang= (App Store 로케일별 URL에서 사용) > 저장된 선택 > 영문.
-  // 문서 자체의 소스 순서(EN 먼저)와 같다.
-  const param = new URLSearchParams(location.search).get('lang');
-  const initial =
-    param === 'ko' || param === 'en'
-      ? param
-      : (localStorage.getItem('devguru-lang') ?? 'en');
-  setLang(initial);
+  // 토글을 끈 단일 언어 문서에서는 버튼도 섹션도 없다. 그대로 두면 setLang 이
+  // html[lang] 을 en 으로 덮어써 한국어 문서가 영어라고 선언된다.
+  if (buttons.length) {
+    buttons.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang!)));
+    // 우선순위: 명시적 ?lang= (App Store 로케일별 URL에서 사용) > 저장된 선택 > 영문.
+    // 문서 자체의 소스 순서(EN 먼저)와 같다.
+    const param = new URLSearchParams(location.search).get('lang');
+    const initial =
+      param === 'ko' || param === 'en'
+        ? param
+        : (localStorage.getItem('devguru-lang') ?? 'en');
+    setLang(initial);
+  }
 </script>

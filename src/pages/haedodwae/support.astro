@@ -1,0 +1,82 @@
+---
+import LegalShell from '../../components/LegalShell.astro';
+import LegalBodyStyles from '../../components/LegalBodyStyles.astro';
+
+const links = [
+  { href: '/haedodwae/privacy/', label: '개인정보' },
+  { href: '/haedodwae/terms/', label: '이용약관' },
+  { href: '/haedodwae/support/', label: '지원' },
+];
+---
+
+<LegalShell
+  title="해도돼? — 지원"
+  description="「해도돼?」 사용 안내와 자주 묻는 질문, 문의처."
+  overline="해도돼? — 지원"
+  appName="해도돼?"
+  links={links}
+  langToggle={false}
+>
+  <section class="legal">
+    <h1>「해도돼?」 지원</h1>
+    <p class="eff">
+      오늘 세차해도 될지, 창문을 열어도 될지. 날씨와 대기질을 보고 답해 주는 앱입니다.
+    </p>
+
+    <h2>문의</h2>
+    <div class="contact-card">
+      <p>
+        무엇이든 <a href="mailto:devguru.j610@gmail.com">devguru.j610@gmail.com</a> 으로 보내
+        주세요. 보통 며칠 안에 답장드립니다.
+      </p>
+    </div>
+
+    <h2>자주 묻는 질문</h2>
+
+    <h3>위치 권한을 왜 요구하나요?</h3>
+    <p>
+      가까운 대기질 측정소를 찾고 그 지역의 날씨를 가져오기 위해서입니다.
+      <strong>정확한 위치는 저장하지 않습니다.</strong> 대기질 조회에는 약 1km 격자로 반올림한
+      좌표만 보내고, 투표 서버에는 시·도 이름만 갑니다. 자세한 내용은
+      <a href="/haedodwae/privacy/">개인정보 처리방침</a>에 적었습니다.
+    </p>
+
+    <h3>위치 권한을 주지 않으면 못 쓰나요?</h3>
+    <p>쓸 수 있습니다. 설정에서 지역을 직접 고르면 그 지역 기준으로 판단합니다.</p>
+
+    <h3>점수는 어떻게 계산되나요?</h3>
+    <p>
+      카드를 누르면 상세 화면에서 판단의 이유와 근거가 된 값(기온·강수·바람·습도·미세먼지 등)을
+      그대로 볼 수 있습니다. 카드마다 보는 항목과 기준이 다릅니다.
+    </p>
+
+    <h3>알림이 오지 않아요.</h3>
+    <p>
+      알림은 기본적으로 꺼져 있습니다. 앱의 설정에서 스마트 알림을 켜고 iOS 알림 권한을 허용해
+      주세요. 켠 뒤에도 iOS 가 앱을 언제 깨울지는 보장하지 않으므로 알림이 늦거나 오지 않을 수
+      있습니다. iOS 설정 → 일반 → <strong>백그라운드 앱 새로고침</strong>이 켜져 있으면 더
+      안정적으로 도착합니다.
+    </p>
+
+    <h3>투표 기록을 지우고 싶어요.</h3>
+    <p>
+      그 카드에서 선택을 다시 눌러 취소하면 서버에서 바로 지워집니다. 앱을 삭제해도 됩니다.
+      <strong>이메일 요청으로는 처리할 수 없습니다</strong> — 서버에 남는 것이 무작위 기기
+      식별자뿐이라 보낸 분의 기록을 특정할 수 없기 때문입니다.
+    </p>
+
+    <h3>날씨가 다른 앱과 달라요.</h3>
+    <p>
+      날씨는 Apple 날씨, 대기질은 한국환경공단 에어코리아에서 가져옵니다. 출처와 갱신 시각이 다르면
+      값도 다를 수 있습니다. 앱 안 “출처” 화면에서 언제 받아온 값인지 확인할 수 있습니다.
+    </p>
+
+    <h2>문서</h2>
+    <ul>
+      <li><a href="/haedodwae/privacy/">개인정보 처리방침</a></li>
+      <li><a href="/haedodwae/terms/">이용약관</a></li>
+    </ul>
+  </section>
+</LegalShell>
+
+<LegalBodyStyles />

@@ -1,0 +1,128 @@
+---
+/**
+ * 법적 문서 본문 스타일. Monkey Flash 의 두 페이지는 심사에 걸린 문서라
+ * 각자 style 블록을 그대로 들고 있고, 그 뒤에 만든 문서들이 이걸 쓴다.
+ * 값은 `MonkeyFlash/support.astro` 의 블록과 같다 — 표(table) 규칙만 더했다.
+ */
+---
+
+<style is:global>
+  .legal h1 {
+    font-size: clamp(28px, 3.4vw, 36px);
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .legal .eff {
+    color: var(--color-ink-2);
+    font-size: 15px;
+    margin-bottom: 32px;
+    max-width: 65ch;
+  }
+  .legal h2 {
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    font-weight: 500;
+    margin: 44px 0 12px;
+  }
+  .legal h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 24px 0 6px;
+    color: var(--color-ink);
+  }
+  .legal p {
+    color: var(--color-ink-2);
+    line-height: 1.7;
+    margin-bottom: 14px;
+    max-width: 65ch;
+  }
+  .legal ol,
+  .legal ul {
+    color: var(--color-ink-2);
+    line-height: 1.7;
+    margin: 0 0 14px;
+    padding-left: 22px;
+    max-width: 65ch;
+  }
+  .legal ol {
+    list-style: decimal;
+  }
+  .legal ul {
+    list-style: disc;
+  }
+  .legal li {
+    margin-bottom: 6px;
+  }
+  .legal strong {
+    color: var(--color-ink);
+  }
+  .legal a {
+    color: var(--color-amber);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .legal .contact-card {
+    margin-top: 32px;
+    padding: 28px 32px;
+    background: var(--color-container-low);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+    color: var(--color-ink-2);
+    line-height: 1.8;
+  }
+  /* 좁은 화면에서 표가 페이지를 넓히지 않게 스스로 스크롤한다. */
+  .legal .table-scroll {
+    overflow-x: auto;
+    margin: 0 0 14px;
+    max-width: 65ch;
+  }
+  .legal table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 30rem;
+    color: var(--color-ink-2);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  .legal th,
+  .legal td {
+    text-align: left;
+    vertical-align: top;
+    padding: 10px 14px 10px 0;
+    border-bottom: 1px solid;
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+  }
+  .legal th {
+    color: var(--color-ink);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  /* 좁은 화면에서는 옆으로 미는 대신 행을 세로로 쌓는다. 심사자가 보는 폭이다. */
+  @media (max-width: 560px) {
+    .legal table,
+    .legal tbody,
+    .legal tr,
+    .legal th,
+    .legal td {
+      display: block;
+      min-width: 0;
+    }
+    .legal thead {
+      display: none;
+    }
+    .legal tr {
+      padding: 14px 0;
+      border-bottom: 1px solid;
+      border-color: color-mix(in srgb, currentColor 14%, transparent);
+    }
+    .legal th,
+    .legal td {
+      border: 0;
+      padding: 0;
+      white-space: normal;
+    }
+    .legal th {
+      margin-bottom: 4px;
+    }
+  }
+</style>
