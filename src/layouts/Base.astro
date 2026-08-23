@@ -27,6 +27,9 @@ const {
   schema = [],
 } = Astro.props;
 
+// 계측은 배포본에서만. 개발 서버 방문이 통계에 섞이지 않게 합니다.
+const gaId = import.meta.env.PROD ? site.gaId : '';
+
 const pageTitle = title ? `${title} — ${site.nameKo} ${site.nameEn}` : `${site.nameKo} — ${site.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
 const ogImageUrl = new URL(ogImage, Astro.site ?? site.url).href;
@@ -106,6 +109,18 @@ const schemaGraph = {
     <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
     <meta name="naver-site-verification" content="b8ba07c923628bc3a348113349009ce5395e58b3" />
+
+    {/* Google Analytics 4. dataLayer 이름을 그대로 쓰므로 나중에 GTM 으로 옮겨도
+        이 두 줄만 지우면 됩니다. */}
+    {gaId && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script
+          is:inline
+          set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gaId}');`}
+        />
+      </>
+    )}
 
     <meta name="theme-color" content="#ffffff" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

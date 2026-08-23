@@ -180,6 +180,12 @@ const { class: className, ...rest } = Astro.props;
           return;
         }
 
+        // 메일이 실제로 나간 경우에만 셉니다. 버튼 클릭 수가 아니라 도착 수입니다.
+        window.gtag?.('event', 'contact_submit', {
+          work_type: value('type'),
+          budget_range: value('budget'),
+        });
+
         form.reset();
         note.textContent = '문의가 도착했습니다. 읽고 답장드리겠습니다.';
         label.textContent = '보냈습니다';
