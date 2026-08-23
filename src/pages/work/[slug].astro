@@ -14,9 +14,37 @@ export function getStaticPaths() {
 
 const { work, next } = Astro.props;
 const hasNext = works.length > 1 && next.slug !== work.slug;
+
+const siteUrl = Astro.site ?? 'https://bymemory.dev';
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+const schema = [
+  {
+    '@type': 'CreativeWork',
+    '@id': `${pageUrl}#work`,
+    name: work.title,
+    alternateName: work.titleEn,
+    description: work.summary,
+    url: pageUrl,
+    inLanguage: 'ko',
+    dateCreated: work.year,
+    genre: work.category,
+    creator: { '@id': new URL('/#organization', siteUrl).href },
+    ...(work.cover ? { image: new URL(work.cover, siteUrl).href } : {}),
+    ...(work.link ? { sameAs: work.link.href } : {}),
+  },
+  {
+    '@type': 'BreadcrumbList',
+    '@id': `${pageUrl}#breadcrumb`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '홈', item: new URL('/', siteUrl).href },
+      { '@type': 'ListItem', position: 2, name: '작업', item: new URL('/work/', siteUrl).href },
+      { '@type': 'ListItem', position: 3, name: work.title, item: pageUrl },
+    ],
+  },
+];
 ---
 
-<Base title={work.title} description={work.summary}>
+<Base title={work.title} description={work.summary} schema={schema}>
   <!-- ── Head ── -->
   <section
     class="page-head"

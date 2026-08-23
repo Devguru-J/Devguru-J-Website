@@ -11,6 +11,10 @@ interface Props {
   hideFooter?: boolean;
   /** 푸터 연락 섹션에 양식을 함께 보일지. 홈에서만 켭니다. */
   footerForm?: boolean;
+  /** 검색엔진 색인 제외. 404 등 결과 페이지에만 켭니다. */
+  noindex?: boolean;
+  /** 페이지별 schema.org 노드. Organization·WebSite·WebPage 그래프에 이어 붙습니다. */
+  schema?: Record<string, unknown>[];
 }
 
 const {
@@ -19,11 +23,57 @@ const {
   ogImage = '/og.png',
   hideFooter = false,
   footerForm = false,
+  noindex = false,
+  schema = [],
 } = Astro.props;
 
 const pageTitle = title ? `${title} — ${site.nameKo} ${site.nameEn}` : `${site.nameKo} — ${site.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
 const ogImageUrl = new URL(ogImage, Astro.site ?? site.url).href;
+
+const siteUrl = (Astro.site ?? new URL(site.url)).href;
+const orgId = new URL('/#organization', siteUrl).href;
+const websiteId = new URL('/#website', siteUrl).href;
+const schemaGraph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': orgId,
+      name: `${site.nameKo} ${site.nameEn}`,
+      alternateName: [site.nameKo, site.nameEn],
+      url: siteUrl,
+      email: site.email,
+      description: site.description,
+      logo: {
+        '@type': 'ImageObject',
+        url: new URL('/og.png', siteUrl).href,
+        width: 1200,
+        height: 630,
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      name: `${site.nameKo} ${site.nameEn}`,
+      url: siteUrl,
+      description: site.description,
+      inLanguage: 'ko',
+      publisher: { '@id': orgId },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: pageTitle,
+      description,
+      inLanguage: 'ko',
+      isPartOf: { '@id': websiteId },
+      primaryImageOfPage: { '@type': 'ImageObject', url: ogImageUrl },
+    },
+    ...schema,
+  ],
+};
 ---
 
 <!doctype html>
@@ -35,6 +85,7 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? site.url).href;
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
 
     <meta property="og:type" content="website" />
@@ -43,8 +94,16 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? site.url).href;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageUrl} />
+    {/* 기본 og.png 규격. 페이지가 다른 이미지를 넘기면 크기를 단정하지 않습니다. */}
+    {ogImage === '/og.png' && <meta property="og:image:width" content="1200" />}
+    {ogImage === '/og.png' && <meta property="og:image:height" content="630" />}
     <meta property="og:locale" content="ko_KR" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
     <meta name="theme-color" content="#ffffff" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
