@@ -293,6 +293,7 @@ export const works: Work[] = [
       '이미지·PDF는 픽셀을 검게 태워 복원할 수 없게 가립니다.',
       '자동 탐지의 한계를 숨기지 않고 안내합니다.',
     ],
+    cover: '/work/garimi.webp',
     link: { label: '사이트 보기', href: 'https://www.blinder.kr' },
   },
 ];
