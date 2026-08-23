@@ -88,8 +88,9 @@ const hasNext = works.length > 1 && next.slug !== work.slug;
                 <span>{s.heading}</span>
               </p>
             </Reveal>
+            {/* 본문은 문장 경계에 <br /> 을 담고 있다 (works.ts) — HTML 로 해석한다. */}
             <Reveal animation="slight-fade-in-from-bottom" delay={100} class="chapter-block__body">
-              {s.body.map((p) => <p>{p}</p>)}
+              {s.body.map((p) => <p set:html={p} />)}
             </Reveal>
           </div>
         ))
