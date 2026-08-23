@@ -83,20 +83,141 @@ const year = new Date().getFullYear();
      쓰이므로 전부 currentColor 기반으로 맞춘다. */
   .legal-shell {
     --color-ink: currentColor;
-    --color-ink-2: color-mix(in srgb, currentColor 62%, transparent);
+    --color-ink-2: color-mix(in srgb, currentColor 72%, transparent);
     --color-amber: currentColor;
-    --color-container-low: color-mix(in srgb, currentColor 5%, transparent);
+    --color-container-low: color-mix(in srgb, currentColor 4%, transparent);
     --font-mono: inherit;
+    --legal-hairline: color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  /* =====================================================================
+     본문을 사이트의 편집 디자인에 맞추는 오버라이드.
+
+     각 페이지의 본문과 자체 <style is:global> 블록(심사에 걸린 문서)은
+     그대로 두고, `.legal-shell .legal` 의 더 높은 특이성으로만 덮어쓴다.
+     내용·마크업·URL 은 바뀌지 않는다.
+     ===================================================================== */
+
+  /* 제목 — 작업 상세의 헤드와 같은 눈금·자간 */
+  .legal-shell .legal h1 {
+    font-size: var(--memory-fs-h2);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1.12;
+    margin-bottom: 0;
+  }
+
+  /* 리드 줄(시행일·요약) — .lead 와 같은 처리 */
+  .legal-shell .legal .eff {
+    font-size: var(--memory-fs-lead);
+    line-height: 1.7;
+    letter-spacing: -0.025em;
+    margin-top: 1.4rem;
+    margin-bottom: clamp(3.5rem, 6vw, 5.5rem);
+    max-width: 48ch;
+  }
+
+  /* 장 제목 — 헤어라인 위에 얹히는 chapter 리듬 */
+  .legal-shell .legal h2 {
+    font-size: var(--memory-fs-h3);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.25;
+    margin: clamp(3.5rem, 6vw, 5.5rem) 0 1.1em;
+    padding-top: clamp(2rem, 3.2vw, 2.75rem);
+    border-top: 1px solid var(--legal-hairline);
+  }
+
+  .legal-shell .legal h3 {
+    font-size: var(--memory-fs-h4);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 2.4em 0 0.65em;
+  }
+
+  .legal-shell .legal p,
+  .legal-shell .legal ol,
+  .legal-shell .legal ul {
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    line-height: 1.85;
+    letter-spacing: -0.02em;
+  }
+
+  .legal-shell .legal li {
+    margin-bottom: 0.5em;
+  }
+
+  .legal-shell .legal li::marker {
+    color: color-mix(in srgb, currentColor 40%, transparent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 링크 — 앰버 강조 대신 사이트의 currentColor 밑줄 */
+  .legal-shell .legal a {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
+    transition: text-decoration-color 0.4s var(--nectar-cubic-bezier-out);
+  }
+
+  .legal-shell .legal a:hover,
+  .legal-shell .legal a:focus-visible {
+    text-decoration-color: currentColor;
+  }
+
+  /* 연락 카드 — 그림자 박스 대신 헤어라인 컨테이너 */
+  .legal-shell .legal .contact-card {
+    margin-top: clamp(2.5rem, 4vw, 3.5rem);
+    padding: clamp(1.75rem, 3vw, 2.5rem) clamp(1.75rem, 3.2vw, 2.75rem);
+    background: var(--color-container-low);
+    box-shadow: none;
+    border: 1px solid var(--legal-hairline);
+    line-height: 1.85;
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    letter-spacing: -0.02em;
+  }
+
+  /* 표 — 본문과 같은 눈금, 헤어라인 행 구분 */
+  .legal-shell .legal table {
+    font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+    line-height: 1.7;
+    letter-spacing: -0.015em;
+  }
+
+  .legal-shell .legal th,
+  .legal-shell .legal td {
+    padding: 0.8em 1em 0.8em 0;
+    border-color: var(--legal-hairline);
+  }
+
+  .legal-shell .legal th {
+    font-weight: 500;
+  }
+
+  /* 좁은 화면에서 표가 세로로 쌓일 때(LegalBodyStyles 의 규칙)의 여백을
+     위 패딩 오버라이드가 이기지 않도록 같은 조건으로 되돌린다. */
+  @media (max-width: 560px) {
+    .legal-shell .legal th,
+    .legal-shell .legal td {
+      border: 0;
+      padding: 0;
+    }
+
+    .legal-shell .legal th {
+      margin-bottom: 4px;
+    }
   }
 </style>
 
 <style>
   .legal-shell {
-    padding-block: clamp(140px, 16vh, 200px) clamp(48px, 6vw, 80px);
+    padding-block: clamp(150px, 18vh, 230px) clamp(48px, 6vw, 80px);
   }
 
   .legal-shell__inner {
-    max-width: 76ch;
+    max-width: min(100%, 880px);
     margin-inline: auto;
   }
 
@@ -105,17 +226,20 @@ const year = new Date().getFullYear();
     align-items: baseline;
     justify-content: space-between;
     gap: 2rem;
-    padding-bottom: 1rem;
-    margin-bottom: clamp(36px, 5vw, 64px);
+    padding-bottom: 1.1rem;
+    margin-bottom: clamp(48px, 7vw, 88px);
     border-bottom: 1px solid;
     border-color: color-mix(in srgb, currentColor 14%, transparent);
   }
 
+  /* 사이트의 .eyebrow 와 같은 처리 */
   .legal-overline {
     font-size: var(--memory-fs-meta);
-    letter-spacing: 0.13em;
+    font-weight: 500;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    opacity: 0.4;
+    line-height: 1;
+    opacity: 0.55;
   }
 
   .legal-lang {
