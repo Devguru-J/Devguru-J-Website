@@ -141,6 +141,7 @@ export const works: Work[] = [
       '화면을 보는 경험과 실제 정보 탐색이 분리되지 않도록 만듭니다.',
     ],
     cover: '/work/kb-inc.webp',
+    link: { label: '사이트 보기', href: 'https://kbinc.kr' },
   },
 
 
