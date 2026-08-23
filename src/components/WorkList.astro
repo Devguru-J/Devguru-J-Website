@@ -57,11 +57,24 @@ const { works, pending = [], class: className = '', ...rest } = Astro.props;
               </div>
             </div>
 
-            {/* Cursor-following media. position:fixed — moved by motion.js each rAF. */}
+            {/* Cursor-following media. position:fixed — moved by motion.js each rAF.
+                thumb 가 있으면 cover 대신 그걸 쓴다 (세로 포스터는 is-portrait). */}
             <div class="nectar-post-grid-item-bg">
-              <div class="nectar-post-grid-item-bg__media">
-                {work.cover ? (
-                  <img src={work.cover} alt="" loading="lazy" decoding="async" width="1200" height="900" />
+              <div
+                class:list={[
+                  'nectar-post-grid-item-bg__media',
+                  work.thumbPortrait && 'is-portrait',
+                ]}
+              >
+                {work.thumb || work.cover ? (
+                  <img
+                    src={work.thumb ?? work.cover}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    width={work.thumbPortrait ? 1024 : 1200}
+                    height={work.thumbPortrait ? 1536 : 900}
+                  />
                 ) : (
                   <span class="nectar-post-grid-item-bg__plate">{work.titleEn}</span>
                 )}
@@ -330,6 +343,15 @@ const { works, pending = [], class: className = '', ...rest } = Astro.props;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  /* 세로 포스터 썸네일 — 박스를 2:3 으로 바꾸고, 커서 중앙 정렬 오프셋
+     (음수 left/top = 폭·높이의 절반)도 그 비율로 다시 맞춘다. */
+  .vert_list_hover_effect_featured_image_follow .nectar-post-grid-item-bg__media.is-portrait {
+    width: 14vw;
+    aspect-ratio: 2 / 3;
+    left: -7vw;
+    top: -10.5vw;
   }
 
   .vert_list_hover_effect_featured_image_follow .nectar-post-grid-item-bg__plate {

@@ -98,6 +98,27 @@ const hasNext = works.length > 1 && next.slug !== work.slug;
     </div>
   </section>
 
+  <!-- ── Images — 포스터·홍보 이미지 (있을 때만) ── -->
+  {
+    work.images && (
+      <section
+        class="section--tight image-sec"
+        data-color-change-section-bg-color="#ffffff"
+        data-color-change-section-text-color="#000000"
+      >
+        <div class="container image-sec__inner">
+          {work.images.map((img) => (
+            <div class="work-figure nectar-media" data-bg-animation="zoom-out-reveal">
+              <div class="inner-wrap">
+                <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
   <!-- ── Notes ── -->
   <section
     class="section notes-sec"
@@ -279,6 +300,29 @@ const hasNext = works.length > 1 && next.slug !== work.slug;
     .chapter-block__body {
       grid-column: 1 / -1;
     }
+  }
+
+  /* Images */
+  .image-sec {
+    padding-block: 0 var(--memory-section-y-tight);
+  }
+
+  .image-sec__inner {
+    display: grid;
+    gap: var(--memory-space-lg);
+  }
+
+  /* 세로 포스터가 화면을 다 먹지 않게 — 가운데에 적당한 폭으로 */
+  .work-figure {
+    width: min(520px, 100%);
+    margin-inline: auto;
+    overflow: hidden;
+  }
+
+  .work-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   /* Notes */

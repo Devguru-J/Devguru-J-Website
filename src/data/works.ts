@@ -35,6 +35,16 @@ export interface Work {
   /** 상세 페이지 하단 요약 리스트 */
   notes: string[];
   cover?: string;
+  /**
+   * 목록의 커서 추종 썸네일 전용 이미지. 없으면 cover 를 그대로 씁니다.
+   * cover 는 상세 상단(16:10)과 겸용이라, 목록에서만 다른 그림을 보여주고
+   * 싶을 때 씁니다.
+   */
+  thumb?: string;
+  /** thumb 가 세로 포스터(2:3)면 true — 호버 박스가 세로 비율로 바뀝니다. */
+  thumbPortrait?: boolean;
+  /** 상세 본문 아래에 붙는 추가 이미지 (포스터·홍보 이미지 등) */
+  images?: { src: string; alt: string }[];
   /** 외부 링크 (있을 때만 노출) */
   link?: { label: string; href: string };
   /**
@@ -232,6 +242,14 @@ export const works: Work[] = [
       '정확한 위치를 저장하지 않습니다.',
     ],
     cover: '/work/haedodwae.webp',
+    thumb: '/work/haedodwae-poster.webp',
+    thumbPortrait: true,
+    images: [
+      {
+        src: '/work/haedodwae-poster.webp',
+        alt: '해도 돼? 출시 포스터 — 지금, 해도 돼? 오늘의 고민에, 날씨로 답하다.',
+      },
+    ],
   },
 
   {
