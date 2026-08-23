@@ -168,7 +168,7 @@ const avoided = [
             <p class="lead">
               십사 년째 같은 키보드를 씁니다.<br />
               스틸시리즈 6Gv2, 요즘은 팔지 않는 모델입니다.<br />
-              십 년 넘게 손에 든 라이터도 하나 있습니다.<br />
+              <span class="one-line">십 년 넘게 손에 든 라이터도 하나 있습니다.</span><br />
               그동안 제가 쓰던 소프트웨어는 여러 번 바뀌었고, 몇 개는 아예 사라졌습니다.
             </p>
             <p class="chapter__quote">
@@ -527,6 +527,15 @@ const avoided = [
     .hero__lead .lead br,
     .chapter__body-col .lead br {
       display: none;
+    }
+  }
+
+  /* 열 폭보다 살짝 긴 문장을 한 줄로 유지한다. 본문 열(8~11칸) 오른쪽의
+     빈 12번째 칸이 넘치는 몇십 px 을 받아주는 폭에서만 켠다 — 그보다
+     좁으면 nowrap 이 글자를 화면 밖으로 밀어내므로 자연 줄바꿈에 맡긴다. */
+  @media (min-width: 1360px) {
+    .chapter__body-col .lead .one-line {
+      white-space: nowrap;
     }
   }
 
