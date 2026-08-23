@@ -150,6 +150,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  /* 한국어 줄바꿈 — 어절 단위로 끊고(keep-all), 긴 라틴 단어·URL 은
+     넘치는 대신 쪼갠다(break-word). 둘은 항상 짝으로 다닌다. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
   /* Salient css/colors.php — body colour crossfade for colour-change sections */
   transition: color var(--page-color-change-section-transition-time),
     background-color var(--page-color-change-section-transition-time);
@@ -179,7 +183,9 @@ h6 {
   font-weight: 600;
   letter-spacing: -0.045em;
   line-height: 1.18;
-  text-wrap: pretty;
+  /* 제목은 balance — 여러 줄일 때 줄 길이를 고르게 나눈다.
+     본문(p)은 pretty 유지: balance 를 본문에 쓰면 문단 폭이 줄어든다. */
+  text-wrap: balance;
   word-break: keep-all;
 }
 
