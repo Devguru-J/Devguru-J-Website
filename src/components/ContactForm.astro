@@ -91,10 +91,16 @@ const { class: className, ...rest } = Astro.props;
     <label>이 칸은 비워두세요<input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
   </div>
 
-  <label class="contact-form__consent">
-    <input type="checkbox" name="consent" required />
-    <span>문의 처리를 위해 적어주신 내용을 보관하는 데 동의합니다.</span>
-  </label>
+  <div class="contact-form__consent-block">
+    <label class="contact-form__consent">
+      <input type="checkbox" name="consent" required />
+      <span>
+        문의에 답장하기 위해 이름 · 연락 수단 · 문의 내용을 받고 3년간 보관하는 데
+        동의합니다. 동의하지 않아도 되지만, 그 경우 문의를 접수할 수 없습니다.
+      </span>
+    </label>
+    <a class="contact-form__consent-more" href="/privacy/">개인정보처리방침 전문 보기</a>
+  </div>
 
   <div class="contact-form__foot">
     <button type="submit" class="contact-form__submit">
@@ -296,6 +302,28 @@ const { class: className, ...rest } = Astro.props;
     transform: rotate(45deg);
     opacity: 0.45;
     pointer-events: none;
+  }
+
+  .contact-form__consent-block {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+  }
+
+  .contact-form__consent-more {
+    font-size: var(--memory-fs-meta);
+    opacity: 0.45;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+    /* 체크박스 폭(18px)과 gap(0.75rem)만큼 들여 동의 문구와 줄을 맞춥니다. */
+    margin-left: calc(18px + 0.75rem);
+    transition: opacity 0.35s var(--memory-ease-ui);
+  }
+
+  .contact-form__consent-more:hover,
+  .contact-form__consent-more:focus-visible {
+    opacity: 0.8;
   }
 
   .contact-form__consent {
