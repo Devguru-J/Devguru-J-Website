@@ -33,5 +33,6 @@
 
 ## 참고
 
+- [전문(llms-full.txt)](https://bymemory.dev/llms-full.txt): 사이트의 모든 페이지 본문을 한 파일에 모은 문서입니다.
 - [sitemap](https://bymemory.dev/sitemap-index.xml)
 - [robots.txt](https://bymemory.dev/robots.txt)
