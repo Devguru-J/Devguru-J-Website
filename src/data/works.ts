@@ -251,6 +251,10 @@ export const works: Work[] = [
         alt: '해도 돼? 출시 포스터 — 지금, 해도 돼? 오늘의 고민에, 날씨로 답하다.',
       },
     ],
+    link: {
+      label: 'App Store에서 보기',
+      href: 'https://apps.apple.com/kr/app/%ED%95%B4%EB%8F%84-%EB%8F%BC/id6804227402',
+    },
   },
 
   {
