@@ -8,7 +8,7 @@ bymemory.dev는 백링크 그래프의 허브다. 구조는 방사형 — 스튜
 |---|---|
 | kb-inc | https://kbinc.kr |
 | dl-auto-solution | https://dlas.co.kr |
-| garimi | https://www.blinder.kr |
+| garimi | https://blinder.kr/ |
 
 ## 들어오는 링크 (각 사이트 푸터 크레딧)
 

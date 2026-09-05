@@ -299,7 +299,7 @@ export const works: Work[] = [
       '자동 탐지의 한계를 숨기지 않고 안내합니다.',
     ],
     cover: '/work/garimi.webp',
-    link: { label: '사이트 보기', href: 'https://www.blinder.kr' },
+    link: { label: '사이트 보기', href: 'https://blinder.kr/' },
   },
 ];
 
